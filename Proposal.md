@@ -17,7 +17,7 @@ There are 2 cases this can definitely help.
 - YAML templating  
   Helm and Kustomize shine in this area, but if you need the most simplistic approach of using the same YAML stanza imported, Helm and Kustomize do solve the problem, but are a bit of an overkill.
 
-Both of them are interesting because Markdown and YAML cannot import other file, because of its simplicity.
+Both of them are interesting because Markdown and YAML cannot import other file, because of their simplicity.
 
 ## What it does NOT
 
