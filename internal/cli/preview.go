@@ -46,5 +46,15 @@ func preview(fileName string) error {
 
 	file.PrintDebugAll()
 
+	fmt.Printf(`You can replace the file content with either of the commands below:
+
+- 'importer generate %s'
+  Replace the file content with the processed file, importing all annotated references.
+- 'importer purge %s' 
+  Replace the file content by removing all data between annotation pairs.
+
+You can find more with 'importer help'
+`, fileName, fileName)
+
 	return nil
 }
