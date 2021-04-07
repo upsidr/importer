@@ -44,7 +44,7 @@ func preview(fileName string) error {
 		return err
 	}
 
-	file.PrintDebug()
+	file.PrintDebugAll()
 
 	return nil
 }

@@ -26,6 +26,7 @@ func Execute(args []string) error {
 	rootCmd.AddCommand(
 		previewCmd,
 		generateCmd,
+		purgeCmd,
 	)
 	if err := rootCmd.Execute(); err != nil {
 		return err

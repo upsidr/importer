@@ -6,33 +6,32 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-
 	"github.com/upsidr/importer/internal/parse"
 )
 
 var (
-	generateCmd = &cobra.Command{
-		Use:   "generate",
-		Short: "Parse the provided file and generate result with imported files",
-		RunE:  executeGenerate,
+	purgeCmd = &cobra.Command{
+		Use:   "purge",
+		Short: "Parse the provided file and purge data between annotations",
+		RunE:  executePurge,
 	}
 )
 
-func executeGenerate(cmd *cobra.Command, args []string) error {
+func executePurge(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
 	if len(args) != 1 {
 		return errors.New("error: incorrect argument, you can only pass in 1 argument")
 	}
 
 	arg := args[0]
-	if err := generate(arg); err != nil {
-		return fmt.Errorf("error: handling generate, %v", err)
+	if err := purge(arg); err != nil {
+		return fmt.Errorf("error: handling purge, %v", err)
 	}
 
 	return nil
 }
 
-func generate(fileName string) error {
+func purge(fileName string) error {
 	f, err := os.Open(fileName)
 	if err != nil {
 		return err
@@ -44,7 +43,7 @@ func generate(fileName string) error {
 		return err
 	}
 
-	err = file.ReplaceWithAfter()
+	err = file.ReplaceWithPurged()
 	if err != nil {
 		return err
 	}

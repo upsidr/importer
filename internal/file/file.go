@@ -8,34 +8,20 @@ type File struct {
 	// extension format.
 	fileType string
 
-	// contentBefore holds the file content as it was before processing. The
+	// ContentBefore holds the file content as it was before processing. The
 	// first slice represents the line number, and the second is for the actual
 	// data.
-	contentBefore [][]byte
+	ContentBefore [][]byte
 
-	// contentPurged holds the file coontent, but removes the parts between
+	// ContentPurged holds the file coontent, but removes the parts between
 	// importer annotation begin/end. The first slice represents the line
 	// number, and the second is for the actual data.
-	contentPurged [][]byte
+	ContentPurged [][]byte
 
-	// contentAfter holds the file content after the import has been run. This
+	// ContentAfter holds the file content after the import has been run. This
 	// only holds the actual data in byte slice representation.
-	contentAfter []byte
+	ContentAfter []byte
 
-	// annotations is an array holding onto each annotation block.
-	annotations map[int]annotation
-}
-
-type annotation struct {
-	name                  string
-	lineWithBeginOriginal int
-	lineWithBeginPurged   int
-	targetPath            string
-	targetLines           []int
-}
-
-func NewFile() *File {
-	result := &File{}
-
-	return result
+	// Annotations is an array holding onto each annotation block.
+	Annotations map[int]*Annotation
 }
