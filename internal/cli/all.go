@@ -12,12 +12,12 @@ var (
 	rootCmd = &cobra.Command{
 		Use:   "importer",
 		Short: "Code generation for any file with importer annotation",
-		Long: `Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-		Run: func(cmd *cobra.Command, args []string) {
-			//
-		},
+		Long: `Importer allows pulling in any content from any file.
+
+This is especially useful for file format that requires single file input, such as YAML and Markdown.
+Within those files, you can add importer annotation to pull some content from other file.
+As long as you have some code generation / compilation logic built into the CI setup,
+you don't have to duplicate content in Markdowns, YAMLs, or any other files.`,
 	}
 )
 
