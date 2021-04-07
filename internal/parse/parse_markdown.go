@@ -28,8 +28,8 @@ func parseMarkdown(fileName string, input io.Reader) (*file.File, error) {
 	// for readability. This shouldn't be necessary, but with this approach,
 	// the slice index matches the line number, and is easy to get my head
 	// around for now.
-	f.ContentBefore = make([][]byte, 1)
-	f.ContentPurged = make([][]byte, 1)
+	f.ContentBefore = make([][]byte, 0)
+	f.ContentPurged = make([][]byte, 0)
 
 	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
