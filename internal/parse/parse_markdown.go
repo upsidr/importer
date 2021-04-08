@@ -39,7 +39,7 @@ func parseMarkdown(fileName string, input io.Reader) (*file.File, error) {
 
 		match := re.FindStringSubmatch(scanner.Text())
 		if len(match) == 0 {
-			// If the line appears after some annotation, add empty slice.
+			// If the line appears after some annotation, remove the line.
 			if inNested {
 				continue
 			}

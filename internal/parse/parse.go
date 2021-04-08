@@ -118,11 +118,11 @@ func convert(name string, match matchHolder) (*file.Annotation, error) {
 						ls := strings.Split(matchedContent, "~")
 						lb, err := strconv.Atoi(ls[0])
 						if err != nil {
-							fmt.Printf("error: found non-numeric input for line number lower bound, %v", err)
+							return nil, fmt.Errorf("error: found non-numeric input for line number lower bound, %v", err)
 						}
 						ub, err := strconv.Atoi(ls[1])
 						if err != nil {
-							fmt.Printf("error: found non-numeric input for line number upper bound, %v", err)
+							return nil, fmt.Errorf("error: found non-numeric input for line number upper bound, %v", err)
 						}
 						// Add line numbers to the slice.
 						// This way, we can support comma separated list, etc.
