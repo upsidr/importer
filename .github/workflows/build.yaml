@@ -32,7 +32,7 @@ jobs:
         run: go mod download
 
       - name: Run Go Build
-        run: go build ./cmd/importer
+        run: go build ./...
       - name: Run Go Test
         run: go test ./...
 
