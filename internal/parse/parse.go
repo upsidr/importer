@@ -12,6 +12,11 @@ import (
 	"github.com/upsidr/importer/internal/file"
 )
 
+var (
+	ErrUnsupportedFileType = errors.New("unsupported file type")
+	ErrNoInput             = errors.New("no file content found")
+)
+
 // File holds onto file data.
 type File struct {
 	FileName string
@@ -51,7 +56,7 @@ type File struct {
 // If any of the above steps failed, it would return an error.
 func Parse(fileName string, input io.Reader) (*file.File, error) {
 	if input == nil {
-		return nil, errors.New("no file content found")
+		return nil, ErrNoInput
 	}
 
 	fileType := filepath.Ext(fileName)
@@ -62,17 +67,17 @@ func Parse(fileName string, input io.Reader) (*file.File, error) {
 	case ".md":
 		result, err = parseMarkdown(fileName, input)
 		if err != nil {
-			return nil, err
+			return nil, err // TODO: test coverage
 		}
 	case ".yaml", ".yml":
-		fmt.Printf("yaml")
+		fmt.Printf("yaml") // TODO: implement
 	default:
-		return nil, fmt.Errorf("unsupported file type '%s' provided", fileType)
+		return nil, fmt.Errorf("%w, '%s' provided", ErrUnsupportedFileType, fileType)
 	}
 
 	err = result.UpdateWithAnnotations()
 	if err != nil {
-		return nil, err
+		return nil, err // TODO: test coverage
 	}
 
 	return result, nil
