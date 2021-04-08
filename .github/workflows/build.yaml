@@ -1,25 +1,21 @@
-name: Build
+name: Release
 
 on:
   push:
     branches:
       - main
       - initial-implementation # For testing
+  pull_request:
+    branches:
+      - main
+      - release/v*
 
 env:
   GO_VERSION: 1.16.2
 
 jobs:
   build:
-    name: Build Importer Binary
-    # strategy:
-    #   fail-fast: true
-    #   matrix:
-    #     GOOS:
-    #       - linux
-    #       - darwin
-    #     GOARCH:
-    #       - amd64
+    name: Build Importer Binary for Release
     runs-on: ubuntu-latest
     steps:
       - name: Check out
@@ -34,7 +30,13 @@ jobs:
       - name: Go mod download
         run: go mod download
 
+      - name: Run Go Build
+        run: go build ./cmd/importer
+      - name: Run Go Test
+        run: go test ./...
+
       - name: Run GoReleaser
+        # if: github.event_name != 'pull_request'
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
@@ -43,19 +45,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build
-        if: ${{ false }} # Disabling for now
-        run: |
-          GOOS=${{ matrix.GOOS }} GOARCH=${{ matrix.GOARCH }} go build \
-            -o importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }} \
-            ./cmd/importer/
-
       - name: Upload Artifact
-        if: ${{ false }} # Disabling for now
+        # if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v2
         with:
-          name: importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }}
-          path: ./importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }}
+          name: importer
+          path: ./cmd/importer/dist/*
 
   build-for-windows:
     if: ${{ false }} # Disabling Windows build for now
