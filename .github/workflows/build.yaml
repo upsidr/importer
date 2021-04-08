@@ -6,17 +6,21 @@ on:
       - main
       - initial-implementation # For testing
 
+env:
+  GO_VERSION: 1.16.2
+
 jobs:
   build:
-    name: Build Importer Binary
+    name: Build Importer Binary (non-Windows)
     strategy:
       fail-fast: true
       matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
-          - windows-latest
-    runs-on: ${{ matrix.os }}
+        GOOS:
+          - linux
+          - darwin
+        GOARCH:
+          - amd64
+    runs-on: ubuntu-latest
     steps:
       - name: Check out
         uses: actions/checkout@v2
@@ -25,14 +29,51 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v1
         with:
-          go-version: 1.16.2
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Go mod download
+        run: go mod download
 
       - name: Build
         run: |
-          go mod download
-          go build ./cmd/importer/
+          GOOS=${{ matrix.GOOS }} GOARCH=${{ matrix.GOARCH }} go build \
+            -o importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }} \
+            ./cmd/importer/
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: importer
+          name: importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }}
+          path: ./importer
+
+  build-for-windows:
+    name: Build Importer Binary - Windows
+    strategy:
+      matrix:
+        GOARCH:
+          - amd64
+    runs-on: windows-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Go mod download
+        run: go mod download
+
+      - name: Build for Windows
+        run: |
+          GOOS=windows GOARCH=${{ matrix.GOARCH }} go build \
+            -o importer-windows-${{ matrix.GOARCH }}.exe \
+            ./cmd/importer/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: importer-windows-${{ matrix.GOARCH }}.exe
           path: ./importer
