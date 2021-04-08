@@ -28,9 +28,6 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
 
-      - name: Go mod download
-        run: go mod download
-
       - name: Run Go Build
         run: go build ./...
       - name: Run Go Test
