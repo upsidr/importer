@@ -12,14 +12,14 @@ env:
 jobs:
   build:
     name: Build Importer Binary
-    strategy:
-      fail-fast: true
-      matrix:
-        GOOS:
-          - linux
-          - darwin
-        GOARCH:
-          - amd64
+    # strategy:
+    #   fail-fast: true
+    #   matrix:
+    #     GOOS:
+    #       - linux
+    #       - darwin
+    #     GOARCH:
+    #       - amd64
     runs-on: ubuntu-latest
     steps:
       - name: Check out
@@ -39,6 +39,7 @@ jobs:
         with:
           version: latest
           args: release --rm-dist
+          workdir: ./cmd/importer
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
