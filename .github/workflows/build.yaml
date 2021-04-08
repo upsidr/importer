@@ -34,19 +34,30 @@ jobs:
       - name: Go mod download
         run: go mod download
 
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build
+        if: ${{ false }} # Disabling for now
         run: |
           GOOS=${{ matrix.GOOS }} GOARCH=${{ matrix.GOARCH }} go build \
             -o importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }} \
             ./cmd/importer/
 
       - name: Upload Artifact
+        if: ${{ false }} # Disabling for now
         uses: actions/upload-artifact@v2
         with:
           name: importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }}
           path: ./importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }}
 
   build-for-windows:
+    if: ${{ false }} # Disabling Windows build for now
     name: Build Importer Binary - Windows
     strategy:
       matrix:
