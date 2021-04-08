@@ -36,7 +36,7 @@ jobs:
         run: go test ./...
 
       - name: Run GoReleaser
-        # if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request'
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
@@ -46,7 +46,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Artifact
-        # if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v2
         with:
           name: importer
