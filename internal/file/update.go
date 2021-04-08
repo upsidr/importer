@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 func (f *File) UpdateWithAnnotations() error {
@@ -14,10 +15,12 @@ func (f *File) UpdateWithAnnotations() error {
 		result = append(result, br)
 
 		if a, found := f.Annotations[line+1]; found {
-			// TODO: file should be relative to the original file rather than current dir
-			f, err := os.Open(a.TargetPath)
+			// Make sure the files are read based on the relative path
+			dir := filepath.Dir(f.FileName)
+			targetPath := dir + "/" + a.TargetPath
+			f, err := os.Open(targetPath)
 			if err != nil {
-				fmt.Printf("warning: could not open file '%s', skipping\n", a.TargetPath)
+				fmt.Printf("warning: could not open file '%s', skipping\n", targetPath)
 				continue
 			}
 			currentLine := 0
