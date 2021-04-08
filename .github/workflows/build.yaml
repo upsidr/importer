@@ -48,36 +48,3 @@ jobs:
         with:
           name: importer
           path: ./cmd/importer/dist/*
-
-  build-for-windows:
-    if: ${{ false }} # Disabling Windows build for now
-    name: Build Importer Binary - Windows
-    strategy:
-      matrix:
-        GOARCH:
-          - amd64
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set up Go
-        uses: actions/setup-go@v1
-        with:
-          go-version: ${{ env.GO_VERSION }}
-
-      - name: Go mod download
-        run: go mod download
-
-      - name: Build for Windows
-        run: |
-          GOOS=windows GOARCH=${{ matrix.GOARCH }} go build \
-            -o importer-windows-${{ matrix.GOARCH }}.exe \
-            ./cmd/importer/
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: importer-windows-${{ matrix.GOARCH }}.exe
-          path: ./importer-windows-${{ matrix.GOARCH }}.exe
