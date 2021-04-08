@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }}
-          path: ./importer
+          path: ./importer-${{ matrix.GOOS }}-${{ matrix.GOARCH }}
 
   build-for-windows:
     name: Build Importer Binary - Windows
@@ -76,4 +76,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: importer-windows-${{ matrix.GOARCH }}.exe
-          path: ./importer
+          path: ./importer-windows-${{ matrix.GOARCH }}.exe
