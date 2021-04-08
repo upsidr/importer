@@ -1,10 +1,11 @@
-name: Release
+name: Build Importer
 
 on:
   push:
     branches:
       - main
-      - initial-implementation # For testing
+    tags:
+      - v*
   pull_request:
     branches:
       - main
