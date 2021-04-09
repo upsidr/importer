@@ -1,7 +1,6 @@
 # Importer
 
 <!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#1~9 == -->
-
 ## ✨ Install
 
 The simplest approach is to get Importer via Homebrew.
@@ -11,11 +10,9 @@ $ brew install upsidr/tap/importer
 ```
 
 You can also find the relevent binary files under [releases](https://github.com/upsidr/importer/releases).
-
 <!-- == imptr: getting-started-install / end == -->
 
 <!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#1~49 == -->
-
 ## 🚀 Examples
 
 Let's see what Importer does with the file in this repository [`./testdata/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
@@ -65,13 +62,11 @@ sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 Content after annotation is left untouched.
 ```
-
 <!-- == imptr: getting-started-example-short / end == -->
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples.md).
 
 <!-- == imptr: import_from_proposal / begin from: ./Proposal.md#5~8 == -->
-
 ## What it does
 
 - In any file, you can import other file content
@@ -79,7 +74,6 @@ You can find more examples [here](https://github.com/upsidr/importer/blob/main/d
 <!-- == imptr: import_from_proposal / end == -->
 
 <!-- == imptr: some_random_note / begin from: ./docs/template/_lorem.md#5~12 == -->
-
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -88,5 +82,4 @@ quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequa
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 Excepteur sint occaecat cupidatat non proident,
 sunt in culpa qui officia deserunt mollit anim id est laborum."
-
 <!-- == imptr: some_random_note / end == -->
