@@ -1,0 +1,19 @@
+builds:
+  - id: importer
+    binary: importer
+    main: ./cmd/importer/main.go
+    goos:
+      - darwin
+      - linux
+      # - windows # Taking out Windows for now
+    goarch:
+      - amd64
+
+brews:
+  - name: importer
+    tap:
+      owner: upsidr
+      name: homebrew-tap
+    folder: Formula
+    homepage: https://github.com/upsidr/importer
+    description: Import lines from anywhere

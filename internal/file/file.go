@@ -1,0 +1,27 @@
+package file
+
+// File holds onto file data.
+type File struct {
+	FileName string
+
+	// fileType is derived from FileName, which is simply represented using
+	// extension format.
+	fileType string
+
+	// ContentBefore holds the file content as it was before processing. The
+	// first slice represents the line number, and the second is for the actual
+	// data.
+	ContentBefore [][]byte
+
+	// ContentPurged holds the file coontent, but removes the parts between
+	// importer annotation begin/end. The first slice represents the line
+	// number, and the second is for the actual data.
+	ContentPurged [][]byte
+
+	// ContentAfter holds the file content after the import has been run. This
+	// only holds the actual data in byte slice representation.
+	ContentAfter []byte
+
+	// Annotations is an array holding onto each annotation block.
+	Annotations map[int]*Annotation
+}
