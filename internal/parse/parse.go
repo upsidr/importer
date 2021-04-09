@@ -30,7 +30,7 @@ type File struct {
 	// data.
 	ContentBefore [][]byte
 
-	// ContentPurged holds the file coontent, but removes the parts between
+	// ContentPurged holds the file content, but removes the parts between
 	// importer annotation begin/end. The first slice represents the line
 	// number, and the second is for the actual data.
 	ContentPurged [][]byte
