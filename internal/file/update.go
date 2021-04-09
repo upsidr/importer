@@ -23,6 +23,8 @@ func (f *File) UpdateWithAnnotations() error {
 				fmt.Printf("warning: could not open file '%s', skipping\n", targetPath)
 				continue
 			}
+			defer f.Close() // TODO: Move logic within this for loop to separate func, so that defer runs as early as possible
+
 			currentLine := 0
 			scanner := bufio.NewScanner(f)
 			for scanner.Scan() {
