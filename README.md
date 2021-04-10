@@ -1,6 +1,8 @@
-# Importer
+sunt in cu
 
-<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#1~9 == -->
+a qui officia deserunt mollit anim id est laborum."
+<!-- == imptr: some_random_note / end == -->
+
 ## ✨ Install
 
 The simplest approach is to get Importer via Homebrew.
@@ -96,7 +98,7 @@ jobs:
 
 This repository uses Importer to generate some of the markdown documentation.
 
-You can find actually running CI setup in https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml
+You can find actually running CI setup in [`.github/workflows/importer-markdown-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml).
 <!-- == imptr: getting-started-github-action / end == -->
 
 <!-- == imptr: import_from_proposal / begin from: ./Proposal.md#5~8 == -->
