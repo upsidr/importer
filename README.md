@@ -1,8 +1,6 @@
-sunt in cu
+# Importer
 
-a qui officia deserunt mollit anim id est laborum."
-<!-- == imptr: some_random_note / end == -->
-
+<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#1~9 == -->
 ## ✨ Install
 
 The simplest approach is to get Importer via Homebrew.
