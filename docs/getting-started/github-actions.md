@@ -27,4 +27,4 @@ jobs:
 
 This repository uses Importer to generate some of the markdown documentation.
 
-You can find actually running CI setup in https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml
+You can find actually running CI setup in [`.github/workflows/importer-markdown-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml).
