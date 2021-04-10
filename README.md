@@ -4,7 +4,7 @@
 ## ✨ Install
 
 The simplest approach is to get Importer via Homebrew.
- 
+
 ```bash
 $ brew install upsidr/tap/importer
 ```
