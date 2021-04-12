@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  GO_VERSION: 1.16.2
+
 jobs:
   importer:
     name: Run Importer Generate
