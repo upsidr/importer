@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+
 	"github.com/upsidr/importer/internal/file"
 )
 
@@ -31,14 +32,14 @@ some data between an annotation pair, which gets purged.
 `),
 			wantFile: &file.File{
 				FileName: "dummy.md",
-				ContentBefore: StringToLineBytes(t, `
+				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ../../testdata/note.txt#1~3 == -->
 some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / end == -->
 `),
-				ContentPurged: StringToLineBytes(t, `
+				ContentPurged: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ../../testdata/note.txt#1~3 == -->
@@ -89,6 +90,9 @@ This is test data.
 
 			if diff := cmp.Diff(tc.wantFile, f, cmp.AllowUnexported(file.File{})); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
+				for _, x := range f.ContentBefore {
+					t.Errorf("%s", x)
+				}
 			}
 		})
 	}

@@ -24,6 +24,10 @@ func TestGenerate(t *testing.T) {
 			inputFile: "../../testdata/simple-before.md",
 			wantFile:  "../../testdata/simple-after.md",
 		},
+		"markdown long input": {
+			inputFile: "../../testdata/long-input-purged.md",
+			wantFile:  "../../testdata/long-input-after.md",
+		},
 	}
 
 	for name, tc := range cases {

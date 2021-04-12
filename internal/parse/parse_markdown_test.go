@@ -8,6 +8,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/upsidr/importer/internal/file"
+	"github.com/upsidr/importer/internal/testingutil/golden"
 )
 
 func TestParseMarkdown(t *testing.T) {
@@ -28,12 +29,12 @@ No importer annotation
 `),
 			wantFile: &file.File{
 				FileName: "dummy",
-				ContentBefore: StringToLineBytes(t, `
+				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
 No importer annotation
 `),
-				ContentPurged: StringToLineBytes(t, `
+				ContentPurged: StringToLineStrings(t, `
 # Test Markdown
 
 No importer annotation
@@ -52,14 +53,14 @@ some data between an annotation pair, which gets purged.
 `),
 			wantFile: &file.File{
 				FileName: "dummy",
-				ContentBefore: StringToLineBytes(t, `
+				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ../../testdata/simple-before-importer.md#1~2 == -->
 some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / end == -->
 `),
-				ContentPurged: StringToLineBytes(t, `
+				ContentPurged: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ../../testdata/simple-before-importer.md#1~2 == -->
@@ -92,7 +93,7 @@ This annotation for "another_importer" gets ignored as it is within another anno
 `),
 			wantFile: &file.File{
 				FileName: "dummy",
-				ContentBefore: StringToLineBytes(t, `
+				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ./somefile#1~2 == -->
@@ -105,7 +106,7 @@ This annotation for "another_importer" gets ignored as it is within another anno
 
 <!-- == imptr: some_importer / end == -->
 `),
-				ContentPurged: StringToLineBytes(t, `
+				ContentPurged: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ./somefile#1~2 == -->
@@ -117,6 +118,26 @@ This annotation for "another_importer" gets ignored as it is within another anno
 						LineToInsertAt: 4,
 						TargetPath:     "./somefile",
 						TargetLines:    []int{1, 2},
+					},
+				},
+			},
+		},
+
+		// ===================
+		// File based cases below
+		"simple data from file in testdata": {
+			fileName: "dummy",
+			input:    strings.NewReader(golden.FileAsString(t, "../../testdata/simple-before.md")),
+			wantFile: &file.File{
+				FileName:      "dummy",
+				ContentBefore: StringToLineStrings(t, golden.FileAsString(t, "../../testdata/simple-before.md")),
+				ContentPurged: StringToLineStrings(t, golden.FileAsString(t, "../../testdata/simple-purged.md")),
+				Annotations: map[int]*file.Annotation{
+					3: {
+						Name:           "lorem",
+						LineToInsertAt: 3,
+						TargetPath:     "../docs/template/_lorem.md",
+						TargetLines:    []int{5, 6, 7, 8, 9, 10, 11, 12},
 					},
 				},
 			},
@@ -135,14 +156,14 @@ some data between an annotation pair, which gets purged.
 `),
 			wantFile: &file.File{
 				FileName: "dummy",
-				ContentBefore: StringToLineBytes(t, `
+				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin == -->
 some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / end == -->
 `),
-				ContentPurged: StringToLineBytes(t, `
+				ContentPurged: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin == -->
@@ -169,14 +190,14 @@ some data between an annotation pair, which gets purged.
 `),
 			wantFile: &file.File{
 				FileName: "dummy",
-				ContentBefore: StringToLineBytes(t, `
+				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ./somefile#NOT_NUMBER~2233 == -->
 some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / end == -->
 `),
-				ContentPurged: StringToLineBytes(t, `
+				ContentPurged: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ./somefile#NOT_NUMBER~2233 == -->
@@ -196,14 +217,14 @@ some data between an annotation pair, which gets purged.
 `),
 			wantFile: &file.File{
 				FileName: "dummy",
-				ContentBefore: StringToLineBytes(t, `
+				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ./somefile#1~NOT_NUMBER == -->
 some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / end == -->
 `),
-				ContentPurged: StringToLineBytes(t, `
+				ContentPurged: StringToLineStrings(t, `
 # Test Markdown
 
 <!-- == imptr: some_importer / begin from: ./somefile#1~NOT_NUMBER == -->
