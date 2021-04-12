@@ -6,15 +6,15 @@ import (
 	"testing"
 )
 
-// StringToLineBytes converts input string into slice of byte slices, where
+// StringToLineStrings converts input string into slice of byte slices, where
 // each outer slice element represents a single line.
-func StringToLineBytes(t testing.TB, data string) [][]byte {
+func StringToLineStrings(t testing.TB, data string) []string {
 	t.Helper()
 
-	result := make([][]byte, 0)
+	result := make([]string, 0)
 	scanner := bufio.NewScanner(strings.NewReader(data))
 	for scanner.Scan() {
-		result = append(result, scanner.Bytes())
+		result = append(result, scanner.Text())
 	}
 
 	return result

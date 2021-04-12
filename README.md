@@ -1,68 +1,57 @@
-# importer
+# Importer
 
-<!-- == imptr: getting-started / begin from: ./docs/getting-started.md#3~63 == -->
-## Basic Usage
+<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#1~9 == -->
+## ✨ Install
 
-```bash
-$ cat testdata/simple-before-importer.md
-```
-
-```console
-# Simple Markdown Test
-
-<!-- == imptr: lorem / begin from: ./docs/template/_lorem.md#5~12 == -->
-
-Any content here will be removed by Importer.
-
-<!-- == imptr: lorem / end == -->
-```
+The simplest approach is to get Importer via Homebrew.
 
 ```bash
-$ importer preview testdata/simple-before-importer.md
+$ brew install upsidr/tap/importer
 ```
 
-```console
----------------
-Content Before:
-0:      # Simple Markdown Test
-1:
-2:      <!-- == imptr: lorem / begin from: ./docs/template/_lorem.md#5~12 == -->
-3:
-4:      Any content here will be removed by Importer.
-5:
-6:      <!-- == imptr: lorem / end == -->
----------------
+You can also find the relevent binary files under [releases](https://github.com/upsidr/importer/releases).
+<!-- == imptr: getting-started-install / end == -->
 
----------------
-Content After Purged:
-0:      # Simple Markdown Test
-1:
-2:      <!-- == imptr: lorem / begin from: ./docs/template/_lorem.md#5~12 == -->
-3:      <!-- == imptr: lorem / end == -->
----------------
+<!-- imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#1~49 == -->
 
----------------
-Content After Processed:
-1:      # Simple Markdown Test
-2:
-3:      <!-- == imptr: lorem / begin from: ./docs/template/_lorem.md#5~12 == -->
-4:      "Lorem ipsum dolor sit amet,
-5:      consectetur adipiscing elit,
-6:      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-7:      Ut enim ad minim veniam,
-8:      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-9:      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-10:     Excepteur sint occaecat cupidatat non proident,
-11:     sunt in culpa qui officia deserunt mollit anim id est laborum."
-12:     <!-- == imptr: lorem / end == -->
----------------
+## 🚀 Examples
 
-You can replace the file content with either of the commands below:
+<!-- imptr: getting-started-example-short / end == -->
 
-- 'importer generate testdata/simple-before-importer.md'
-- 'importer purge testdata/simple-before-importer.md'
+You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples.md).
+
+<!-- == imptr: getting-started-github-action / begin from: ./docs/getting-started/github-actions.md#1~30 == -->
+## :octocat: GitHub Action Integration
+
+Because you can install Importer using Homebrew, you can set up GitHub Action definition such as below:
+
+<!--TODO: This is exactly where Importer can pull in the actual file content-->
+
+```yaml
+jobs:
+  importer:
+    name: Run Importer Generate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Importer
+        run: brew install upsidr/tap/importer
+
+      - name: Check out
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Run Importer against README.md
+        run: importer generate README.md
+      - name: Check if README.md has any change compared to the branch
+        run: |
+          git status --short
+          git diff-index --quiet HEAD
 ```
-<!-- == imptr: getting-started / end == -->
+
+This repository uses Importer to generate some of the markdown documentation.
+
+You can find actually running CI setup in [`.github/workflows/importer-markdown-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml).
+<!-- == imptr: getting-started-github-action / end == -->
 
 <!-- == imptr: import_from_proposal / begin from: ./Proposal.md#5~8 == -->
 ## What it does

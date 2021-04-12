@@ -20,6 +20,10 @@ func TestPurge(t *testing.T) {
 			inputFile: "../../testdata/simple-before.md",
 			wantFile:  "../../testdata/simple-purged.md",
 		},
+		"markdown long input": {
+			inputFile: "../../testdata/long-input-after.md",
+			wantFile:  "../../testdata/long-input-purged.md",
+		},
 	}
 
 	for name, tc := range cases {
