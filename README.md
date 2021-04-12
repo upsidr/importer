@@ -12,12 +12,11 @@ $ brew install upsidr/tap/importer
 You can also find the relevent binary files under [releases](https://github.com/upsidr/importer/releases).
 <!-- == imptr: getting-started-install / end == -->
 
-<!-- Temporarily disabling Example section -->
-<!-- == DISABLED imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#1~49 == -->
+<!-- imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#1~49 == -->
 
 ## 🚀 Examples
 
-<!-- == DISABLED imptr: getting-started-example-short / end == -->
+<!-- imptr: getting-started-example-short / end == -->
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples.md).
 
