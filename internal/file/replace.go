@@ -1,8 +1,8 @@
 package file
 
 import (
-	"bytes"
 	"os"
+	"strings"
 )
 
 // ReplaceWithAfter replaces the original file content with the processed
@@ -40,9 +40,9 @@ func (f *File) ReplaceWithPurged() error {
 	}
 	defer file.Close()
 
-	data := bytes.Join(f.ContentPurged, []byte("\n"))
-	data = append(data, []byte("\n")...) // Make sure to add new line at the end of the file
-	_, err = file.Write(data)
+	data := strings.Join(f.ContentPurged, "\n")
+	data = data + "\n" // Make sure to add new line at the end of the file
+	_, err = file.WriteString(data)
 	if err != nil {
 		return err
 	}

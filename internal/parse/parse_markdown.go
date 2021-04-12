@@ -28,14 +28,14 @@ func parseMarkdown(fileName string, input io.Reader) (*file.File, error) {
 	// for readability. This shouldn't be necessary, but with this approach,
 	// the slice index matches the line number, and is easy to get my head
 	// around for now.
-	f.ContentBefore = make([][]byte, 0)
-	f.ContentPurged = make([][]byte, 0)
+	f.ContentBefore = make([]string, 0)
+	f.ContentPurged = make([]string, 0)
 
 	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
 		currentLine++
-		currentBytes := scanner.Bytes()
-		f.ContentBefore = append(f.ContentBefore, currentBytes)
+		currentStr := scanner.Text()
+		f.ContentBefore = append(f.ContentBefore, currentStr)
 
 		match := re.FindStringSubmatch(scanner.Text())
 		if len(match) == 0 {
@@ -43,7 +43,7 @@ func parseMarkdown(fileName string, input io.Reader) (*file.File, error) {
 			if inNested {
 				continue
 			}
-			f.ContentPurged = append(f.ContentPurged, currentBytes)
+			f.ContentPurged = append(f.ContentPurged, currentStr)
 			continue
 		}
 
@@ -68,7 +68,7 @@ func parseMarkdown(fileName string, input io.Reader) (*file.File, error) {
 		// Note that, contentPurged does not contain any data that's wrapped
 		// between annotations. Those lines will be kept as an empty byte slice
 		// for further processing later to create contentAfter.
-		f.ContentPurged = append(f.ContentPurged, currentBytes)
+		f.ContentPurged = append(f.ContentPurged, currentStr)
 
 		// Annotations must match up to create a pair. If it isn't a proper
 		// pair, it is treated as broken. For that reason, we need to keep
