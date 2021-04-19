@@ -7,6 +7,6 @@ var (
 	// AnnotationYAML is the annotation used for importer to find match.
 	AnnotationYAML = `# == imptr: (?P<importer_name>\S+) \/ (?P<importer_marker>begin|end)(?P<importer_option>.*) ==`
 
-	// FilePathIndicator
-	OptionFilePathIndicator = `from: (?P<importer_target_path>\S+)\s*\#(?P<importer_target_lines>\S+)\s?`
+	// OptionFilePathIndicator is pattern used for parsing Importer options.
+	OptionFilePathIndicator = `from: (?P<importer_target_path>\S+)\s*\#(?P<importer_target_detail>\S+)\s?`
 )

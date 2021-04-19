@@ -97,7 +97,9 @@ func parseMarkdown(fileName string, input io.Reader) (*file.File, error) {
 					matchData.isEndFound = true
 				}
 			case "importer_option":
-				matchData.options = append(matchData.options, string(matchedContent))
+				if matchedContent != "" { // TODO: skipping empty string like this as end annotation shouldn't override
+					matchData.options = matchedContent
+				}
 			}
 		}
 		matches[subgroupName] = matchData
