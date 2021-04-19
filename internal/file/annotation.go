@@ -6,8 +6,14 @@ package file
 type Annotation struct {
 	Name           string
 	LineToInsertAt int
-	TargetPath     string
+
+	TargetPath string
+
+	TargetExportMarker string
+
 	TargetLines    []int
+	TargetLineFrom int
+	TargetLineTo   int
 
 	// TODO: Add insert style such as code verbatim, details, quotes, etc.
 }

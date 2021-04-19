@@ -59,7 +59,8 @@ This is test data.
 						Name:           "some_importer",
 						LineToInsertAt: 4,
 						TargetPath:     "../../testdata/note.txt",
-						TargetLines:    []int{1, 2, 3},
+						TargetLineFrom: 1,
+						TargetLineTo:   3,
 					},
 				},
 			},
@@ -93,6 +94,7 @@ This is test data.
 				for _, x := range f.ContentBefore {
 					t.Errorf("%s", x)
 				}
+				t.Errorf("%s", f.ContentAfter)
 			}
 		})
 	}
