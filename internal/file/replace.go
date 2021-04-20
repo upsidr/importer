@@ -12,18 +12,18 @@ import (
 func (f *File) ReplaceWithAfter() error {
 	file, err := os.CreateTemp("/tmp/", "importer_replace_*")
 	if err != nil {
-		return err
+		return err // TODO: test coverage
 	}
 	defer file.Close()
 
 	_, err = file.Write(f.ContentAfter)
 	if err != nil {
-		return err
+		return err // TODO: test coverage
 	}
 
 	err = os.Rename(file.Name(), f.FileName)
 	if err != nil {
-		return err
+		return err // TODO: test coverage
 	}
 
 	return nil
@@ -36,7 +36,7 @@ func (f *File) ReplaceWithAfter() error {
 func (f *File) ReplaceWithPurged() error {
 	file, err := os.CreateTemp("/tmp/", "importer_replace_*")
 	if err != nil {
-		return err
+		return err // TODO: test coverage
 	}
 	defer file.Close()
 
@@ -44,12 +44,12 @@ func (f *File) ReplaceWithPurged() error {
 	data = data + "\n" // Make sure to add new line at the end of the file
 	_, err = file.WriteString(data)
 	if err != nil {
-		return err
+		return err // TODO: test coverage
 	}
 
 	err = os.Rename(file.Name(), f.FileName)
 	if err != nil {
-		return err
+		return err // TODO: test coverage
 	}
 
 	return nil
