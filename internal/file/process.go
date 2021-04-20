@@ -41,6 +41,10 @@ func processSingleAnnotation(result []byte, filePath string, annotation *Annotat
 	}
 	defer file.Close()
 
+	// Handle marker imports
+	// TODO:
+
+	// Handle line number imports
 	currentLine := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
