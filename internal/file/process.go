@@ -16,46 +16,22 @@ func (f *File) ProcessAnnotations() error {
 		result = append(result, br)
 
 		if a, found := f.Annotations[line+1]; found {
-			// Make sure the files are read based on the relative path
-			dir := filepath.Dir(f.FileName)
-			targetPath := dir + "/" + a.TargetPath
-			file, err := os.Open(targetPath)
+			processed, err := processSingleAnnotation(result, f.FileName, a)
 			if err != nil {
-				fmt.Printf("warning: could not open file '%s', skipping\n", targetPath)
+				fmt.Printf("warning: %s", err)
 				continue
 			}
-			defer file.Close() // TODO: Move logic within this for loop to separate func, so that defer runs as early as possible
-
-			// Handle marker imports
-
-			// Handle line number imports
-			currentLine := 0
-			scanner := bufio.NewScanner(file)
-			for scanner.Scan() {
-				currentLine++
-				if currentLine >= a.TargetLineFrom && currentLine <= a.TargetLineTo {
-					result = append(result, scanner.Bytes()...)
-					result = append(result, br)
-					continue
-				}
-				for _, l := range a.TargetLines {
-					if currentLine == l {
-						result = append(result, scanner.Bytes()...)
-						result = append(result, br)
-						continue
-					}
-				}
-			}
+			result = processed
 		}
 	}
 	f.ContentAfter = result
 	return nil
 }
 
-func (f *File) processSingleAnnotation(result []byte, annotation *Annotation) ([]byte, error) {
+func processSingleAnnotation(result []byte, filePath string, annotation *Annotation) ([]byte, error) {
 	br := byte('\n')
 	// Make sure the files are read based on the relative path
-	dir := filepath.Dir(f.FileName)
+	dir := filepath.Dir(filePath)
 	targetPath := dir + "/" + annotation.TargetPath
 	file, err := os.Open(targetPath)
 	if err != nil {
