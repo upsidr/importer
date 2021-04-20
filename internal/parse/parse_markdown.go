@@ -14,7 +14,7 @@ import (
 // data between annotation pairs purged.
 func parseMarkdown(fileName string, input io.Reader) (*file.File, error) {
 	f := &file.File{FileName: fileName}
-	re := regexp.MustCompile(AnnotationMarkdown)
+	re := regexp.MustCompile(ImporterAnnotationMarkdown)
 
 	annotations := map[int]*file.Annotation{}
 	matches := map[string]matchHolder{}

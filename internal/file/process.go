@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 )
 
 // ProcessAnnotations reads annotations and generates ContentAfter.
@@ -41,14 +42,35 @@ func processSingleAnnotation(result []byte, filePath string, annotation *Annotat
 	}
 	defer file.Close()
 
-	// Handle marker imports
-	// TODO:
-
-	// Handle line number imports
+	// Prep
+	reExport := regexp.MustCompile(ExportMarkerMarkdown)
+	withinExportMarker := false
 	currentLine := 0
+
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		currentLine++
+
+		// Handle export marker imports
+		match := reExport.FindStringSubmatch(scanner.Text())
+		if len(match) != 0 {
+			// match[1] is export_marker_name
+			if match[1] == annotation.TargetExportMarker {
+				withinExportMarker = true
+			}
+			// match[2] is exporter_marker_condition
+			if match[2] == "end" {
+				withinExportMarker = false
+			}
+			continue
+		}
+		if withinExportMarker {
+			result = append(result, scanner.Bytes()...)
+			result = append(result, br)
+			continue
+		}
+
+		// Handle line number imports
 		if currentLine >= annotation.TargetLineFrom &&
 			currentLine <= annotation.TargetLineTo {
 			result = append(result, scanner.Bytes()...)

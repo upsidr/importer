@@ -17,3 +17,16 @@ type Annotation struct {
 
 	// TODO: Add insert style such as code verbatim, details, quotes, etc.
 }
+
+var (
+	// ExportMarkerMarkdown is the marker used to indicate how a file can
+	// export specific sections.
+	//
+	// Example:
+	//   <!-- == export: simple_instruction / begin == -->
+	//   This is the content that will be exported under "simple_instruction" name.
+	//   You can import this content by providing option such as:
+	//     ./file_path.txt#[simple_instruction]
+	//   <!-- == export: simple_instruction / end == -->
+	ExportMarkerMarkdown = `<!-- == export: (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) == -->`
+)
