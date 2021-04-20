@@ -45,15 +45,19 @@ some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / begin from: ../../testdata/note.txt#1~3 == -->
 <!-- == imptr: some_importer / end == -->
 `),
-				ContentAfter: []byte(`
-# Test Markdown
+				// Because the ContentAfter is processed only after running
+				// ProcessAnnotations, this does not get populated.
+				// Checkout file package and cli package for more complete
+				// examples.
+				// ContentAfter: []byte(`
+				// # Test Markdown
 
-<!-- == imptr: some_importer / begin from: ../../testdata/note.txt#1~3 == -->
-This is test data.
-他言語サポートのためのテスト文章。
-🍸 Emojis 🍷 Supported 🍺
-<!-- == imptr: some_importer / end == -->
-`),
+				// <!-- == imptr: some_importer / begin from: ../../testdata/note.txt#1~3 == -->
+				// This is test data.
+				// 他言語サポートのためのテスト文章。
+				// 🍸 Emojis 🍷 Supported 🍺
+				// <!-- == imptr: some_importer / end == -->
+				// `),
 				Annotations: map[int]*file.Annotation{
 					4: {
 						Name:           "some_importer",
