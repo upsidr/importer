@@ -38,7 +38,7 @@ func processSingleAnnotation(result []byte, filePath string, annotation *Annotat
 	if err != nil {
 		// Purposely returning the byte slice as it contains data that were
 		// populated prior to hitting this func
-		return result, fmt.Errorf("could not open file '%s', skipping, %v", targetPath, err)
+		return result, fmt.Errorf("could not open file '%s', skipping, %w", targetPath, err)
 	}
 	defer file.Close()
 
