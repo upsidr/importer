@@ -71,7 +71,8 @@ some data between an annotation pair, which gets purged.
 						Name:           "some_importer",
 						LineToInsertAt: 4,
 						TargetPath:     "../../testdata/simple-before-importer.md",
-						TargetLines:    []int{1, 2},
+						TargetLineFrom: 1,
+						TargetLineTo:   2,
 					},
 				},
 			},
@@ -117,7 +118,8 @@ This annotation for "another_importer" gets ignored as it is within another anno
 						Name:           "some_importer",
 						LineToInsertAt: 4,
 						TargetPath:     "./somefile",
-						TargetLines:    []int{1, 2},
+						TargetLineFrom: 1,
+						TargetLineTo:   2,
 					},
 				},
 			},
@@ -137,7 +139,8 @@ This annotation for "another_importer" gets ignored as it is within another anno
 						Name:           "lorem",
 						LineToInsertAt: 3,
 						TargetPath:     "../docs/template/_lorem.md",
-						TargetLines:    []int{5, 6, 7, 8, 9, 10, 11, 12},
+						TargetLineFrom: 5,
+						TargetLineTo:   12,
 					},
 				},
 			},
@@ -242,6 +245,12 @@ some data between an annotation pair, which gets purged.
 				t.Errorf("unexpected error, %v", err)
 				return
 			}
+
+			// err = f.ProcessAnnotations()
+			// if err != nil {
+			// 	t.Errorf("unexpected error, %v", err)
+			// 	return
+			// }
 
 			if diff := cmp.Diff(tc.wantFile, f, cmp.AllowUnexported(file.File{})); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)

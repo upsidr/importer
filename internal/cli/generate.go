@@ -44,6 +44,11 @@ func generate(fileName string) error {
 		return err
 	}
 
+	err = file.ProcessAnnotations()
+	if err != nil {
+		return err
+	}
+
 	err = file.ReplaceWithAfter()
 	if err != nil {
 		return err

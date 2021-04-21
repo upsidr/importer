@@ -28,6 +28,10 @@ func TestGenerate(t *testing.T) {
 			inputFile: "../../testdata/long-input-purged.md",
 			wantFile:  "../../testdata/long-input-after.md",
 		},
+		"markdown with exporter": {
+			inputFile: "../../testdata/using-exporter-before.md",
+			wantFile:  "../../testdata/using-exporter-after.md",
+		},
 	}
 
 	for name, tc := range cases {
