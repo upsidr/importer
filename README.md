@@ -1,7 +1,8 @@
 # Importer
 
-<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#1~9 == -->
 ## ✨ Install
+
+<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
 
 The simplest approach is to get Importer via Homebrew.
 
@@ -10,7 +11,25 @@ $ brew install upsidr/tap/importer
 ```
 
 You can also find the relevent binary files under [releases](https://github.com/upsidr/importer/releases).
+
 <!-- == imptr: getting-started-install / end == -->
+
+<details>
+<summmary>Other Installation Options</summmary>
+
+## Install with Go
+
+<!-- == imptr: install-with-go / begin from: ./docs/getting-started/install.md#[go-get] == -->
+
+You can also use Go to install.
+
+```bash
+$ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
+```
+
+<!-- == imptr: install-with-go / end == -->
+
+</details>
 
 <!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#1~49 == -->
 ## 🚀 Examples
