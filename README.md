@@ -32,12 +32,11 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 </details>
 
 <!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#1~49 == -->
-
 ## 🚀 Examples
 
 Let's see what Importer does with the file in this repository [`./testdata/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
 
-```console
+```markdown
 # Simple Markdown Test
 
 <!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
@@ -82,13 +81,11 @@ sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 Content after annotation is left untouched.
 ```
-
 <!-- == imptr: getting-started-example-short / end == -->
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples.md).
 
 <!-- == imptr: getting-started-github-action / begin from: ./docs/getting-started/github-actions.md#1~30 == -->
-
 ## :octocat: GitHub Action Integration
 
 Because you can install Importer using Homebrew, you can set up GitHub Action definition such as below:
@@ -119,11 +116,9 @@ jobs:
 This repository uses Importer to generate some of the markdown documentation.
 
 You can find actually running CI setup in [`.github/workflows/importer-markdown-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml).
-
 <!-- == imptr: getting-started-github-action / end == -->
 
 <!-- == imptr: import_from_proposal / begin from: ./Proposal.md#5~8 == -->
-
 ## What it does
 
 - In any file, you can import other file content
@@ -131,7 +126,6 @@ You can find actually running CI setup in [`.github/workflows/importer-markdown-
 <!-- == imptr: import_from_proposal / end == -->
 
 <!-- == imptr: some_random_note / begin from: ./docs/template/_lorem.md#5~12 == -->
-
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -140,5 +134,4 @@ quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequa
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 Excepteur sint occaecat cupidatat non proident,
 sunt in culpa qui officia deserunt mollit anim id est laborum."
-
 <!-- == imptr: some_random_note / end == -->
