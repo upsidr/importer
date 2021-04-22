@@ -15,7 +15,7 @@ You can also find the relevent binary files under [releases](https://github.com/
 <!-- == imptr: getting-started-install / end == -->
 
 <details>
-<summary>◾️ Other Installation Options</summary>
+<summary>Other Installation Options</summary>
 
 ### Install with Go
 
