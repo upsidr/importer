@@ -1,5 +1,7 @@
 ## 🚀 Examples
 
+<!-- == export: simple / begin == -->
+
 Let's see what Importer does with the file in this repository [`./testdata/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
 
 ```markdown
@@ -47,6 +49,8 @@ sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 Content after annotation is left untouched.
 ```
+
+<!-- == export: simple / end == -->
 
 ### Full Example
 

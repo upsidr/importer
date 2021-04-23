@@ -1,8 +1,10 @@
 ## :octocat: GitHub Action Integration
 
+<!-- == export: with-homebrew / begin == -->
+
 Because you can install Importer using Homebrew, you can set up GitHub Action definition such as below:
 
-<!--TODO: This is exactly where Importer can pull in the actual file content-->
+<!--TODO: The below YAML is exactly where Importer should be able to pull in the actual file content-->
 
 ```yaml
 jobs:
@@ -28,3 +30,5 @@ jobs:
 This repository uses Importer to generate some of the markdown documentation.
 
 You can find actually running CI setup in [`.github/workflows/importer-markdown-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml).
+
+<!-- == export: with-homebrew / end == -->
