@@ -16,4 +16,6 @@ The below is a simple example for **Markdown**.
 <!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
 ```
 
-<img src="/../../assets/images/annotatino-explanation.png" />
+![Annotation explained][annotation-explanation]
+
+[annotation-explanation]: /../../assets/images/annotatino-explanation.png "Annotation Explanation"
