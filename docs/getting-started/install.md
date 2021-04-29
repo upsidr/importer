@@ -4,7 +4,7 @@
 
 <!-- == export: homebrew-install / begin == -->
 
-The simplest approach is to get Importer via Homebrew.
+You can get Importer with simple Homebrew command.
 
 ```bash
 $ brew install upsidr/tap/importer
