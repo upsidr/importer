@@ -128,7 +128,7 @@ You can find actually running CI setup in [`.github/workflows/importer-markdown-
 
 <!-- == imptr: basic-annotation / begin from: ./docs/getting-started/annotations.md#[basic-annotation] == -->
 
-An annotation is a simple comment with special syntax, and thus is slightly different based on the file.
+An annotation is a simple comment with special syntax, and thus is slightly different depending on file used.
 
 The below is a simple example for **Markdown**.
 
