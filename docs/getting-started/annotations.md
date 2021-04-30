@@ -18,4 +18,4 @@ The below is a simple example for **Markdown**.
 
 ![Annotation explained][annotation-explanation]
 
-[annotation-explanation]: /../../assets/images/annotatino-explanation.png "Annotation Explanation"
+[annotation-explanation]: /assets/images/annotation-explanation.png "Annotation Explanation"
