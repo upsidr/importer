@@ -8,6 +8,8 @@ Importer's most important syntax is its annotation. Each annotation has `begin` 
 
 ### Basic Syntax
 
+<!-- == export: basic-annotation / begin == -->
+
 An annotation is a simple comment with special syntax, and thus is slightly different based on the file.
 
 The below is a simple example for **Markdown**.
@@ -19,3 +21,5 @@ The below is a simple example for **Markdown**.
 ![Annotation explained][annotation-explanation]
 
 [annotation-explanation]: /assets/images/annotation-explanation.png "Annotation Explanation"
+
+<!-- == export: basic-annotation / end == -->

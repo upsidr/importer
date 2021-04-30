@@ -4,7 +4,7 @@
 
 <!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
 
-The simplest approach is to get Importer via Homebrew.
+You can get Importer with simple Homebrew command.
 
 ```bash
 $ brew install upsidr/tap/importer
@@ -124,12 +124,23 @@ You can find actually running CI setup in [`.github/workflows/importer-markdown-
 
 ## 🖋 Annotations and Markers
 
-<!-- == imptr: import_from_proposal / begin from: ./Proposal.md#5~8 == -->
-## What it does
+### Importer Annotation
 
-- In any file, you can import other file content
-- Works like code generation, but does not need to be code
-<!-- == imptr: import_from_proposal / end == -->
+<!-- == imptr: basic-annotation / begin from: ./docs/getting-started/annotations.md#[basic-annotation] == -->
+
+An annotation is a simple comment with special syntax, and thus is slightly different based on the file.
+
+The below is a simple example for **Markdown**.
+
+```markdown
+<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
+```
+
+![Annotation explained][annotation-explanation]
+
+[annotation-explanation]: /assets/images/annotation-explanation.png "Annotation Explanation"
+
+<!-- == imptr: basic-annotation / end == -->
 
 <!-- == imptr: some_random_note / begin from: ./docs/template/_lorem.md#5~12 == -->
 "Lorem ipsum dolor sit amet,
