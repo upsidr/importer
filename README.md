@@ -148,4 +148,4 @@ And there has to be a matching "end" annotation. This is much simpler, as option
 
 <!-- == imptr: basic-annotation / end == -->
 
-[You can find more about the Importer Annotation here.](./docs/getting-started/annotations.md)
+You can find more about the Importer Annotation [here](./docs/getting-started/annotations.md).
