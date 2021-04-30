@@ -40,6 +40,8 @@ As described above, Importer syntax has 3 parts.
 
 #### Importer Name
 
+> Above Example: `getting-started-install`
+
 Importer Name can be any string, without any whitespace characters.
 
 #### Importer "begin" or "end"
@@ -48,4 +50,34 @@ There are only 2 options, "begin" or "end". It has to be lower case.
 
 #### Importer Options
 
-Importer Options are anything you define between `/` and `==`. More about the options below.
+> Above Example: `from: ./docs/getting-started/install.md#[homebrew-install]`
+
+Importer Options are anything you define between `/` and `==`.
+
+The below are the Option formats:
+
+| Name                       | Example         | Description                                                                                                                                                      | Known Limitations                                                                                                                                |
+| -------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Target Path                | `from: xyz.md`  | Defines where to import from. This is a relative path from the file containing the annotation.                                                                   | Path cannot contain whitespace characters                                                                                                        |
+| Separator                  | `#`             | This is to separate Target Path and Target Detail. It can have as many preceding whispace characters.                                                            |                                                                                                                                                  |
+| Target Detail - Line Range | `[1~33]`        | Imports only provided line ranges. You can omit before or after `~` to indicate the range starts from the beginning of the file, or ends at the end of the file. |                                                                                                                                                  |
+| Target Detail - Line List  | `[1,2,5]`       | Imports only provided lines. The lines are comma separated, and you can also use line range in the same target detail.                                           | The order of lines is not persisted, and thus if you define `[3,2,1]`, you would actually see lines imported as line#1, line#2, and then line#3. |
+| Target Detail - Marker     | `[some-marker]` | Searches for the matching Export Marker in the target file. More about Export Marke below.                                                                       | You can only provide single marker.                                                                                                              |
+
+### Export Marker
+
+Importer's simplest form is to import some lines from another file by providing the line numbers.
+
+But if you want to import file that updates its content frequently, you will soon get tired of making line number adjustments on all the Importer Annotations.
+
+Export Marker is very similar to Importer Annotation, with a few minor differences.
+
+```markdown
+<!-- == export: some-export-name / begin == -->
+
+This is the data that can be exported under the Export name of `some-export-name`.
+
+<!-- == export: some-export-name / end == -->
+
+Any content before or after the marker is not imported.
+```
