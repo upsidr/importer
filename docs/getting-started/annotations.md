@@ -10,7 +10,7 @@ Importer's most important syntax is its annotation. Each annotation has `begin` 
 
 <!-- == export: basic-annotation / begin == -->
 
-An annotation is a simple comment with special syntax, and thus is slightly different based on the file.
+An annotation is a simple comment with special syntax, and thus is slightly different depending on file used.
 
 The below is a simple example for **Markdown**.
 
