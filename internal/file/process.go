@@ -43,6 +43,7 @@ func processSingleAnnotation(result []byte, filePath string, annotation *Annotat
 	defer file.Close()
 
 	// Prep
+	// TODO: ExportMarker should be driven by the target file path
 	reExport := regexp.MustCompile(ExportMarkerMarkdown)
 	withinExportMarker := false
 	currentLine := 0
