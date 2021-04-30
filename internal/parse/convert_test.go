@@ -2,6 +2,7 @@ package parse
 
 import (
 	"errors"
+	"math"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -215,6 +216,7 @@ func TestProcessTargetDetail(t *testing.T) {
 			wantResult: &file.Annotation{
 				Name:           "test file",
 				TargetLineFrom: 3,
+				TargetLineTo:   math.MaxInt32,
 			},
 		},
 		"comma separated, complex values": {
