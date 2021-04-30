@@ -66,11 +66,11 @@ The below are the Option formats:
 
 ### Export Marker
 
-Importer's simplest form is to import some lines from another file by providing the line numbers.
+Importer's simplest form is to import some lines from another file by providing line numbers.
 
-But if you want to import file that updates its content frequently, you will soon get tired of making line number adjustments on all the Importer Annotations.
+But if you want to import file that gets updated frequently, it is quite cumbersome to make line number adjustments on all the Importer Annotations every time.
 
-Export Marker is very similar to Importer Annotation, with a few minor differences.
+Export Marker allows defining the begin / end for line range, and assigns a name to it.
 
 ```markdown
 <!-- == export: some-export-name / begin == -->
@@ -80,4 +80,11 @@ This is the data that can be exported under the Export name of `some-export-name
 <!-- == export: some-export-name / end == -->
 
 Any content before or after the marker is not imported.
+```
+
+With the above Export Marker, you can then use something like below to import:
+
+```markdown
+<!-- == imptr: export-marker-test / begin from: ./target-file.md#[some-export-name] == -->
+<!-- == imptr: export-marker-test / end == -->
 ```
