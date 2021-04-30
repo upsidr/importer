@@ -140,6 +140,12 @@ The below is a simple example for **Markdown**.
 
 [annotation-explanation]: /assets/images/annotation-explanation.png "Annotation Explanation"
 
+And there has to be a matching "end" annotation. This is much simpler, as options are all defined in the "begin" annotation.
+
+```markdown
+<!-- == imptr: getting-started-install / end == -->
+```
+
 <!-- == imptr: basic-annotation / end == -->
 
 <!-- == imptr: some_random_note / begin from: ./docs/template/_lorem.md#5~12 == -->
