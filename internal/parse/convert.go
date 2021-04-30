@@ -2,6 +2,7 @@ package parse
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -146,6 +147,8 @@ func processTargetDetail(annotation *file.Annotation, input string) error {
 				return fmt.Errorf("%w, %v", ErrInvalidSyntax, err)
 			}
 			annotation.TargetLineTo = upperBound
+		} else {
+			annotation.TargetLineTo = math.MaxInt32 // TODO: Consider making this Int64
 		}
 
 	default:
