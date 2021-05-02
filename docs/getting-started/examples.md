@@ -1,8 +1,10 @@
 ## 🚀 Examples
 
+<!-- == export: simple / begin == -->
+
 Let's see what Importer does with the file in this repository [`./testdata/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
 
-```console
+```markdown
 # Simple Markdown Test
 
 <!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
@@ -47,6 +49,8 @@ sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 Content after annotation is left untouched.
 ```
+
+<!-- == export: simple / end == -->
 
 ### Full Example
 

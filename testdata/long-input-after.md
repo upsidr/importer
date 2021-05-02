@@ -1,23 +1,24 @@
 # Importer
 
-<!-- == imptr: getting-started-install / begin from: ../docs/getting-started/install.md#1~9 == -->
-## ✨ Install
+<!-- == imptr: getting-started-install / begin from: ../docs/getting-started/install.md#[homebrew-install] == -->
 
-The simplest approach is to get Importer via Homebrew.
+You can get Importer with simple Homebrew command.
 
 ```bash
 $ brew install upsidr/tap/importer
 ```
 
 You can also find the relevent binary files under [releases](https://github.com/upsidr/importer/releases).
+
 <!-- == imptr: getting-started-install / end == -->
 
-<!-- == imptr: getting-started-example-short / begin from: ../docs/getting-started/examples.md#1~49 == -->
+<!-- == imptr: getting-started-example-short / begin from: ../docs/getting-started/examples.md#1~51 == -->
 ## 🚀 Examples
+
 
 Let's see what Importer does with the file in this repository [`./testdata/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
 
-```console
+```markdown
 # Simple Markdown Test
 
 <!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
@@ -66,12 +67,13 @@ Content after annotation is left untouched.
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples.md).
 
-<!-- == imptr: getting-started-github-action / begin from: ../docs/getting-started/github-actions.md#1~30 == -->
+<!-- == imptr: getting-started-github-action / begin from: ../docs/getting-started/github-actions.md#1~32 == -->
 ## :octocat: GitHub Action Integration
+
 
 Because you can install Importer using Homebrew, you can set up GitHub Action definition such as below:
 
-<!--TODO: This is exactly where Importer can pull in the actual file content-->
+<!--TODO: The below YAML is exactly where Importer should be able to pull in the actual file content-->
 
 ```yaml
 jobs:

@@ -19,7 +19,7 @@ func (f *File) ProcessAnnotations() error {
 		if a, found := f.Annotations[line+1]; found {
 			processed, err := processSingleAnnotation(result, f.FileName, a)
 			if err != nil {
-				fmt.Printf("warning: %s", err)
+				fmt.Printf("warning: %s\n", err)
 				continue
 			}
 			result = processed
@@ -38,11 +38,12 @@ func processSingleAnnotation(result []byte, filePath string, annotation *Annotat
 	if err != nil {
 		// Purposely returning the byte slice as it contains data that were
 		// populated prior to hitting this func
-		return result, fmt.Errorf("could not open file '%s', skipping, %w", targetPath, err)
+		return result, err
 	}
 	defer file.Close()
 
 	// Prep
+	// TODO: ExportMarker should be driven by the target file path
 	reExport := regexp.MustCompile(ExportMarkerMarkdown)
 	withinExportMarker := false
 	currentLine := 0
