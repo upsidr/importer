@@ -141,14 +141,13 @@ func processTargetDetail(annotation *file.Annotation, input string) error {
 			annotation.TargetLineFrom = lowerBound
 		}
 
+		annotation.TargetLineTo = math.MaxInt32 // TODO: Consider making this Int64
 		if ub != "" {
 			upperBound, err := strconv.Atoi(ub)
 			if err != nil {
 				return fmt.Errorf("%w, %v", ErrInvalidSyntax, err)
 			}
 			annotation.TargetLineTo = upperBound
-		} else {
-			annotation.TargetLineTo = math.MaxInt32 // TODO: Consider making this Int64
 		}
 
 	default:
