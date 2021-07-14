@@ -1,0 +1,64 @@
+---
+name: Feature Request
+description: File a feature request
+title: "[Feature Request]: "
+labels: [enhancement]
+# assignees:
+#   - rytswd
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ✨ Thanks for filing a feature request! ✨
+
+        Importer strives to provide simple yet useful solutions.
+
+        Because it started as a simple project, there are many areas it can improve, and provide better support.
+
+        If you have any ideas, small or large, we would love to hear your thoughts!
+
+  - type: dropdown
+    id: command
+    attributes:
+      label: 🔮 Relevant Command
+      description: |
+        Please select relevant command(s), or choose "New command" or "Other" if you don't find anything relevant.
+      multiple: true
+      optinos:
+        - importer purge
+        - importer update
+        - importer generate
+        - importer graph
+        - importer preview
+        - New command
+        - Other (Please specify in the description)
+    validations:
+      required: true
+  - type: dropdown
+    id: language-type
+    attributes:
+      label: 🗂 Language Type
+      description: |
+        Please select language type(s) which should be handled. This helps in assessing how much work would be required to implement and support.
+        If you are requesting a new language support, please select "Other" and specify which language type you are seeking support for.
+      multiple: true
+      optinos:
+        - All
+        - Markdown
+        - YAML
+        - Other (Please specify in the description)
+    validations:
+      required: true
+  - type: textarea
+    id: request-details
+    attributes:
+      label: 🔎 Request Details
+      description: |
+        Please provide some overview of the proposed request, and how it is useful.
+
+        It is often useful to have concrete examples how the feature would be useful for your use case,
+        regardless of how specific it may be. That specific example may help others to find similar patterns,
+        and ultimately help find the right solution to implement.
+      placeholder: Background, rationale, pain points, examples, etc.
+    validations:
+      required: true

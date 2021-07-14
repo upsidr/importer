@@ -1,0 +1,46 @@
+---
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: [bug, triage]
+# assignees:
+#   - rytswd
+body:
+  - type: markdown
+    attributes:
+      value: |
+        🐞 Thanks for taking the time to fill out this bug report! 🐞
+
+        Please provide the below details for quick investigations and fixes.
+
+  - type: input
+    id: version
+    attributes:
+      label: 🔖 Version
+      description: Which version of Imoporter do you get the bug with?
+      placeholder: e.g. 0.1.0-rc1, 0.2.0, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 📌 What happened?
+      description: |
+        Did you see some error? Or was something not working as expected? 
+        Please provide as much information as possible. For logs, there is a separate field below.
+      placeholder: Error details, detailed steps to reproduce, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 🪵 Relevant log output
+      description: |
+        Please copy and paste any relevant log output. This will be automatically formatted into a code snippet.
+      render: shell
+  - type: input
+    id: reference
+    attributes:
+      label: 🔗 Reference
+      description: If you have any reference for action, please provide one here
+      placeholder: e.g. https://github.com/upsidr/importer/issues/1
