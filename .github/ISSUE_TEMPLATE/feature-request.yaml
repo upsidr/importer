@@ -40,7 +40,7 @@ body:
       label: 🗂 Language Type
       description: |
         Please select language type(s) which should be handled. This helps in assessing how much work would be required to implement and support.
-        If you are requesting a new language support, please select "Other" and specify which language type you are seeking suppot for.
+        If you are requesting a new language support, please select "Other" and specify which language type you are seeking support for.
       multiple: true
       optinos:
         - All
