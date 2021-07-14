@@ -2,9 +2,12 @@ package cli
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/urfave/cli/v2"
 )
 
 var (
+	rootCmdName = "importer"
+
 	// Used for flags.
 	cfgFile     string
 	userLicense string
@@ -32,4 +35,19 @@ func Execute(args []string) error {
 		return err
 	}
 	return nil
+}
+
+func Run(args []string) error {
+	app := &cli.App{
+		Usage:                "Import any lines, from anywhere",
+		UsageText:            "importer [command]",
+		EnableBashCompletion: true,
+	}
+	app.Commands = []*cli.Command{
+		previewCliCmd,
+		updateCmd,
+		generateCliCmd,
+		purgeCliCmd,
+	}
+	return app.Run(args)
 }

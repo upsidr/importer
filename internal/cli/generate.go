@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/urfave/cli/v2"
 
 	"github.com/upsidr/importer/internal/parse"
 )
@@ -16,6 +17,14 @@ var (
 		Short: "Parse the provided file and generate result with imported files",
 		RunE:  executeGenerate,
 	}
+	generateCliCmd = &cli.Command{
+		Name:        "generate",
+		Aliases:     []string{"gen"},
+		UsageText:   rootCmdName + " generate [filename]",
+		Usage:       "Parse the provided file and generate result with imported files",
+		Description: "Parse the provided file and generate result with imported files",
+		Action:      executeGenerateCLI,
+	}
 )
 
 func executeGenerate(cmd *cobra.Command, args []string) error {
@@ -25,6 +34,21 @@ func executeGenerate(cmd *cobra.Command, args []string) error {
 	}
 
 	arg := args[0]
+	if err := generate(arg); err != nil {
+		return fmt.Errorf("error: handling generate, %v", err)
+	}
+
+	return nil
+}
+
+func executeGenerateCLI(cmd *cli.Context) error {
+	args := cmd.Args()
+	// TODO: add some util func to hande all common error cases
+	if args.Len() != 1 {
+		return errors.New("error: incorrect argument, you can only pass in 1 argument")
+	}
+
+	arg := args.First()
 	if err := generate(arg); err != nil {
 		return fmt.Errorf("error: handling generate, %v", err)
 	}
