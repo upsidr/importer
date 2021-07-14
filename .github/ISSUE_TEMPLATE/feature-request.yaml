@@ -29,6 +29,7 @@ body:
         - importer update
         - importer generate
         - importer graph
+        - importer preview
         - New command
         - Other (Please specify in the description)
     validations:
