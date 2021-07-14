@@ -59,6 +59,6 @@ body:
         It is often useful to have concrete examples how the feature would be useful for your use case,
         regardless of how specific it may be. That specific example may help others to find similar patterns,
         and ultimately help find the right solution to implement.
-      placeholder: Background, rationale, pain points, exmaples, etc.
+      placeholder: Background, rationale, pain points, examples, etc.
     validations:
       required: true
