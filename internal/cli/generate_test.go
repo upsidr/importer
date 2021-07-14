@@ -9,8 +9,8 @@ import (
 	"github.com/upsidr/importer/internal/testingutil/golden"
 )
 
-// Run `go test ./... -update` to update golden files under testdata
-var update = flag.Bool("update", false, "update golden files")
+// Run `go test ./... -updateGolden` to updateGolden golden files under testdata
+var updateGolden = flag.Bool("update", false, "update golden files")
 
 func TestGenerate(t *testing.T) {
 	cases := map[string]struct {
@@ -44,7 +44,7 @@ func TestGenerate(t *testing.T) {
 				t.Fatalf("error with generate, %v", err)
 			}
 
-			if *update {
+			if *updateGolden {
 				processed := golden.File(t, copiedFile)
 				golden.UpdateFile(t, tc.wantFile, processed)
 			}
