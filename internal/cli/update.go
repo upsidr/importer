@@ -12,12 +12,15 @@ import (
 
 var (
 	updateCmd = &cli.Command{
-		Name:        "update",
-		Aliases:     []string{"up"},
-		UsageText:   rootCmdName + " update [filename]",
-		Usage:       "Parse the provided file and generate result with imported files",
-		Description: "Parse the provided file and generate result with imported files",
-		Action:      executeUpdate,
+		Name:      "update",
+		Aliases:   []string{"up"},
+		UsageText: rootCmdName + " update [filename]",
+		Usage:     "Parse the provided file and generate result with imported files",
+		Description: "`update`" + ` command parses the provided file and processes the Import markers in place.
+
+This does not support creating a new file, nor send the result to stdout. For such use cases, use ` + "`generate`" + ` command
+`,
+		Action: executeUpdate,
 	}
 )
 
