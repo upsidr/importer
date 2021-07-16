@@ -11,16 +11,12 @@ import (
 )
 
 var (
-	// previewCmd = &cobra.Command{
-	// 	Use:   "preview",
-	// 	Short: "Parse the provided file and send the result to stdout",
-	// 	RunE:  executePreview,
-	// }
 	previewCliCmd = &cli.Command{
 		Name:      "preview",
 		UsageText: rootCmdName + " preview [filename]",
-		Usage:     "Parse the provided file and send the result to stdout",
-		Description: "`preview`" + ` command processes the provided file and gives you a quick preview.
+		Usage:     "Provides Importer update and purge previews",
+		Description: `
+` + "`preview`" + ` command processes the provided file and gives you a quick preview.
 
 This allows you to find what the file looks like after ` + "`update`" + ` or ` + "`purge`" + `.
 `,
@@ -29,20 +25,6 @@ This allows you to find what the file looks like after ` + "`update`" + ` or ` +
 		// TODO: Add support for diff preview
 	}
 )
-
-// func executePreview(cmd *cobra.Command, args []string) error {
-// 	// TODO: add some util func to hande all common error cases
-// 	if len(args) != 1 {
-// 		return errors.New("error: incorrect argument, you can only pass in 1 argument")
-// 	}
-
-// 	arg := args[0]
-// 	if err := preview(arg); err != nil {
-// 		return fmt.Errorf("error: handling preview, %v", err)
-// 	}
-
-// 	return nil
-// }
 
 func executePreviewCLI(ctx *cli.Context) error {
 	args := ctx.Args()
