@@ -1,0 +1,50 @@
+---
+name: Other
+description: Generic template for anything other than bug report or feature request
+title: "[Misc]: "
+labels: []
+# assignees:
+#   - rytswd
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ☺️ Thanks for filing an issue! ☺️
+
+        If you have a feature request, or reporting a bug, please use the corresponding template instead.
+
+  - type: dropdown
+    id: areas
+    attributes:
+      label: 🗺 Areas
+      description: |
+        Please select relevant area(s).
+      multiple: true
+      options:
+        - Commands (e.g. importer update, etc.)
+        - Community
+        - Development
+        - Documentation
+        - Security
+        - Version management (including dependencies)
+        - Other (Please specify in the description)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 🔖 Version
+      description: Which version of Imoporter do you get the bug with? If not relevant, please leave it blank.
+      placeholder: e.g. 0.1.0-rc1, 0.2.0, etc.
+  - type: textarea
+    id: details
+    attributes:
+      label: 🔎  Details
+      # description: |
+      #   Please provide some overview of the proposed request, and how it is useful.
+      #   It is often useful to have concrete examples how the feature would be useful for your use case,
+      #   regardless of how specific it may be. That specific example may help others to find similar patterns,
+      #   and ultimately help find the right solution to implement.
+      # placeholder: Background, rationale, pain points, examples, etc.
+    validations:
+      required: true
