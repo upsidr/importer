@@ -36,7 +36,7 @@ func TestPurge(t *testing.T) {
 				t.Fatalf("error with generate, %v", err)
 			}
 
-			if *update {
+			if *updateGolden {
 				processed := golden.File(t, copiedFile)
 				golden.UpdateFile(t, tc.wantFile, processed)
 			}
