@@ -58,6 +58,8 @@ func TestGenerateStdout(t *testing.T) {
 				if !strings.Contains(err.Error(), tc.wantErrString) {
 					t.Fatalf("error with generate, %v", err)
 				}
+				w.Close()
+				os.Stdout = origStdout
 				return
 			}
 
