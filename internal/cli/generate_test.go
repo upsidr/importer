@@ -126,7 +126,7 @@ func TestGenerateStdoutWithHelper(t *testing.T) {
 				return
 			}
 
-			stdout := fakeStdout.Read(t)
+			stdout := fakeStdout.ReadAllAndClose(t)
 
 			if *updateGolden {
 				golden.UpdateFile(t, tc.wantFile, stdout)
