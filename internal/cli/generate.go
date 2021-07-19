@@ -22,26 +22,36 @@ var (
 While ` + "`update`" + ` command is useful for managing file content in itself, ` + "`generate`" + ` can be used to create a separate template file.
 This approach allows the input file to be full of Importer markes without actual importing, and only used as the template to generate a new file.
 `,
+		Flags: []cli.Flag{
+			&cli.PathFlag{
+				Name:        "out",
+				Aliases:     []string{"o"},
+				Usage:       "write to `FILE`",
+				Destination: &generateTargetFile,
+			},
+		},
 		Action: executeGenerateCLI,
 	}
+	generateTargetFile string
 )
 
 func executeGenerateCLI(cmd *cli.Context) error {
 	args := cmd.Args()
 	// TODO: add some util func to hande all common error cases
-	if args.Len() != 1 {
+	if args.Len() < 1 {
 		return errors.New("error: incorrect argument, you can only pass in 1 argument")
 	}
 
 	arg := args.First()
-	if err := generate(arg); err != nil {
+	out := generateTargetFile
+	if err := generate(arg, out); err != nil {
 		return fmt.Errorf("error: handling generate, %v", err)
 	}
 
 	return nil
 }
 
-func generate(fileName string) error {
+func generate(fileName string, targetFilepath string) error {
 	f, err := os.Open(fileName)
 	if err != nil {
 		return err
@@ -58,10 +68,9 @@ func generate(fileName string) error {
 		return err
 	}
 
-	err = file.ReplaceWithAfter()
-	if err != nil {
-		return err
+	if targetFilepath != "" {
+		return file.WriteAfterTo(targetFilepath)
 	}
 
-	return nil
+	return file.PrintAfter()
 }
