@@ -10,6 +10,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/upsidr/importer/internal/testingutil/golden"
+	"github.com/upsidr/importer/internal/testingutil/stdout"
 )
 
 // Run `go test ./... -updateGolden` to updateGolden golden files under testdata
@@ -68,6 +69,62 @@ func TestGenerateStdout(t *testing.T) {
 				t.Fatal(err)
 			}
 			r.Close()
+
+			if *updateGolden {
+				golden.UpdateFile(t, tc.wantFile, stdout)
+			}
+
+			got := string(stdout)
+			want := golden.FileAsString(t, tc.wantFile)
+
+			if diff := cmp.Diff(want, got); diff != "" {
+				t.Errorf("result didn't match (-want / +got)\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestGenerateStdoutWithHelper(t *testing.T) {
+	cases := map[string]struct {
+		// Input
+		inputFile string
+
+		// Output
+		wantFile      string
+		wantErrString string
+	}{
+		"markdown": {
+			inputFile: "../../testdata/simple-before.md",
+			wantFile:  "../../testdata/simple-after.md",
+		},
+		"markdown long input": {
+			inputFile: "../../testdata/long-input-purged.md",
+			wantFile:  "../../testdata/long-input-after.md",
+		},
+		"markdown with exporter": {
+			inputFile: "../../testdata/using-exporter-before.md",
+			wantFile:  "../../testdata/using-exporter-after.md",
+		},
+		"error case: file not found": {
+			inputFile:     "does_not_exist",
+			wantErrString: "no such file",
+		},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			fakeStdout := stdout.New(t)
+			defer fakeStdout.Close()
+
+			err := generate(tc.inputFile, "") // Empty second argument means generate writes to stdout
+			if err != nil {
+				if !strings.Contains(err.Error(), tc.wantErrString) {
+					t.Fatalf("error with generate, %v", err)
+				}
+				return
+			}
+
+			stdout := fakeStdout.Read(t)
 
 			if *updateGolden {
 				golden.UpdateFile(t, tc.wantFile, stdout)
