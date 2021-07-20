@@ -2,13 +2,13 @@ package cli
 
 import (
 	"flag"
-	"io"
 	"os"
 	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 
+	"github.com/upsidr/importer/internal/parse"
 	"github.com/upsidr/importer/internal/testingutil/golden"
 	"github.com/upsidr/importer/internal/testingutil/stdout"
 )
@@ -41,75 +41,9 @@ func TestGenerateStdout(t *testing.T) {
 			inputFile:     "does_not_exist",
 			wantErrString: "no such file",
 		},
-	}
-
-	for name, tc := range cases {
-		t.Run(name, func(t *testing.T) {
-			// Stdout setup
-			origStdout := os.Stdout
-			r, w, err := os.Pipe()
-			if err != nil {
-				t.Fatal(err)
-			}
-			os.Stdout = w
-
-			err = generate(tc.inputFile, "") // Empty second argument means generate writes to stdout
-			if err != nil {
-				if !strings.Contains(err.Error(), tc.wantErrString) {
-					t.Fatalf("error with generate, %v", err)
-				}
-				w.Close()
-				os.Stdout = origStdout
-				return
-			}
-
-			// Get stdout back
-			w.Close()
-			os.Stdout = origStdout
-			stdout, err := io.ReadAll(r)
-			if err != nil {
-				t.Fatal(err)
-			}
-			r.Close()
-
-			if *updateGolden {
-				golden.UpdateFile(t, tc.wantFile, stdout)
-			}
-
-			got := string(stdout)
-			want := golden.FileAsString(t, tc.wantFile)
-
-			if diff := cmp.Diff(want, got); diff != "" {
-				t.Errorf("result didn't match (-want / +got)\n%s", diff)
-			}
-		})
-	}
-}
-
-func TestGenerateStdoutWithHelper(t *testing.T) {
-	cases := map[string]struct {
-		// Input
-		inputFile string
-
-		// Output
-		wantFile      string
-		wantErrString string
-	}{
-		"markdown": {
-			inputFile: "../../testdata/simple-before.md",
-			wantFile:  "../../testdata/simple-after.md",
-		},
-		"markdown long input": {
-			inputFile: "../../testdata/long-input-purged.md",
-			wantFile:  "../../testdata/long-input-after.md",
-		},
-		"markdown with exporter": {
-			inputFile: "../../testdata/using-exporter-before.md",
-			wantFile:  "../../testdata/using-exporter-after.md",
-		},
-		"error case: file not found": {
-			inputFile:     "does_not_exist",
-			wantErrString: "no such file",
+		"error case: file not supported (.txt)": {
+			inputFile:     "../../testdata/note.txt",
+			wantErrString: parse.ErrUnsupportedFileType.Error(),
 		},
 	}
 
@@ -128,11 +62,56 @@ func TestGenerateStdoutWithHelper(t *testing.T) {
 
 			stdout := fakeStdout.ReadAllAndClose(t)
 
-			if *updateGolden {
-				golden.UpdateFile(t, tc.wantFile, stdout)
+			got := string(stdout)
+			want := golden.FileAsString(t, tc.wantFile)
+
+			if diff := cmp.Diff(want, got); diff != "" {
+				t.Errorf("result didn't match (-want / +got)\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestGenerateToFile(t *testing.T) {
+	cases := map[string]struct {
+		// Input
+		inputFile string
+
+		// Output
+		wantFile string
+	}{
+		"markdown": {
+			inputFile: "../../testdata/simple-before.md",
+			wantFile:  "../../testdata/simple-after.md",
+		},
+		"markdown long input": {
+			inputFile: "../../testdata/long-input-purged.md",
+			wantFile:  "../../testdata/long-input-after.md",
+		},
+		"markdown with exporter": {
+			inputFile: "../../testdata/using-exporter-before.md",
+			wantFile:  "../../testdata/using-exporter-after.md",
+		},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			tempFile, err := os.CreateTemp("", "")
+			if err != nil {
+				t.Fatal(err)
 			}
 
-			got := string(stdout)
+			err = generate(tc.inputFile, tempFile.Name()) // Second argument for target file
+			if err != nil {
+				t.Fatalf("error with generate, %v", err)
+			}
+
+			if *updateGolden {
+				processed := golden.File(t, tempFile.Name())
+				golden.UpdateFile(t, tc.wantFile, processed)
+			}
+
+			got := golden.FileAsString(t, tempFile.Name())
 			want := golden.FileAsString(t, tc.wantFile)
 
 			if diff := cmp.Diff(want, got); diff != "" {
