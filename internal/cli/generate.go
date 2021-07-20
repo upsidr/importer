@@ -39,7 +39,7 @@ func executeGenerateCLI(cmd *cli.Context) error {
 	args := cmd.Args()
 	// TODO: add some util func to hande all common error cases
 	if args.Len() < 1 {
-		return errors.New("error: incorrect argument, you can only pass in 1 argument")
+		return errors.New("error: incorrect argument, you need to pass in an argument")
 	}
 
 	arg := args.First()
