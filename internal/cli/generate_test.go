@@ -2,17 +2,77 @@ package cli
 
 import (
 	"flag"
+	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 
+	"github.com/upsidr/importer/internal/parse"
 	"github.com/upsidr/importer/internal/testingutil/golden"
+	"github.com/upsidr/importer/internal/testingutil/stdout"
 )
 
 // Run `go test ./... -updateGolden` to updateGolden golden files under testdata
 var updateGolden = flag.Bool("update", false, "update golden files")
 
-func TestGenerate(t *testing.T) {
+func TestGenerateStdout(t *testing.T) {
+	cases := map[string]struct {
+		// Input
+		inputFile string
+
+		// Output
+		wantFile      string
+		wantErrString string
+	}{
+		"markdown": {
+			inputFile: "../../testdata/simple-before.md",
+			wantFile:  "../../testdata/simple-after.md",
+		},
+		"markdown long input": {
+			inputFile: "../../testdata/long-input-purged.md",
+			wantFile:  "../../testdata/long-input-after.md",
+		},
+		"markdown with exporter": {
+			inputFile: "../../testdata/using-exporter-before.md",
+			wantFile:  "../../testdata/using-exporter-after.md",
+		},
+		"error case: file not found": {
+			inputFile:     "does_not_exist",
+			wantErrString: "no such file",
+		},
+		"error case: file not supported (.txt)": {
+			inputFile:     "../../testdata/note.txt",
+			wantErrString: parse.ErrUnsupportedFileType.Error(),
+		},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			fakeStdout := stdout.New(t)
+			defer fakeStdout.Close()
+
+			err := generate(tc.inputFile, "") // Empty second argument means generate writes to stdout
+			if err != nil {
+				if !strings.Contains(err.Error(), tc.wantErrString) {
+					t.Fatalf("error with generate, %v", err)
+				}
+				return
+			}
+
+			stdout := fakeStdout.ReadAllAndClose(t)
+
+			got := string(stdout)
+			want := golden.FileAsString(t, tc.wantFile)
+
+			if diff := cmp.Diff(want, got); diff != "" {
+				t.Errorf("result didn't match (-want / +got)\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestGenerateToFile(t *testing.T) {
 	cases := map[string]struct {
 		// Input
 		inputFile string
@@ -36,20 +96,22 @@ func TestGenerate(t *testing.T) {
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			copiedFile, remove := golden.CopyTemp(t, tc.inputFile)
-			defer remove()
+			tempFile, err := os.CreateTemp("", "")
+			if err != nil {
+				t.Fatal(err)
+			}
 
-			err := generate(copiedFile)
+			err = generate(tc.inputFile, tempFile.Name()) // Second argument for target file
 			if err != nil {
 				t.Fatalf("error with generate, %v", err)
 			}
 
 			if *updateGolden {
-				processed := golden.File(t, copiedFile)
+				processed := golden.File(t, tempFile.Name())
 				golden.UpdateFile(t, tc.wantFile, processed)
 			}
 
-			got := golden.FileAsString(t, copiedFile)
+			got := golden.FileAsString(t, tempFile.Name())
 			want := golden.FileAsString(t, tc.wantFile)
 
 			if diff := cmp.Diff(want, got); diff != "" {

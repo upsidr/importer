@@ -9,6 +9,8 @@ import (
 )
 
 // ProcessAnnotations reads annotations and generates ContentAfter.
+//
+// TODO: possibly remove error return, as it currently never returns any error.
 func (f *File) ProcessAnnotations() error {
 	result := []byte{}
 	br := byte('\n')
