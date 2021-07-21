@@ -20,120 +20,15 @@ func TestParseMarkdown(t *testing.T) {
 		// Output
 		wantFile *file.File
 	}{
-		"no importer annotation": {
-			fileName: "dummy",
-			input: strings.NewReader(`
-# Test Markdown
-
-No importer annotation
-`),
-			wantFile: &file.File{
-				FileName: "dummy",
-				ContentBefore: StringToLineStrings(t, `
-# Test Markdown
-
-No importer annotation
-`),
-				ContentPurged: StringToLineStrings(t, `
-# Test Markdown
-
-No importer annotation
-`),
-				Annotations: map[int]*file.Annotation{},
-			},
-		},
-		"with single importer annotation": {
-			fileName: "dummy",
-			input: strings.NewReader(`
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ../../testdata/simple-before-importer.md#1~2 == -->
-some data between an annotation pair, which gets purged.
-<!-- == imptr: some_importer / end == -->
-`),
-			wantFile: &file.File{
-				FileName: "dummy",
-				ContentBefore: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ../../testdata/simple-before-importer.md#1~2 == -->
-some data between an annotation pair, which gets purged.
-<!-- == imptr: some_importer / end == -->
-`),
-				ContentPurged: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ../../testdata/simple-before-importer.md#1~2 == -->
-<!-- == imptr: some_importer / end == -->
-`),
-				Annotations: map[int]*file.Annotation{
-					4: {
-						Name:           "some_importer",
-						LineToInsertAt: 4,
-						TargetPath:     "../../testdata/simple-before-importer.md",
-						TargetLineFrom: 1,
-						TargetLineTo:   2,
-					},
-				},
-			},
-		},
-		"with single importer annotation, inner annotation ignored": {
-			fileName: "dummy",
-			input: strings.NewReader(`
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ./somefile#1~2 == -->
-
-some data between an annotation pair, which gets purged.
-
-This annotation for "another_importer" gets ignored as it is within another annotation pair.
-<!-- == imptr: another_importer / begin from: ./another_file#1~2 == -->
-<!-- == imptr: another_importer / end == -->
-
-<!-- == imptr: some_importer / end == -->
-`),
-			wantFile: &file.File{
-				FileName: "dummy",
-				ContentBefore: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ./somefile#1~2 == -->
-
-some data between an annotation pair, which gets purged.
-
-This annotation for "another_importer" gets ignored as it is within another annotation pair.
-<!-- == imptr: another_importer / begin from: ./another_file#1~2 == -->
-<!-- == imptr: another_importer / end == -->
-
-<!-- == imptr: some_importer / end == -->
-`),
-				ContentPurged: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ./somefile#1~2 == -->
-<!-- == imptr: some_importer / end == -->
-`),
-				Annotations: map[int]*file.Annotation{
-					4: {
-						Name:           "some_importer",
-						LineToInsertAt: 4,
-						TargetPath:     "./somefile",
-						TargetLineFrom: 1,
-						TargetLineTo:   2,
-					},
-				},
-			},
-		},
-
-		// ===================
-		// File based cases below
-		"simple data from file in testdata": {
-			fileName: "dummy",
+		"simple test from main testdata": {
+			fileName: "dummy.md",
 			input:    strings.NewReader(golden.FileAsString(t, "../../testdata/simple-before.md")),
 			wantFile: &file.File{
-				FileName:      "dummy",
-				ContentBefore: StringToLineStrings(t, golden.FileAsString(t, "../../testdata/simple-before.md")),
-				ContentPurged: StringToLineStrings(t, golden.FileAsString(t, "../../testdata/simple-purged.md")),
+				FileName: "dummy.md",
+				ContentBefore: StringToLineStrings(t,
+					golden.FileAsString(t, "../../testdata/simple-before.md")),
+				ContentPurged: StringToLineStrings(t,
+					golden.FileAsString(t, "../../testdata/simple-purged.md")),
 				Annotations: map[int]*file.Annotation{
 					3: {
 						Name:           "lorem",
@@ -145,11 +40,60 @@ This annotation for "another_importer" gets ignored as it is within another anno
 				},
 			},
 		},
+		"no importer annotation": {
+			fileName: "./testdata/markdown/no-importer-marker-before.md",
+			wantFile: &file.File{
+				FileName: "./testdata/markdown/no-importer-marker-before.md",
+				ContentBefore: StringToLineStrings(t,
+					golden.FileAsString(t, "./testdata/markdown/no-importer-marker-before.md")),
+				ContentPurged: StringToLineStrings(t,
+					golden.FileAsString(t, "./testdata/markdown/no-importer-marker-purged.md")),
+				Annotations: map[int]*file.Annotation{},
+			},
+		},
+		"with single importer annotation": {
+			fileName: "./testdata/markdown/single-marker-before.md",
+			wantFile: &file.File{
+				FileName: "./testdata/markdown/single-marker-before.md",
+				ContentBefore: StringToLineStrings(t,
+					golden.FileAsString(t, "./testdata/markdown/single-marker-before.md")),
+				ContentPurged: StringToLineStrings(t,
+					golden.FileAsString(t, "./testdata/markdown/single-marker-purged.md")),
+				Annotations: map[int]*file.Annotation{
+					3: {
+						Name:           "some_importer",
+						LineToInsertAt: 3,
+						TargetPath:     "../../testdata/simple-before-importer.md",
+						TargetLineFrom: 1,
+						TargetLineTo:   2,
+					},
+				},
+			},
+		},
+		"with single importer annotation, inner annotation ignored": {
+			fileName: "./testdata/markdown/single-marker-with-inner-before.md",
+			wantFile: &file.File{
+				FileName: "./testdata/markdown/single-marker-with-inner-before.md",
+				ContentBefore: StringToLineStrings(t,
+					golden.FileAsString(t, "./testdata/markdown/single-marker-with-inner-before.md")),
+				ContentPurged: StringToLineStrings(t,
+					golden.FileAsString(t, "./testdata/markdown/single-marker-with-inner-purged.md")),
+				Annotations: map[int]*file.Annotation{
+					3: {
+						Name:           "some_importer",
+						LineToInsertAt: 3,
+						TargetPath:     "./somefile",
+						TargetLineFrom: 1,
+						TargetLineTo:   2,
+					},
+				},
+			},
+		},
 
 		// ===================
 		// Invalid cases below
 		"importer option missing": {
-			fileName: "dummy",
+			fileName: "dummy.md",
 			input: strings.NewReader(`
 # Test Markdown
 
@@ -158,7 +102,7 @@ some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / end == -->
 `),
 			wantFile: &file.File{
-				FileName: "dummy",
+				FileName: "dummy.md",
 				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
@@ -183,7 +127,7 @@ some data between an annotation pair, which gets purged.
 			},
 		},
 		"file line range not number - lower bound": {
-			fileName: "dummy",
+			fileName: "dummy.md",
 			input: strings.NewReader(`
 # Test Markdown
 
@@ -192,7 +136,7 @@ some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / end == -->
 `),
 			wantFile: &file.File{
-				FileName: "dummy",
+				FileName: "dummy.md",
 				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
@@ -210,7 +154,7 @@ some data between an annotation pair, which gets purged.
 			},
 		},
 		"file line range not number - upper bound": {
-			fileName: "dummy",
+			fileName: "dummy.md",
 			input: strings.NewReader(`
 # Test Markdown
 
@@ -219,7 +163,7 @@ some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / end == -->
 `),
 			wantFile: &file.File{
-				FileName: "dummy",
+				FileName: "dummy.md",
 				ContentBefore: StringToLineStrings(t, `
 # Test Markdown
 
@@ -240,17 +184,15 @@ some data between an annotation pair, which gets purged.
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			f, err := parseMarkdown(tc.fileName, tc.input)
+			fileInput := tc.input
+			if fileInput == nil {
+				fileInput = golden.FileAsReader(t, tc.fileName)
+			}
+			f, err := Parse(tc.fileName, fileInput)
 			if err != nil {
 				t.Errorf("unexpected error, %v", err)
 				return
 			}
-
-			// err = f.ProcessAnnotations()
-			// if err != nil {
-			// 	t.Errorf("unexpected error, %v", err)
-			// 	return
-			// }
 
 			if diff := cmp.Diff(tc.wantFile, f, cmp.AllowUnexported(file.File{})); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
