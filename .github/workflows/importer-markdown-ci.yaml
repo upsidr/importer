@@ -34,9 +34,6 @@ jobs:
       - name: Run Importer against README.md
         run: ./importer update README.md # This uses locally built Importer, take off `./` for usual use cases
 
-      - name: Remove binary
-        run: |
-          rm ./importer
       - name: Check if README.md has any change compared to the branch
         run: |
           git status --short
