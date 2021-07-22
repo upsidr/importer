@@ -12,25 +12,25 @@ import (
 
 const br = byte('\n')
 
-// ProcessAnnotations reads annotations and generates ContentAfter.
+// ProcessMarkers reads markers and generates ContentAfter.
 //
-// Internally, ContentAfter is generated from ContentPurged and Annotations.
+// Internally, ContentAfter is generated from ContentPurged and Markers.
 // This walks thruogh each line of ContentPurged, and copies the data into a
-// byte slice, and while processing each line, it checks if annotations are
-// defined for the given line. If any annotation is registered, it would then
+// byte slice, and while processing each line, it checks if markers are
+// defined for the given line. If any marker is registered, it would then
 // process the target information to import.
 //
 // TODO: possibly remove error return, as it currently never returns any error.
-func (f *File) ProcessAnnotations() error {
+func (f *File) ProcessMarkers() error {
 	result := []byte{}
 	for line, data := range f.ContentPurged {
 		result = append(result, data...)
 		result = append(result, br)
 
-		// Annotation is found for the given line. Before proceeding to the
-		// next line, handle annotation and import the target data.
-		if a, found := f.Annotations[line+1]; found {
-			processed, err := processSingleAnnotation(f.FileName, a)
+		// Marker is found for the given line. Before proceeding to the
+		// next line, handle marker and import the target data.
+		if a, found := f.Markers[line+1]; found {
+			processed, err := processSingleMarker(f.FileName, a)
 			if err != nil {
 				fmt.Printf("warning: %s\n", err)
 				continue
@@ -42,12 +42,12 @@ func (f *File) ProcessAnnotations() error {
 	return nil
 }
 
-func processSingleAnnotation(filePath string, annotation *Annotation) ([]byte, error) {
+func processSingleMarker(filePath string, marker *Marker) ([]byte, error) {
 	// TODO: Add support for URL https://github.com/upsidr/importer/issues/14
 
 	// Make sure the files are read based on the relative path
 	dir := filepath.Dir(filePath)
-	targetPath := dir + "/" + annotation.TargetPath
+	targetPath := dir + "/" + marker.TargetPath
 	file, err := os.Open(targetPath)
 	if err != nil {
 		// Purposely returning the byte slice as it contains data that were
@@ -59,15 +59,15 @@ func processSingleAnnotation(filePath string, annotation *Annotation) ([]byte, e
 	fileType := filepath.Ext(filePath)
 	switch fileType {
 	case ".md":
-		return processSingleAnnotationMarkdown(file, annotation)
+		return processMarkdownSingleMarker(file, marker)
 	case ".yaml", ".yml":
-		return processSingleAnnotationYAML(file, annotation)
+		return processYAMLSingleMarker(file, marker)
 	default:
-		return processSingleAnnotationOther(file, annotation)
+		return processOtherSingleMarker(file, marker)
 	}
 }
 
-func processSingleAnnotationMarkdown(file *os.File, annotation *Annotation) ([]byte, error) {
+func processMarkdownSingleMarker(file *os.File, marker *Marker) ([]byte, error) {
 	result := []byte{}
 
 	reExport := regexp.MustCompile(ExportMarkerMarkdown)
@@ -82,7 +82,7 @@ func processSingleAnnotationMarkdown(file *os.File, annotation *Annotation) ([]b
 		match := reExport.FindStringSubmatch(scanner.Text())
 		if len(match) != 0 {
 			// match[1] is export_marker_name
-			if match[1] == annotation.TargetExportMarker {
+			if match[1] == marker.TargetExportMarker {
 				withinExportMarker = true
 			}
 			// match[2] is exporter_marker_condition
@@ -100,13 +100,13 @@ func processSingleAnnotationMarkdown(file *os.File, annotation *Annotation) ([]b
 		}
 
 		// Handle line number imports
-		if currentLine >= annotation.TargetLineFrom &&
-			currentLine <= annotation.TargetLineTo {
+		if currentLine >= marker.TargetLineFrom &&
+			currentLine <= marker.TargetLineTo {
 			result = append(result, scanner.Bytes()...)
 			result = append(result, br)
 			continue
 		}
-		for _, l := range annotation.TargetLines {
+		for _, l := range marker.TargetLines {
 			if currentLine == l {
 				result = append(result, scanner.Bytes()...)
 				result = append(result, br)
@@ -117,7 +117,7 @@ func processSingleAnnotationMarkdown(file *os.File, annotation *Annotation) ([]b
 	return result, nil
 }
 
-func processSingleAnnotationYAML(file *os.File, annotation *Annotation) ([]byte, error) {
+func processYAMLSingleMarker(file *os.File, marker *Marker) ([]byte, error) {
 	result := []byte{}
 
 	reExport := regexp.MustCompile(ExportMarkerYAML)
@@ -141,7 +141,7 @@ func processSingleAnnotationYAML(file *os.File, annotation *Annotation) ([]byte,
 			}
 
 			// match[2] is export_marker_name
-			if match[2] == annotation.TargetExportMarker {
+			if match[2] == marker.TargetExportMarker {
 				withinExportMarker = true
 			}
 			// match[3] is exporter_marker_condition
@@ -154,21 +154,21 @@ func processSingleAnnotationYAML(file *os.File, annotation *Annotation) ([]byte,
 
 		// Handle export marker imports
 		if withinExportMarker {
-			lineData = adjustIndentation(lineData, markerIndentation, annotation)
+			lineData = adjustIndentation(lineData, markerIndentation, marker)
 			result = append(result, lineData...)
 			continue
 		}
 
 		// Handle line number imports
-		if currentLine >= annotation.TargetLineFrom &&
-			currentLine <= annotation.TargetLineTo {
-			lineData = adjustIndentation(lineData, markerIndentation, annotation)
+		if currentLine >= marker.TargetLineFrom &&
+			currentLine <= marker.TargetLineTo {
+			lineData = adjustIndentation(lineData, markerIndentation, marker)
 			result = append(result, lineData...)
 			continue
 		}
-		for _, l := range annotation.TargetLines {
+		for _, l := range marker.TargetLines {
 			if currentLine == l {
-				lineData = adjustIndentation(lineData, markerIndentation, annotation)
+				lineData = adjustIndentation(lineData, markerIndentation, marker)
 				result = append(result, lineData...)
 				continue
 			}
@@ -177,7 +177,7 @@ func processSingleAnnotationYAML(file *os.File, annotation *Annotation) ([]byte,
 	return result, nil
 }
 
-func processSingleAnnotationOther(file *os.File, annotation *Annotation) ([]byte, error) {
+func processOtherSingleMarker(file *os.File, marker *Marker) ([]byte, error) {
 	result := []byte{}
 
 	currentLine := 0
@@ -193,13 +193,13 @@ func processSingleAnnotationOther(file *os.File, annotation *Annotation) ([]byte
 		// separately.
 
 		// Handle line number imports
-		if currentLine >= annotation.TargetLineFrom &&
-			currentLine <= annotation.TargetLineTo {
+		if currentLine >= marker.TargetLineFrom &&
+			currentLine <= marker.TargetLineTo {
 			result = append(result, scanner.Bytes()...)
 			result = append(result, br)
 			continue
 		}
-		for _, l := range annotation.TargetLines {
+		for _, l := range marker.TargetLines {
 			if currentLine == l {
 				result = append(result, scanner.Bytes()...)
 				result = append(result, br)
@@ -210,18 +210,18 @@ func processSingleAnnotationOther(file *os.File, annotation *Annotation) ([]byte
 	return result, nil
 }
 
-func adjustIndentation(lineData []byte, markerIndentation int, annotation *Annotation) []byte {
+func adjustIndentation(lineData []byte, markerIndentation int, marker *Marker) []byte {
 	// If no indentation setup is done, simply return as is
-	if annotation.Indentation == nil {
+	if marker.Indentation == nil {
 		lineData = append(lineData, br)
 		return lineData
 	}
 
 	lineString := string(lineData)
-	indentLength := annotation.Indentation.Length
+	indentLength := marker.Indentation.Length
 	// Check which indentation adjustment is used.
 	// Absolute adjustment takes precedence over extra indentation.
-	switch annotation.Indentation.Mode {
+	switch marker.Indentation.Mode {
 	case AbsoluteIndentation:
 		actualIndent := len(lineString) - len(strings.TrimLeft(lineString, " "))
 		switch {

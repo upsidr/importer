@@ -1,9 +1,9 @@
 package file
 
-// Annotation holds on to the data required for importer processing. This does
+// Marker holds on to the data required for importer processing. This does
 // not hold the target file content itself, and that needs to be handled
 // separately.
-type Annotation struct {
+type Marker struct {
 	Name           string
 	LineToInsertAt int
 

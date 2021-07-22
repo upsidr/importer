@@ -8,7 +8,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestProcessAnnotation(t *testing.T) {
+func TestProcessMarker(t *testing.T) {
 	cases := map[string]struct {
 		// Input
 		file *File
@@ -25,7 +25,7 @@ func TestProcessAnnotation(t *testing.T) {
 					"a test",
 					"data",
 				},
-				Annotations: map[int]*Annotation{
+				Markers: map[int]*Marker{
 					2: {
 						Name:           "test annotation",
 						LineToInsertAt: 2,
@@ -49,7 +49,7 @@ data
 					"a test",
 					"data",
 				},
-				Annotations: map[int]*Annotation{
+				Markers: map[int]*Marker{
 					2: {
 						Name:           "test annotation",
 						LineToInsertAt: 2,
@@ -67,7 +67,7 @@ data
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			err := tc.file.ProcessAnnotations()
+			err := tc.file.ProcessMarkers()
 			if err != nil {
 				if !errors.Is(err, tc.wantErr) {
 					t.Errorf("error did not match:\n    want: %v\n    got:  %v", tc.wantErr, err)
@@ -82,11 +82,11 @@ data
 	}
 }
 
-func TestProcessSingleAnnotation(t *testing.T) {
+func TestProcessSingleMarker(t *testing.T) {
 	cases := map[string]struct {
 		// Input
 		callerFile string
-		annotation *Annotation
+		marker     *Marker
 
 		// Output
 		want    []byte
@@ -94,7 +94,7 @@ func TestProcessSingleAnnotation(t *testing.T) {
 	}{
 		"markdown: range process": {
 			callerFile: "./some_file.md",
-			annotation: &Annotation{
+			marker: &Marker{
 				LineToInsertAt: 1, // Not used in this, as single annotation handling is about appending data
 				TargetPath:     "../../testdata/note.txt",
 				TargetLineFrom: 1,
@@ -107,7 +107,7 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		},
 		"markdown: comma separated lines": {
 			callerFile: "./some_file.md",
-			annotation: &Annotation{
+			marker: &Marker{
 				LineToInsertAt: 1,
 				TargetPath:     "../../testdata/note.txt",
 				TargetLines:    []int{2, 3},
@@ -118,7 +118,7 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		},
 		"markdown: exporter marker": {
 			callerFile: "./some_file.md",
-			annotation: &Annotation{
+			marker: &Marker{
 				LineToInsertAt:     1,
 				TargetPath:         "../../testdata/with-exporter.md",
 				TargetExportMarker: "test_exporter",
@@ -136,7 +136,7 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		},
 		"yaml: simple import": {
 			callerFile: "./some_file.yaml",
-			annotation: &Annotation{
+			marker: &Marker{
 				LineToInsertAt:     5,
 				TargetPath:         "../../testdata/with-exporter.yaml",
 				TargetExportMarker: "long-tree",
@@ -157,7 +157,7 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		},
 		"yaml: absolute indentation": {
 			callerFile: "./some_file.yaml",
-			annotation: &Annotation{
+			marker: &Marker{
 				LineToInsertAt:     5,
 				TargetPath:         "../../testdata/with-exporter.yaml",
 				TargetExportMarker: "metadata-only",
@@ -173,7 +173,7 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		},
 		"yaml: absolute indentation with zero indentation": {
 			callerFile: "./some_file.yaml",
-			annotation: &Annotation{
+			marker: &Marker{
 				LineToInsertAt:     5,
 				TargetPath:         "../../testdata/with-exporter.yaml",
 				TargetExportMarker: "metadata-only",
@@ -189,7 +189,7 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		},
 		"yaml: extra indentation": {
 			callerFile: "./some_file.yaml",
-			annotation: &Annotation{
+			marker: &Marker{
 				LineToInsertAt:     5,
 				TargetPath:         "../../testdata/with-exporter.yaml",
 				TargetExportMarker: "sample-nested",
@@ -211,7 +211,7 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		// ERROR CASES
 		"no target file found": {
 			callerFile: "./some_file.md",
-			annotation: &Annotation{
+			marker: &Marker{
 				LineToInsertAt:     1,
 				TargetPath:         "../../does-not-exist.md",
 				TargetExportMarker: "test_exporter",
@@ -222,7 +222,7 @@ func TestProcessSingleAnnotation(t *testing.T) {
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			result, err := processSingleAnnotation(tc.callerFile, tc.annotation)
+			result, err := processSingleMarker(tc.callerFile, tc.marker)
 			if err != nil {
 				if !errors.Is(err, tc.wantErr) {
 					t.Errorf("error did not match:\n    want: %v\n    got:  %v", tc.wantErr, err)

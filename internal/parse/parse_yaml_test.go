@@ -28,7 +28,7 @@ func TestParseYAML(t *testing.T) {
 					golden.FileAsString(t, "./testdata/yaml/single-marker-before.yaml")),
 				ContentPurged: StringToLineStrings(t,
 					golden.FileAsString(t, "./testdata/yaml/single-marker-purged.yaml")),
-				Annotations: map[int]*file.Annotation{
+				Markers: map[int]*file.Marker{
 					3: {
 						Name:               "some-importer",
 						LineToInsertAt:     3,
@@ -46,7 +46,7 @@ func TestParseYAML(t *testing.T) {
 					golden.FileAsString(t, "./testdata/yaml/no-importer-marker-before.yaml")),
 				ContentPurged: StringToLineStrings(t,
 					golden.FileAsString(t, "./testdata/yaml/no-importer-marker-purged.yaml")),
-				Annotations: map[int]*file.Annotation{},
+				Markers: map[int]*file.Marker{},
 			},
 		},
 
@@ -73,7 +73,7 @@ data:
   # == imptr: some_importer / begin ==
   # == imptr: some_importer / end ==
 `),
-				Annotations: map[int]*file.Annotation{
+				Markers: map[int]*file.Marker{
 					3: {
 						// Name of improter and line are found
 						Name:           "some_importer",
@@ -104,7 +104,7 @@ data:
   # == imptr: some_importer / begin from: ./somefile#NOT_NUMBER~2233 ==
   # == imptr: some_importer / end == -->
 `),
-				Annotations: map[int]*file.Annotation{},
+				Markers: map[int]*file.Marker{},
 			},
 		},
 		"file line range not number - upper bound": {
@@ -128,7 +128,7 @@ data:
   # == imptr: some_importer / begin from: ./somefile#1~NOT_NUMBER ==
   # == imptr: some_importer / end ==
 `),
-				Annotations: map[int]*file.Annotation{},
+				Markers: map[int]*file.Marker{},
 			},
 		},
 	}

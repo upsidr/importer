@@ -17,7 +17,7 @@ func TestConvert(t *testing.T) {
 		match matchHolder
 
 		// Output
-		wantResult *file.Annotation
+		wantResult *file.Marker
 		wantErr    error
 	}{
 		"valid annotation match": {
@@ -28,7 +28,7 @@ func TestConvert(t *testing.T) {
 				lineToInsertAt: 10,
 				options:        "from: ./some_file.txt#2~22",
 			},
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:           "test name",
 				LineToInsertAt: 10,
 				TargetPath:     "./some_file.txt",
@@ -44,7 +44,7 @@ func TestConvert(t *testing.T) {
 				lineToInsertAt: 10,
 				options:        "from: ./some_file.txt#2~22 indent: absolute 2",
 			},
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:           "test name",
 				LineToInsertAt: 10,
 				TargetPath:     "./some_file.txt",
@@ -63,7 +63,7 @@ func TestConvert(t *testing.T) {
 				isEndFound:     true,
 				lineToInsertAt: 10,
 			},
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:           "test name",
 				LineToInsertAt: 10,
 			},
@@ -78,7 +78,7 @@ func TestConvert(t *testing.T) {
 				lineToInsertAt: 10,
 				options:        "from: ./some_file.txt#2~22",
 			},
-			wantErr: ErrNoMatchingAnnotations,
+			wantErr: ErrNoMatchingMarker,
 		},
 		"INVALID: annotation is not matched, beging missing": {
 			name: "test name",
@@ -88,7 +88,7 @@ func TestConvert(t *testing.T) {
 				lineToInsertAt: 10,
 				options:        "from: ./some_file.txt#2~22",
 			},
-			wantErr: ErrNoMatchingAnnotations,
+			wantErr: ErrNoMatchingMarker,
 		},
 		"INVALID: annotation has invalid line ranges": {
 			name: "test name",
@@ -123,7 +123,7 @@ func TestConvert(t *testing.T) {
 				return
 			}
 
-			if diff := cmp.Diff(tc.wantResult, annotation, cmp.AllowUnexported(file.Annotation{})); diff != "" {
+			if diff := cmp.Diff(tc.wantResult, annotation, cmp.AllowUnexported(file.Marker{})); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
 			}
 		})
@@ -133,26 +133,26 @@ func TestConvert(t *testing.T) {
 func TestProcessTargetPath(t *testing.T) {
 	cases := map[string]struct {
 		// Input
-		annotation *file.Annotation
+		annotation *file.Marker
 		input      string
 
 		// Output
-		wantResult *file.Annotation
+		wantResult *file.Marker
 		wantErr    error
 	}{
 		"simple test": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input: "./some_path.txt",
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:       "test file",
 				TargetPath: "./some_path.txt",
 			},
 		},
 
 		"INVALID: empty file path": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input:   "",
@@ -170,7 +170,7 @@ func TestProcessTargetPath(t *testing.T) {
 				return
 			}
 
-			if diff := cmp.Diff(tc.wantResult, tc.annotation, cmp.AllowUnexported(file.Annotation{})); diff != "" {
+			if diff := cmp.Diff(tc.wantResult, tc.annotation, cmp.AllowUnexported(file.Marker{})); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
 			}
 		})
@@ -180,81 +180,81 @@ func TestProcessTargetPath(t *testing.T) {
 func TestProcessTargetDetail(t *testing.T) {
 	cases := map[string]struct {
 		// Input
-		annotation *file.Annotation
+		annotation *file.Marker
 		input      string
 
 		// Output
-		wantResult *file.Annotation
+		wantResult *file.Marker
 		wantErr    error
 	}{
 		"export marker": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input: "[some_marker]",
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:               "test file",
 				TargetExportMarker: "some_marker",
 			},
 		},
 		"simple comma separated values": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input: "1,2,3,5",
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:        "test file",
 				TargetLines: []int{1, 2, 3, 5},
 			},
 		},
 		"simple tilde based values": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input: "3~22",
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:           "test file",
 				TargetLineFrom: 3,
 				TargetLineTo:   22,
 			},
 		},
 		"tilde based values without lower bound": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input: "~22",
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:         "test file",
 				TargetLineTo: 22,
 			},
 		},
 		"tilde based values without upper bound": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input: "3~",
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:           "test file",
 				TargetLineFrom: 3,
 				TargetLineTo:   math.MaxInt32,
 			},
 		},
 		"comma separated, complex values": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input: "2,1,1,1,3~7,4~6",
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:        "test file",
 				TargetLines: []int{2, 1, 1, 1, 3, 4, 5, 6, 7, 4, 5, 6},
 			},
 		},
 		"single line value": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input: "15",
-			wantResult: &file.Annotation{
+			wantResult: &file.Marker{
 				Name:        "test file",
 				TargetLines: []int{15},
 			},
@@ -262,21 +262,21 @@ func TestProcessTargetDetail(t *testing.T) {
 
 		// ERROR CASE
 		"INVALID: export marker": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input:   "[some marker with whitespace]",
 			wantErr: ErrInvalidSyntax,
 		},
 		"INVALID: tilde based range, invalid char lower range": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input:   "x~2",
 			wantErr: ErrInvalidSyntax,
 		},
 		"INVALID: tilde based range, invalid char upper range": {
-			annotation: &file.Annotation{
+			annotation: &file.Marker{
 				Name: "test file",
 			},
 			input:   "3~x",
@@ -294,7 +294,7 @@ func TestProcessTargetDetail(t *testing.T) {
 				return
 			}
 
-			if diff := cmp.Diff(tc.wantResult, tc.annotation, cmp.AllowUnexported(file.Annotation{})); diff != "" {
+			if diff := cmp.Diff(tc.wantResult, tc.annotation, cmp.AllowUnexported(file.Marker{})); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
 			}
 		})

@@ -19,6 +19,6 @@ type File struct {
 	// only holds the actual data in byte slice representation.
 	ContentAfter []byte
 
-	// Annotations is an array holding onto each annotation block.
-	Annotations map[int]*Annotation
+	// Markers is an array holding onto each annotation block.
+	Markers map[int]*Marker
 }

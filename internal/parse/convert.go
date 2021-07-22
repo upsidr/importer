@@ -12,7 +12,7 @@ import (
 )
 
 // matchHolder is a temporary data holder, which is used to ensure validity of
-// annotation data.
+// marker data.
 type matchHolder struct {
 	isBeginFound   bool
 	isEndFound     bool
@@ -20,12 +20,12 @@ type matchHolder struct {
 	options        string
 }
 
-func processMarker(name string, match matchHolder) (*file.Annotation, error) {
+func processMarker(name string, match matchHolder) (*file.Marker, error) {
 	if !match.isBeginFound || !match.isEndFound {
-		return nil, fmt.Errorf("%w", ErrNoMatchingAnnotations)
+		return nil, fmt.Errorf("%w", ErrNoMatchingMarker)
 	}
 
-	result := &file.Annotation{
+	result := &file.Marker{
 		Name:           name,
 		LineToInsertAt: match.lineToInsertAt,
 	}
@@ -43,7 +43,7 @@ func processMarker(name string, match matchHolder) (*file.Annotation, error) {
 	return result, nil
 }
 
-func processFileOption(marker *file.Annotation, match matchHolder) error {
+func processFileOption(marker *file.Marker, match matchHolder) error {
 	reImportTarget := regexp.MustCompile(OptionFilePathIndicator)
 	ms := reImportTarget.FindAllStringSubmatch(match.options, -1)
 
@@ -75,7 +75,7 @@ func processFileOption(marker *file.Annotation, match matchHolder) error {
 	return nil
 }
 
-func processIndentOption(marker *file.Annotation, match matchHolder) error {
+func processIndentOption(marker *file.Marker, match matchHolder) error {
 	reIndentMode := regexp.MustCompile(OptionIndentMode)
 	ms := reIndentMode.FindAllStringSubmatch(match.options, -1)
 
@@ -125,13 +125,13 @@ func processIndentOption(marker *file.Annotation, match matchHolder) error {
 //   - URL to retrieve the file from
 //
 // TODO: URL handling to be supported
-func processTargetPath(annotation *file.Annotation, input string) error {
+func processTargetPath(marker *file.Marker, input string) error {
 	// TODO: Add more validation
 	if input == "" {
 		return fmt.Errorf("%w", ErrInvalidPath)
 	}
 
-	annotation.TargetPath = input
+	marker.TargetPath = input
 
 	return nil
 }
@@ -147,16 +147,16 @@ func processTargetPath(annotation *file.Annotation, input string) error {
 //   - Open line range, e.g. "~22" for line 1 to 22, "6~" for line 6 to end of
 //     file.
 //   - Line selection, e.g. "1,5,7" meaning line 1, 5 and 7.
-func processTargetDetail(annotation *file.Annotation, input string) error {
+func processTargetDetail(marker *file.Marker, input string) error {
 	exportMarker := regexp.MustCompile(`\[(\S+)\]`)
 
-	marker := exportMarker.FindStringSubmatch(input)
+	markerRegex := exportMarker.FindStringSubmatch(input)
 	switch {
 	// Handle export marker
-	case marker != nil:
-		annotation.TargetExportMarker = string(marker[1])
+	case markerRegex != nil:
+		marker.TargetExportMarker = string(markerRegex[1])
 
-	// Handle line range annotation with commas
+	// Handle line range marker with commas
 	case strings.Contains(input, ","):
 		targetLines := []int{}
 
@@ -186,7 +186,7 @@ func processTargetDetail(annotation *file.Annotation, input string) error {
 			targetLines = append(targetLines, lineNumber)
 		}
 
-		annotation.TargetLines = targetLines
+		marker.TargetLines = targetLines
 
 	// Handle single line range
 	case strings.Contains(input, "~"):
@@ -199,16 +199,16 @@ func processTargetDetail(annotation *file.Annotation, input string) error {
 			if err != nil {
 				return fmt.Errorf("%w, %v", ErrInvalidSyntax, err)
 			}
-			annotation.TargetLineFrom = lowerBound
+			marker.TargetLineFrom = lowerBound
 		}
 
-		annotation.TargetLineTo = math.MaxInt32 // TODO: Consider making this Int64
+		marker.TargetLineTo = math.MaxInt32 // TODO: Consider making this Int64
 		if ub != "" {
 			upperBound, err := strconv.Atoi(ub)
 			if err != nil {
 				return fmt.Errorf("%w, %v", ErrInvalidSyntax, err)
 			}
-			annotation.TargetLineTo = upperBound
+			marker.TargetLineTo = upperBound
 		}
 
 	default:
@@ -216,24 +216,8 @@ func processTargetDetail(annotation *file.Annotation, input string) error {
 		if err != nil {
 			return fmt.Errorf("%w, %v", ErrInvalidSyntax, err)
 		}
-		annotation.TargetLines = append(annotation.TargetLines, i)
+		marker.TargetLines = append(marker.TargetLines, i)
 	}
-
-	return nil
-}
-
-// processIndentMode processes string input of indentation mode.
-//
-// Currently, there are 2 modes supported:
-//   - absolute: indent by absolute value
-//   - extra: add extra indentation relative to the existing indentation
-func processIndentMode(annotation *file.Annotation, input string) error {
-	// TODO: Add more validation
-	if input == "" {
-		return fmt.Errorf("%w", ErrInvalidPath)
-	}
-
-	annotation.TargetPath = input
 
 	return nil
 }
