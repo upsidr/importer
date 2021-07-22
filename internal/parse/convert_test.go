@@ -36,6 +36,26 @@ func TestConvert(t *testing.T) {
 				TargetLineTo:   22,
 			},
 		},
+		"valid annotation match with indent": {
+			name: "test name",
+			match: matchHolder{
+				isBeginFound:   true,
+				isEndFound:     true,
+				lineToInsertAt: 10,
+				options:        "from: ./some_file.txt#2~22 indent: absolute 2",
+			},
+			wantResult: &file.Annotation{
+				Name:           "test name",
+				LineToInsertAt: 10,
+				TargetPath:     "./some_file.txt",
+				TargetLineFrom: 2,
+				TargetLineTo:   22,
+				Indentation: &file.Indentation{
+					Mode:   file.AbsoluteIndentation,
+					Length: 2,
+				},
+			},
+		},
 		"TBC: annotation without option, valid for now": {
 			name: "test name",
 			match: matchHolder{
@@ -95,7 +115,7 @@ func TestConvert(t *testing.T) {
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			annotation, err := convert(tc.name, tc.match)
+			annotation, err := processMarker(tc.name, tc.match)
 			if err != nil {
 				if !errors.Is(err, tc.wantErr) {
 					t.Errorf("error did not match:\n    want: %v\n    got:  %v", tc.wantErr, err)

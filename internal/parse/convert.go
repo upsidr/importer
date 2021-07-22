@@ -1,6 +1,7 @@
 package parse
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"regexp"
@@ -19,42 +20,102 @@ type matchHolder struct {
 	options        string
 }
 
-func convert(name string, match matchHolder) (*file.Annotation, error) {
+func processMarker(name string, match matchHolder) (*file.Annotation, error) {
 	if !match.isBeginFound || !match.isEndFound {
 		return nil, fmt.Errorf("%w", ErrNoMatchingAnnotations)
 	}
-	reImportTarget := regexp.MustCompile(OptionFilePathIndicator)
 
 	result := &file.Annotation{
 		Name:           name,
 		LineToInsertAt: match.lineToInsertAt,
 	}
 
-	ms := reImportTarget.FindAllStringSubmatch(match.options, -1)
-
-	// No option provided
-	// TODO: Handle this case better
-	if len(ms) == 0 {
-		return result, nil
+	err := processFileOption(result, match)
+	if err != nil {
+		return nil, err
 	}
 
-	for _, m := range ms {
-		for i, n := range reImportTarget.SubexpNames() {
-			matchedContent := m[i]
-			switch n {
-			case "importer_target_path":
-				if err := processTargetPath(result, matchedContent); err != nil {
-					return nil, err // TODO: Add test coverage when more validation is added to path check
-				}
-			case "importer_target_detail":
-				if err := processTargetDetail(result, matchedContent); err != nil {
-					return nil, err
-				}
+	err = processIndentOption(result, match)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func processFileOption(marker *file.Annotation, match matchHolder) error {
+	reImportTarget := regexp.MustCompile(OptionFilePathIndicator)
+	ms := reImportTarget.FindAllStringSubmatch(match.options, -1)
+
+	switch {
+	// No option provided
+	// TODO: Handle this case better
+	case len(ms) == 0:
+		return nil
+	// Single option should be found only once in the line
+	case len(ms) > 1:
+		return errors.New("more than single option provided in the same line") // TODO: Add test coverage
+	}
+
+	m := ms[0]
+	for i, n := range reImportTarget.SubexpNames() {
+		matchedContent := m[i]
+		switch n {
+		case "importer_target_path":
+			if err := processTargetPath(marker, matchedContent); err != nil {
+				return err // TODO: Add test coverage when more validation is added to path check
+			}
+		case "importer_target_detail":
+			if err := processTargetDetail(marker, matchedContent); err != nil {
+				return err
 			}
 		}
 	}
 
-	return result, nil
+	return nil
+}
+
+func processIndentOption(marker *file.Annotation, match matchHolder) error {
+	reIndentMode := regexp.MustCompile(OptionIndentMode)
+	ms := reIndentMode.FindAllStringSubmatch(match.options, -1)
+
+	switch {
+	// No option provided
+	// TODO: Handle this case better
+	case len(ms) == 0:
+		return nil
+	// Single option should be found only once in the line
+	case len(ms) > 1:
+		return errors.New("more than single option provided in the same line") // TODO: Add test coverage
+	}
+
+	m := ms[0]
+	for i, n := range reIndentMode.SubexpNames() {
+		matchedContent := m[i]
+		switch n {
+		case "importer_indent_mode":
+			switch matchedContent {
+			case "absolute":
+				marker.Indentation = &file.Indentation{Mode: file.AbsoluteIndentation}
+			case "extra":
+				marker.Indentation = &file.Indentation{Mode: file.ExtraIndentation}
+			default:
+				return errors.New("unsupported indentation mode")
+			}
+		case "importer_indent_length":
+			// Indentation length can be handled only when indentation mode
+			// is specified. As RegEx handling should start from mode handling,
+			// marker.Indentation shouldn't be nil at this point.
+
+			length, err := strconv.Atoi(matchedContent)
+			if err != nil {
+				return err
+			}
+			marker.Indentation.Length = length
+		}
+	}
+
+	return nil
 }
 
 // processTargetPath processes string input of import target path.
@@ -157,6 +218,22 @@ func processTargetDetail(annotation *file.Annotation, input string) error {
 		}
 		annotation.TargetLines = append(annotation.TargetLines, i)
 	}
+
+	return nil
+}
+
+// processIndentMode processes string input of indentation mode.
+//
+// Currently, there are 2 modes supported:
+//   - absolute: indent by absolute value
+//   - extra: add extra indentation relative to the existing indentation
+func processIndentMode(annotation *file.Annotation, input string) error {
+	// TODO: Add more validation
+	if input == "" {
+		return fmt.Errorf("%w", ErrInvalidPath)
+	}
+
+	annotation.TargetPath = input
 
 	return nil
 }

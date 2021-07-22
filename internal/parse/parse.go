@@ -172,7 +172,7 @@ func parse(annotation string, fileName string, input io.Reader) (*file.File, err
 	}
 
 	for name, data := range matches {
-		annotation, err := convert(name, data)
+		annotation, err := processMarker(name, data)
 		if err != nil {
 			// TODO: err should be handled rather than simply ignored.
 			//       This is fine for now as error is used for internal logic
