@@ -16,11 +16,11 @@ That's why Importer was created. You can stick to simple file format, but when i
 
 ## Implementation Details
 
-Importer is a simple regular expression file reader. It looks for special Importer Annotation comment, which has no meaning in that given language, but Importer can parse such comment and wires up other file content. [You can find more about Importer Annotation here.](../getting-started/annotatinos.md)
+Importer is a simple regular expression file reader. It looks for special Importer Marker comment, which has no meaning in that given language, but Importer can parse such comment and wires up other file content. [You can find more about Importer Marker here.](../getting-started/annotatinos.md)
 
 In language like Markdown and YAML, a single file is made to be as is, meaning you cannot import other files. This makes them really simple and easy to get started, but when you try to do something a bit more involved, it becomes difficult to maintain very quickly.
 
-Because Importer tries to be "dumb", it doesn't actually know much about the given file syntax. Importer looks for Importer Annotation comments, parses them, and generates the updated version of that file, with specified lines imported into it.
+Because Importer tries to be "dumb", it doesn't actually know much about the given file syntax. Importer looks for Importer Marker comments, parses them, and generates the updated version of that file, with specified lines imported into it.
 
 Because the goal of Importer is very simple, the implementation is based on simple regular expressions. It is not made to be performant, nor capable of handling complex scenarios. But it works for most cases, such as Markdown and YAML. Other file typse may benefit from this approach. If there is any other file types that could benefit from this, we will look to expand our support in the future.
 
@@ -43,18 +43,18 @@ Importer is planning to support YAML files in the near future.
 
 Currently, `importer generate` takes in a file argument, and updates the file content in place.
 
-Instead, we are aiming to provide `importer update` to provide the same feature, while `importer generate` to output the result to stdout. This allows having a separate file that contains Importer Annotations, and a generated file as a separate file.
+Instead, we are aiming to provide `importer update` to provide the same feature, while `importer generate` to output the result to stdout. This allows having a separate file that contains Importer Markers, and a generated file as a separate file.
 
 ### Add `graph` command
 
-Currently, Importer only looks at the provided argument and its Import Target Files. When the Target File contains another Importer Annotation, it would be better to update the Target File content first.
+Currently, Importer only looks at the provided argument and its Import Target Files. When the Target File contains another Importer Marker, it would be better to update the Target File content first.
 We will need much better processing than simple regex handling, and abstract syntax tree needs to be created for this command. Also, this command needs to ensure there is no cyclic dependencies in the Importer definitions.
 
-### Support line brak in Importer Annotation and Export Marker
+### Support line brak in Importer Marker and Exporter Marker
 
-Currently Importer Annotation and Export Marker have to be a single line input. If you have a line break in them, it will be ignored. This is because how it's currently implemented, and fixing this would require a proper AST setup when parsing a file.
+Currently Importer Marker and Exporter Marker have to be a single line input. If you have a line break in them, it will be ignored. This is because how it's currently implemented, and fixing this would require a proper AST setup when parsing a file.
 
-### Add special annotations `ignore` to skip Importer run
+### Add special markers `ignore` to skip Importer run
 
 When having an automation such as `find . -name '*.md' -exec importer generate {} \;`, you may want to skip some files.
 
