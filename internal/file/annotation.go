@@ -15,9 +15,25 @@ type Annotation struct {
 	TargetLineFrom int
 	TargetLineTo   int
 
-	ExtraIndentation    int
-	AbsoluteIndentation int
+	Indentation *Indentation
+
 	// TODO: Add insert style such as code verbatim, details, quotes, etc.
+}
+
+type IndentationMode int
+
+const (
+	// Reserve 0 value as invalid
+	_ IndentationMode = iota
+
+	AbsoluteIndentation
+	ExtraIndentation
+)
+
+// Indentation holds additional indentation handling option.
+type Indentation struct {
+	Mode   IndentationMode
+	Length int
 }
 
 var (

@@ -137,10 +137,10 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		"yaml: simple import": {
 			callerFile: "./some_file.yaml",
 			annotation: &Annotation{
-				LineToInsertAt:      5,
-				TargetPath:          "../../testdata/with-exporter.yaml",
-				TargetExportMarker:  "long-tree",
-				AbsoluteIndentation: -1,
+				LineToInsertAt:     5,
+				TargetPath:         "../../testdata/with-exporter.yaml",
+				TargetExportMarker: "long-tree",
+				Indentation:        nil,
 			},
 			want: []byte(`a:
   b:
@@ -158,10 +158,13 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		"yaml: absolute indentation": {
 			callerFile: "./some_file.yaml",
 			annotation: &Annotation{
-				LineToInsertAt:      5,
-				TargetPath:          "../../testdata/with-exporter.yaml",
-				TargetExportMarker:  "metadata-only",
-				AbsoluteIndentation: 30,
+				LineToInsertAt:     5,
+				TargetPath:         "../../testdata/with-exporter.yaml",
+				TargetExportMarker: "metadata-only",
+				Indentation: &Indentation{
+					Mode:   AbsoluteIndentation,
+					Length: 30,
+				},
 			},
 			want: []byte(`                              metadata:
                                 name: sample-data
@@ -171,10 +174,13 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		"yaml: absolute indentation with zero indentation": {
 			callerFile: "./some_file.yaml",
 			annotation: &Annotation{
-				LineToInsertAt:      5,
-				TargetPath:          "../../testdata/with-exporter.yaml",
-				TargetExportMarker:  "metadata-only",
-				AbsoluteIndentation: 0,
+				LineToInsertAt:     5,
+				TargetPath:         "../../testdata/with-exporter.yaml",
+				TargetExportMarker: "metadata-only",
+				Indentation: &Indentation{
+					Mode:   AbsoluteIndentation,
+					Length: 0,
+				},
 			},
 			want: []byte(`metadata:
   name: sample-data
@@ -184,11 +190,13 @@ func TestProcessSingleAnnotation(t *testing.T) {
 		"yaml: extra indentation": {
 			callerFile: "./some_file.yaml",
 			annotation: &Annotation{
-				LineToInsertAt:      5,
-				TargetPath:          "../../testdata/with-exporter.yaml",
-				TargetExportMarker:  "sample-nested",
-				AbsoluteIndentation: -1,
-				ExtraIndentation:    2,
+				LineToInsertAt:     5,
+				TargetPath:         "../../testdata/with-exporter.yaml",
+				TargetExportMarker: "sample-nested",
+				Indentation: &Indentation{
+					Mode:   ExtraIndentation,
+					Length: 2,
+				},
 			},
 			want: []byte(`    nested:
       more:

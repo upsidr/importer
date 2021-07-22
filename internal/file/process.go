@@ -211,30 +211,36 @@ func processSingleAnnotationOther(file *os.File, annotation *Annotation) ([]byte
 }
 
 func adjustIndentation(lineData []byte, markerIndentation int, annotation *Annotation) []byte {
-	lineString := string(lineData)
+	// If no indentation setup is done, simply return as is
+	if annotation.Indentation == nil {
+		lineData = append(lineData, br)
+		return lineData
+	}
 
+	lineString := string(lineData)
+	indentLength := annotation.Indentation.Length
 	// Check which indentation adjustment is used.
 	// Absolute adjustment takes precedence over extra indentation.
-	switch {
-	case annotation.AbsoluteIndentation >= 0:
+	switch annotation.Indentation.Mode {
+	case AbsoluteIndentation:
 		actualIndent := len(lineString) - len(strings.TrimLeft(lineString, " "))
 		switch {
 		// Marker appears with more indentation than Absolute, and thus strip
 		// extra indentations.
-		case markerIndentation > annotation.AbsoluteIndentation:
-			indentAdjustment := markerIndentation - annotation.AbsoluteIndentation
+		case markerIndentation > indentLength:
+			indentAdjustment := markerIndentation - indentLength
 			lineData = lineData[indentAdjustment:]
 
 		// Marker has less indentation than Absolute wants, and thus prepend
 		// the indent diff.
-		case markerIndentation < annotation.AbsoluteIndentation:
-			indentAdjustment := annotation.AbsoluteIndentation - markerIndentation
+		case markerIndentation < indentLength:
+			indentAdjustment := indentLength - markerIndentation
 			lineData = prependWhitespaces(lineData, indentAdjustment)
 		case actualIndent < markerIndentation:
 			// TODO: Handle case where indentation is less than marker indentation
 		}
-	case annotation.ExtraIndentation > 0:
-		lineData = prependWhitespaces(lineData, annotation.ExtraIndentation)
+	case ExtraIndentation:
+		lineData = prependWhitespaces(lineData, indentLength)
 	}
 	lineData = append(lineData, br)
 	return lineData
