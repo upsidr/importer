@@ -70,7 +70,7 @@ func processSingleMarker(filePath string, marker *Marker) ([]byte, error) {
 func processMarkdownSingleMarker(file *os.File, marker *Marker) ([]byte, error) {
 	result := []byte{}
 
-	reExport := regexp.MustCompile(ExportMarkerMarkdown)
+	reExport := regexp.MustCompile(ExporterMarkerMarkdown)
 	withinExportMarker := false
 	currentLine := 0
 
@@ -120,7 +120,7 @@ func processMarkdownSingleMarker(file *os.File, marker *Marker) ([]byte, error) 
 func processYAMLSingleMarker(file *os.File, marker *Marker) ([]byte, error) {
 	result := []byte{}
 
-	reExport := regexp.MustCompile(ExportMarkerYAML)
+	reExport := regexp.MustCompile(ExporterMarkerYAML)
 	withinExportMarker := false
 	markerIndentation := 0
 	currentLine := 0

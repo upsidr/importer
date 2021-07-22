@@ -37,7 +37,7 @@ type Indentation struct {
 }
 
 var (
-	// ExportMarkerMarkdown is the marker used to indicate how a file can
+	// ExporterMarkerMarkdown is the marker used to indicate how a file can
 	// export specific sections.
 	//
 	// Example:
@@ -46,9 +46,9 @@ var (
 	//   You can import this content by providing option such as:
 	//     ./file_path.txt#[simple_instruction]
 	//   <!-- == export: simple_instruction / end == -->
-	ExportMarkerMarkdown = `<!-- == export: (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) == -->`
+	ExporterMarkerMarkdown = `<!-- == export: (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) == -->`
 
-	// ExportMarkerYAML is the marker used to indicate how a file can export
+	// ExporterMarkerYAML is the marker used to indicate how a file can export
 	// specific sections.
 	//
 	// Example:
@@ -57,5 +57,5 @@ var (
 	//     # == export: random_data / begin ==
 	//     random-data: this is exported
 	//     # == export: random_data / end ==
-	ExportMarkerYAML = `(?P<export_marker_indent>\s*)# == export: (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) ==`
+	ExporterMarkerYAML = `(?P<export_marker_indent>\s*)# == export: (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) ==`
 )
