@@ -58,7 +58,7 @@ Currently Importer Marker and Exporter Marker have to be a single line input. If
 
 When having an automation such as `find . -name '*.md' -exec importer generate {} \;`, you may want to skip some files.
 
-This shouldn't skip Export Marker handling, though.
+This shouldn't skip Exporter Marker handling, though.
 
 ### Add `diff` command
 

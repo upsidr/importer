@@ -25,13 +25,13 @@ We will need much better processing than simple regex handling, and abstract syn
 
 ### Support line brak in Importer Marker and Exporter Marker
 
-Currently Importer Marker and Export Marker have to be a single line input. If you have a line break in them, it will be ignored. This is because how it's currently implemented, and fixing this would require a proper AST setup when parsing a file.
+Currently Importer Marker and Exporter Marker have to be a single line input. If you have a line break in them, it will be ignored. This is because how it's currently implemented, and fixing this would require a proper AST setup when parsing a file.
 
 ### Add special markers `ignore` to skip Importer run
 
 When having an automation such as `find . -name '*.md' -exec importer generate {} \;`, you may want to skip some files.
 
-This shouldn't skip Export Marker handling, though.
+This shouldn't skip Exporter Marker handling, though.
 
 ### Add `diff` command
 
