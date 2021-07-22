@@ -27,7 +27,7 @@ Any content here will be removed by Importer.
 
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
 ```
 
 When you run `importer purge ./testdata/simple-before.md`:
@@ -40,7 +40,7 @@ $ cat ./testdata/simple-before.md
 <!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
 ```
 
 When you run `importer generate ./testdata/simple-before.md`:
@@ -61,7 +61,7 @@ Excepteur sint occaecat cupidatat non proident,
 sunt in culpa qui officia deserunt mollit anim id est laborum."
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
 ```
 <!-- == imptr: getting-started-example-short / end == -->
 

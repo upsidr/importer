@@ -6,4 +6,4 @@ Any content here will be removed by Importer.
 
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
