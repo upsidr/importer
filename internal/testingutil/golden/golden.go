@@ -58,6 +58,17 @@ func FileAsString(t testing.TB, path string) string {
 	return string(b)
 }
 
+// FileAsReader opens the provided path, and return io.Reader while handling
+// error with testing.TB.
+func FileAsReader(t testing.TB, path string) io.Reader {
+	t.Helper()
+	f, err := os.Open(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return f
+}
+
 // UpdateFile updates the golden file at the provided path with content. This
 // fails if there is no file at the given path.
 func UpdateFile(t testing.TB, path string, content []byte) {

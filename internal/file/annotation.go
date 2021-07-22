@@ -15,7 +15,25 @@ type Annotation struct {
 	TargetLineFrom int
 	TargetLineTo   int
 
+	Indentation *Indentation
+
 	// TODO: Add insert style such as code verbatim, details, quotes, etc.
+}
+
+type IndentationMode int
+
+const (
+	// Reserve 0 value as invalid
+	_ IndentationMode = iota
+
+	AbsoluteIndentation
+	ExtraIndentation
+)
+
+// Indentation holds additional indentation handling option.
+type Indentation struct {
+	Mode   IndentationMode
+	Length int
 }
 
 var (
@@ -29,4 +47,15 @@ var (
 	//     ./file_path.txt#[simple_instruction]
 	//   <!-- == export: simple_instruction / end == -->
 	ExportMarkerMarkdown = `<!-- == export: (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) == -->`
+
+	// ExportMarkerYAML is the marker used to indicate how a file can export
+	// specific sections.
+	//
+	// Example:
+	//   data:
+	//     some-data: something
+	//     # == export: random_data / begin ==
+	//     random-data: this is exported
+	//     # == export: random_data / end ==
+	ExportMarkerYAML = `(?P<export_marker_indent>\s*)# == export: (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) ==`
 )

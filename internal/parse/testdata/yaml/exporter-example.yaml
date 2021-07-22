@@ -1,0 +1,13 @@
+random:
+  # == export: random-data / begin ==
+  data:
+    here: here
+    there: there
+  # == export: random-data / end ==
+
+another:
+  # == export: another-data / begin ==
+  data:
+    today: today
+    tomorrow: tomorrow
+  # == export: another-data / end ==

@@ -1,0 +1,5 @@
+data:
+  some-data: test data
+  # == imptr: some-importer / begin from: ./exporter-example.yaml#[random-data] ==
+  data-to-be-purged: this part will be purged
+  # == imptr: some-importer / end ==

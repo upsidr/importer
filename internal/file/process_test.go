@@ -85,18 +85,14 @@ data
 func TestProcessSingleAnnotation(t *testing.T) {
 	cases := map[string]struct {
 		// Input
-		previousData []byte
-		callerFile   string
-		annotation   *Annotation
+		callerFile string
+		annotation *Annotation
 
 		// Output
 		want    []byte
 		wantErr error
 	}{
-		"range process": {
-			previousData: []byte(`Some data
-and another line
-`),
+		"markdown: range process": {
 			callerFile: "./some_file.md",
 			annotation: &Annotation{
 				LineToInsertAt: 1, // Not used in this, as single annotation handling is about appending data
@@ -104,16 +100,13 @@ and another line
 				TargetLineFrom: 1,
 				TargetLineTo:   3,
 			},
-			want: []byte(`Some data
-and another line
-This is test data.
+			want: []byte(`This is test data.
 他言語サポートのためのテスト文章。
 🍸 Emojis 🍷 Supported 🍺
 `),
 		},
-		"comma separated lines": {
-			previousData: []byte{},
-			callerFile:   "./some_file.md",
+		"markdown: comma separated lines": {
+			callerFile: "./some_file.md",
 			annotation: &Annotation{
 				LineToInsertAt: 1,
 				TargetPath:     "../../testdata/note.txt",
@@ -123,9 +116,8 @@ This is test data.
 🍸 Emojis 🍷 Supported 🍺
 `),
 		},
-		"exporter marker": {
-			previousData: []byte{},
-			callerFile:   "./some_file.md",
+		"markdown: exporter marker": {
+			callerFile: "./some_file.md",
 			annotation: &Annotation{
 				LineToInsertAt:     1,
 				TargetPath:         "../../testdata/with-exporter.md",
@@ -142,11 +134,83 @@ This is test data.
 
 `),
 		},
+		"yaml: simple import": {
+			callerFile: "./some_file.yaml",
+			annotation: &Annotation{
+				LineToInsertAt:     5,
+				TargetPath:         "../../testdata/with-exporter.yaml",
+				TargetExportMarker: "long-tree",
+				Indentation:        nil,
+			},
+			want: []byte(`a:
+  b:
+    c:
+      d:
+        e:
+          f:
+            g:
+              h:
+                i:
+                  j:
+                    k: {}
+`),
+		},
+		"yaml: absolute indentation": {
+			callerFile: "./some_file.yaml",
+			annotation: &Annotation{
+				LineToInsertAt:     5,
+				TargetPath:         "../../testdata/with-exporter.yaml",
+				TargetExportMarker: "metadata-only",
+				Indentation: &Indentation{
+					Mode:   AbsoluteIndentation,
+					Length: 30,
+				},
+			},
+			want: []byte(`                              metadata:
+                                name: sample-data
+                                namespace: sample-namespace
+`),
+		},
+		"yaml: absolute indentation with zero indentation": {
+			callerFile: "./some_file.yaml",
+			annotation: &Annotation{
+				LineToInsertAt:     5,
+				TargetPath:         "../../testdata/with-exporter.yaml",
+				TargetExportMarker: "metadata-only",
+				Indentation: &Indentation{
+					Mode:   AbsoluteIndentation,
+					Length: 0,
+				},
+			},
+			want: []byte(`metadata:
+  name: sample-data
+  namespace: sample-namespace
+`),
+		},
+		"yaml: extra indentation": {
+			callerFile: "./some_file.yaml",
+			annotation: &Annotation{
+				LineToInsertAt:     5,
+				TargetPath:         "../../testdata/with-exporter.yaml",
+				TargetExportMarker: "sample-nested",
+				Indentation: &Indentation{
+					Mode:   ExtraIndentation,
+					Length: 2,
+				},
+			},
+			want: []byte(`    nested:
+      more:
+        data:
+          sample: This is a sample data
+        metadata:
+          name: sample-data
+          namespace: sample-namespace
+`),
+		},
 
 		// ERROR CASES
 		"no target file found": {
-			previousData: []byte{},
-			callerFile:   "./some_file.md",
+			callerFile: "./some_file.md",
 			annotation: &Annotation{
 				LineToInsertAt:     1,
 				TargetPath:         "../../does-not-exist.md",
@@ -158,7 +222,7 @@ This is test data.
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			result, err := processSingleAnnotation(tc.previousData, tc.callerFile, tc.annotation)
+			result, err := processSingleAnnotation(tc.callerFile, tc.annotation)
 			if err != nil {
 				if !errors.Is(err, tc.wantErr) {
 					t.Errorf("error did not match:\n    want: %v\n    got:  %v", tc.wantErr, err)
@@ -168,6 +232,35 @@ This is test data.
 
 			if diff := cmp.Diff(tc.want, result); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestPrependWhitespaces(t *testing.T) {
+	cases := map[string]struct {
+		originalSlice   []byte
+		whitespaceCount int
+
+		want []byte
+	}{
+		"indentation": {
+			originalSlice:   []byte("abcdef"),
+			whitespaceCount: 6,
+			want:            []byte("      abcdef"),
+		},
+		"extra indentation": {
+			originalSlice:   []byte("  abcdef"),
+			whitespaceCount: 6,
+			want:            []byte("        abcdef"),
+		},
+	}
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			got := prependWhitespaces(tc.originalSlice, tc.whitespaceCount)
+
+			if diff := cmp.Diff(tc.want, got); diff != "" {
+				t.Errorf("prepend result didn't match (-want / +got)\n%s", diff)
 			}
 		})
 	}

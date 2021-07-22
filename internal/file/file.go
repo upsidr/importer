@@ -1,6 +1,7 @@
 package file
 
-// File holds onto file data.
+// File holds onto file data. This does not provide any file processing support
+// by itself.
 type File struct {
 	FileName string
 

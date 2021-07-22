@@ -31,9 +31,9 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
       - name: Run Go Build
         run: go build ./cmd/importer/
-
       - name: Run Importer against README.md
-        run: ./importer generate README.md # This uses locally built Importer, take of `./` for usual use cases
+        run: ./importer update README.md # This uses locally built Importer, take off `./` for usual use cases
+
       - name: Check if README.md has any change compared to the branch
         run: |
           git status --short

@@ -1,0 +1,4 @@
+data:
+  some-data: test data
+  # == imptr: some-importer / begin from: ./exporter-example.yaml#[random-data] ==
+  # == imptr: some-importer / end ==
