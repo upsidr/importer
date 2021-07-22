@@ -59,15 +59,15 @@ func processSingleMarker(filePath string, marker *Marker) ([]byte, error) {
 	fileType := filepath.Ext(filePath)
 	switch fileType {
 	case ".md":
-		return processMarkdownSingleMarker(file, marker)
+		return processSingleMarkerMarkdown(file, marker)
 	case ".yaml", ".yml":
-		return processYAMLSingleMarker(file, marker)
+		return processSingleMarkerYAML(file, marker)
 	default:
-		return processOtherSingleMarker(file, marker)
+		return processSingleMarkerOther(file, marker)
 	}
 }
 
-func processMarkdownSingleMarker(file *os.File, marker *Marker) ([]byte, error) {
+func processSingleMarkerMarkdown(file *os.File, marker *Marker) ([]byte, error) {
 	result := []byte{}
 
 	reExport := regexp.MustCompile(ExporterMarkerMarkdown)
@@ -117,7 +117,7 @@ func processMarkdownSingleMarker(file *os.File, marker *Marker) ([]byte, error) 
 	return result, nil
 }
 
-func processYAMLSingleMarker(file *os.File, marker *Marker) ([]byte, error) {
+func processSingleMarkerYAML(file *os.File, marker *Marker) ([]byte, error) {
 	result := []byte{}
 
 	reExport := regexp.MustCompile(ExporterMarkerYAML)
@@ -177,7 +177,7 @@ func processYAMLSingleMarker(file *os.File, marker *Marker) ([]byte, error) {
 	return result, nil
 }
 
-func processOtherSingleMarker(file *os.File, marker *Marker) ([]byte, error) {
+func processSingleMarkerOther(file *os.File, marker *Marker) ([]byte, error) {
 	result := []byte{}
 
 	currentLine := 0
