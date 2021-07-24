@@ -9,6 +9,7 @@ import (
 	"regexp"
 
 	"github.com/upsidr/importer/internal/file"
+	"github.com/upsidr/importer/internal/marker"
 )
 
 var (
@@ -38,7 +39,7 @@ type File struct {
 	ContentAfter []byte
 
 	// Markers is an array holding onto each marker block.
-	Markers map[int]file.Marker
+	Markers map[int]*marker.Marker
 }
 
 // Parse reads filename and input, and parses data in the file.
@@ -78,8 +79,8 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 	f := &file.File{FileName: fileName}
 	re := regexp.MustCompile(markerRegex)
 
-	markers := map[int]*file.Marker{}
-	matches := map[string]matchHolder{}
+	markers := map[int]*marker.Marker{}
+	rawMarkers := map[string]*marker.RawMarker{}
 
 	currentLine := 0
 	inNested := false // Flag to check if the data is between markers
@@ -139,8 +140,8 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 		// Markers must match up to create a pair. If it isn't a proper
 		// pair, it is treated as broken. For that reason, we need to keep
 		// track of already found match.
-		matchData := matchHolder{}
-		if data, found := matches[subgroupName]; found {
+		matchData := &marker.RawMarker{}
+		if data, found := rawMarkers[subgroupName]; found {
 			// TODO: Handle case where the same subgroup name gets used multiple times.
 			matchData = data
 		}
@@ -150,29 +151,30 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 			switch n {
 			// The first subgroup is the name, which is used as the map key.
 			case "importer_name":
+				matchData.Name = matchedContent
 				continue
 			case "importer_marker":
 				if matchedContent == "begin" {
 					inNested = true
-					matchData.isBeginFound = true
-					matchData.lineToInsertAt = len(f.ContentPurged)
+					matchData.IsBeginFound = true
+					matchData.LineToInsertAt = len(f.ContentPurged)
 				}
 				if matchedContent == "end" {
 					inNested = false
 					nestedUnder = ""
-					matchData.isEndFound = true
+					matchData.IsEndFound = true
 				}
 			case "importer_option":
 				if matchedContent != "" { // TODO: skipping empty string like this as end marker shouldn't override
-					matchData.options = matchedContent
+					matchData.Options = matchedContent
 				}
 			}
 		}
-		matches[subgroupName] = matchData
+		rawMarkers[subgroupName] = matchData
 	}
 
-	for name, data := range matches {
-		marker, err := processMarker(name, data)
+	for _, data := range rawMarkers {
+		marker, err := marker.NewMarker(data)
 		if err != nil {
 			// TODO: err should be handled rather than simply ignored.
 			//       This is fine for now as error is used for internal logic

@@ -8,6 +8,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/upsidr/importer/internal/file"
+	"github.com/upsidr/importer/internal/marker"
 	"github.com/upsidr/importer/internal/testingutil/golden"
 )
 
@@ -29,7 +30,7 @@ func TestParseMarkdown(t *testing.T) {
 					golden.FileAsString(t, "../../testdata/simple-before.md")),
 				ContentPurged: StringToLineStrings(t,
 					golden.FileAsString(t, "../../testdata/simple-purged.md")),
-				Markers: map[int]*file.Marker{
+				Markers: map[int]*marker.Marker{
 					3: {
 						Name:           "lorem",
 						LineToInsertAt: 3,
@@ -48,7 +49,7 @@ func TestParseMarkdown(t *testing.T) {
 					golden.FileAsString(t, "./testdata/markdown/no-importer-marker-before.md")),
 				ContentPurged: StringToLineStrings(t,
 					golden.FileAsString(t, "./testdata/markdown/no-importer-marker-purged.md")),
-				Markers: map[int]*file.Marker{},
+				Markers: map[int]*marker.Marker{},
 			},
 		},
 		"with single importer annotation": {
@@ -59,7 +60,7 @@ func TestParseMarkdown(t *testing.T) {
 					golden.FileAsString(t, "./testdata/markdown/single-marker-before.md")),
 				ContentPurged: StringToLineStrings(t,
 					golden.FileAsString(t, "./testdata/markdown/single-marker-purged.md")),
-				Markers: map[int]*file.Marker{
+				Markers: map[int]*marker.Marker{
 					3: {
 						Name:           "some_importer",
 						LineToInsertAt: 3,
@@ -78,7 +79,7 @@ func TestParseMarkdown(t *testing.T) {
 					golden.FileAsString(t, "./testdata/markdown/single-marker-with-inner-before.md")),
 				ContentPurged: StringToLineStrings(t,
 					golden.FileAsString(t, "./testdata/markdown/single-marker-with-inner-purged.md")),
-				Markers: map[int]*file.Marker{
+				Markers: map[int]*marker.Marker{
 					3: {
 						Name:           "some_importer",
 						LineToInsertAt: 3,
@@ -116,7 +117,7 @@ some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / begin == -->
 <!-- == imptr: some_importer / end == -->
 `),
-				Markers: map[int]*file.Marker{
+				Markers: map[int]*marker.Marker{
 					4: {
 						// Name of improter and line are found
 						Name:           "some_importer",
@@ -150,7 +151,7 @@ some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / begin from: ./somefile#NOT_NUMBER~2233 == -->
 <!-- == imptr: some_importer / end == -->
 `),
-				Markers: map[int]*file.Marker{},
+				Markers: map[int]*marker.Marker{},
 			},
 		},
 		"file line range not number - upper bound": {
@@ -177,7 +178,7 @@ some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / begin from: ./somefile#1~NOT_NUMBER == -->
 <!-- == imptr: some_importer / end == -->
 `),
-				Markers: map[int]*file.Marker{},
+				Markers: map[int]*marker.Marker{},
 			},
 		},
 	}

@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/upsidr/importer/internal/file"
+	"github.com/upsidr/importer/internal/regexpplus"
 )
 
 // matchHolder is a temporary data holder, which is used to ensure validity of
@@ -44,31 +45,19 @@ func processMarker(name string, match matchHolder) (*file.Marker, error) {
 }
 
 func processFileOption(marker *file.Marker, match matchHolder) error {
-	reImportTarget := regexp.MustCompile(OptionFilePathIndicator)
-	ms := reImportTarget.FindAllStringSubmatch(match.options, -1)
-
-	switch {
-	// No option provided
-	// TODO: Handle this case better
-	case len(ms) == 0:
-		return nil
-	// Single option should be found only once in the line
-	case len(ms) > 1:
-		return errors.New("more than single option provided in the same line") // TODO: Add test coverage
+	matches, err := regexpplus.FindNamedSubgroups(match.options, OptionFilePathIndicator)
+	if err != nil {
+		return nil // Indent options are not required, and thus simply ignore if no match
 	}
 
-	m := ms[0]
-	for i, n := range reImportTarget.SubexpNames() {
-		matchedContent := m[i]
-		switch n {
-		case "importer_target_path":
-			if err := processTargetPath(marker, matchedContent); err != nil {
-				return err // TODO: Add test coverage when more validation is added to path check
-			}
-		case "importer_target_detail":
-			if err := processTargetDetail(marker, matchedContent); err != nil {
-				return err
-			}
+	if targetPath, ok := matches["importer_target_path"]; ok {
+		if err := processTargetPath(marker, targetPath); err != nil {
+			return err // TODO: Add test coverage when more validation is added to path check
+		}
+	}
+	if targetDetail, ok := matches["importer_target_detail"]; ok {
+		if err := processTargetDetail(marker, targetDetail); err != nil {
+			return err
 		}
 	}
 
@@ -76,43 +65,32 @@ func processFileOption(marker *file.Marker, match matchHolder) error {
 }
 
 func processIndentOption(marker *file.Marker, match matchHolder) error {
-	reIndentMode := regexp.MustCompile(OptionIndentMode)
-	ms := reIndentMode.FindAllStringSubmatch(match.options, -1)
-
-	switch {
-	// No option provided
-	// TODO: Handle this case better
-	case len(ms) == 0:
-		return nil
-	// Single option should be found only once in the line
-	case len(ms) > 1:
-		return errors.New("more than single option provided in the same line") // TODO: Add test coverage
+	matches, err := regexpplus.FindNamedSubgroups(match.options, OptionIndentMode)
+	if err != nil {
+		return nil // Indent options are not required, and thus simply ignore if no match
 	}
 
-	m := ms[0]
-	for i, n := range reIndentMode.SubexpNames() {
-		matchedContent := m[i]
-		switch n {
-		case "importer_indent_mode":
-			switch matchedContent {
-			case "absolute":
-				marker.Indentation = &file.Indentation{Mode: file.AbsoluteIndentation}
-			case "extra":
-				marker.Indentation = &file.Indentation{Mode: file.ExtraIndentation}
-			default:
-				return errors.New("unsupported indentation mode")
-			}
-		case "importer_indent_length":
-			// Indentation length can be handled only when indentation mode
-			// is specified. As RegEx handling should start from mode handling,
-			// marker.Indentation shouldn't be nil at this point.
-
-			length, err := strconv.Atoi(matchedContent)
-			if err != nil {
-				return err
-			}
-			marker.Indentation.Length = length
+	if indent, ok := matches["importer_indent_mode"]; ok {
+		switch indent {
+		case "absolute":
+			marker.Indentation = &file.Indentation{Mode: file.AbsoluteIndentation}
+		case "extra":
+			marker.Indentation = &file.Indentation{Mode: file.ExtraIndentation}
+		default:
+			return errors.New("unsupported indentation mode")
 		}
+	}
+
+	if lengthInput, ok := matches["importer_indent_length"]; ok {
+		// Indentation length can be handled only when indentation mode
+		// is specified. As RegEx handling should start from mode handling,
+		// marker.Indentation shouldn't be nil at this point.
+
+		length, err := strconv.Atoi(lengthInput)
+		if err != nil {
+			return err
+		}
+		marker.Indentation.Length = length
 	}
 
 	return nil
