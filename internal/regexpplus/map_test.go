@@ -58,7 +58,7 @@ func TestFindNamedSubgroups(t *testing.T) {
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			got, err := regexpplus.FindNamedSubgroups(tc.targetLine, tc.regexpInput)
+			got, err := regexpplus.MapWithNamedSubgroups(tc.targetLine, tc.regexpInput)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -86,7 +86,7 @@ func TestFindNamedSubgroupsFail(t *testing.T) {
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			_, err := regexpplus.FindNamedSubgroups(tc.targetLine, tc.regexpInput)
+			_, err := regexpplus.MapWithNamedSubgroups(tc.targetLine, tc.regexpInput)
 			if err == nil {
 				t.Fatal("error was expected but got none")
 			}

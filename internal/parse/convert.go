@@ -45,7 +45,7 @@ func processMarker(name string, match matchHolder) (*file.Marker, error) {
 }
 
 func processFileOption(marker *file.Marker, match matchHolder) error {
-	matches, err := regexpplus.FindNamedSubgroups(match.options, OptionFilePathIndicator)
+	matches, err := regexpplus.MapWithNamedSubgroups(match.options, OptionFilePathIndicator)
 	if err != nil {
 		return nil // Indent options are not required, and thus simply ignore if no match
 	}
@@ -65,7 +65,7 @@ func processFileOption(marker *file.Marker, match matchHolder) error {
 }
 
 func processIndentOption(marker *file.Marker, match matchHolder) error {
-	matches, err := regexpplus.FindNamedSubgroups(match.options, OptionIndentMode)
+	matches, err := regexpplus.MapWithNamedSubgroups(match.options, OptionIndentMode)
 	if err != nil {
 		return nil // Indent options are not required, and thus simply ignore if no match
 	}
