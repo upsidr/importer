@@ -74,14 +74,7 @@ data:
   # == imptr: some_importer / begin ==
   # == imptr: some_importer / end ==
 `),
-				Markers: map[int]*marker.Marker{
-					3: {
-						// Name of improter and line are found
-						Name:           "some_importer",
-						LineToInsertAt: 3,
-						// But no target specified
-					},
-				},
+				Markers: map[int]*marker.Marker{},
 			},
 		},
 		"file line range not number - lower bound": {

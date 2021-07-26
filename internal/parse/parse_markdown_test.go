@@ -117,14 +117,7 @@ some data between an annotation pair, which gets purged.
 <!-- == imptr: some_importer / begin == -->
 <!-- == imptr: some_importer / end == -->
 `),
-				Markers: map[int]*marker.Marker{
-					4: {
-						// Name of improter and line are found
-						Name:           "some_importer",
-						LineToInsertAt: 4,
-						// But no target specified
-					},
-				},
+				Markers: map[int]*marker.Marker{},
 			},
 		},
 		"file line range not number - lower bound": {
