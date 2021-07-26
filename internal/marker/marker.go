@@ -74,7 +74,7 @@ func NewMarker(raw *RawMarker) (*Marker, error) {
 }
 
 func processFileOption(marker *Marker, match *RawMarker) error {
-	matches, err := regexpplus.FindNamedSubgroups(match.Options, OptionFilePathIndicator)
+	matches, err := regexpplus.MapWithNamedSubgroups(match.Options, OptionFilePathIndicator)
 	if err != nil {
 		return fmt.Errorf("%w, import target option is missing", ErrInvalidSyntax)
 	}
@@ -94,7 +94,7 @@ func processFileOption(marker *Marker, match *RawMarker) error {
 }
 
 func processIndentOption(marker *Marker, match *RawMarker) error {
-	matches, err := regexpplus.FindNamedSubgroups(match.Options, OptionIndentMode)
+	matches, err := regexpplus.MapWithNamedSubgroups(match.Options, OptionIndentMode)
 	if err != nil {
 		return nil // Indent options are not required, and thus simply ignore if no match
 	}

@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
-	"regexp"
 
 	"github.com/upsidr/importer/internal/file"
 	"github.com/upsidr/importer/internal/marker"
+	"github.com/upsidr/importer/internal/regexpplus"
 )
 
 var (
@@ -77,7 +77,6 @@ func Parse(fileName string, input io.Reader) (*file.File, error) {
 // marker pairs purged.
 func parse(markerRegex string, fileName string, input io.Reader) (*file.File, error) {
 	f := &file.File{FileName: fileName}
-	re := regexp.MustCompile(markerRegex)
 
 	markers := map[int]*marker.Marker{}
 	rawMarkers := map[string]*marker.RawMarker{}
@@ -101,21 +100,28 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 		f.ContentBefore = append(f.ContentBefore, currentStr)
 
 		// Look for marker match
-		match := re.FindStringSubmatch(currentStr)
-		if len(match) == 0 {
-			// If the line appears within some other marker set, remove the line.
-			if inNested {
+		matches, err := regexpplus.MapWithNamedSubgroups(currentStr, markerRegex)
+		if err != nil {
+			if errors.Is(err, regexpplus.ErrNoMatch) {
+				// If the line appears within some other marker set, remove the line.
+				if inNested {
+					continue
+				}
+				// Otherwise ensure the marker itself is a part of purged data.
+				f.ContentPurged = append(f.ContentPurged, currentStr)
+
+				// There is no further action needed for matched line, and thus continue.
 				continue
 			}
-			// Otherwise ensure the marker itself is a part of purged data.
-			f.ContentPurged = append(f.ContentPurged, currentStr)
 
-			// There is no further action needed for matched line, and thus continue.
-			continue
+			panic(err) // Unknown error, should not happen
 		}
 
-		// Parse regex match into groups to handle a marker
-		subgroupName := match[1] // regex 1st subgroup. Index 0 is for full string.
+		subgroupName := ""
+
+		if importerName, found := matches["importer_name"]; found {
+			subgroupName = importerName
+		}
 
 		// Ensure this is the top most marker. If a nested marker is
 		// found within another marker, ignore it. This is because we
@@ -140,36 +146,30 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 		// Markers must match up to create a pair. If it isn't a proper
 		// pair, it is treated as broken. For that reason, we need to keep
 		// track of already found match.
-		matchData := &marker.RawMarker{}
+		matchData := &marker.RawMarker{Name: subgroupName}
 		if data, found := rawMarkers[subgroupName]; found {
 			// TODO: Handle case where the same subgroup name gets used multiple times.
 			matchData = data
 		}
 
-		for i, n := range re.SubexpNames() {
-			matchedContent := match[i]
-			switch n {
-			// The first subgroup is the name, which is used as the map key.
-			case "importer_name":
-				matchData.Name = matchedContent
-				continue
-			case "importer_marker":
-				if matchedContent == "begin" {
-					inNested = true
-					matchData.IsBeginFound = true
-					matchData.LineToInsertAt = len(f.ContentPurged)
-				}
-				if matchedContent == "end" {
-					inNested = false
-					nestedUnder = ""
-					matchData.IsEndFound = true
-				}
-			case "importer_option":
-				if matchedContent != "" { // TODO: skipping empty string like this as end marker shouldn't override
-					matchData.Options = matchedContent
-				}
+		if importerMarker, found := matches["importer_marker"]; found {
+			switch importerMarker {
+			case "begin":
+				inNested = true
+				matchData.IsBeginFound = true
+				matchData.LineToInsertAt = len(f.ContentPurged)
+			case "end":
+				inNested = false
+				nestedUnder = ""
+				matchData.IsEndFound = true
 			}
 		}
+		if importerOption, found := matches["importer_option"]; found {
+			if importerOption != "" { // TODO: skipping empty string like this as end marker shouldn't override
+				matchData.Options = importerOption
+			}
+		}
+
 		rawMarkers[subgroupName] = matchData
 	}
 
