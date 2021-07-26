@@ -14,6 +14,8 @@ var (
 // input using `expression`, and returns a map representation. The map contains
 // the key as the subgroup name, and value for the matched data.
 //
+// If there is no match found, an error of ErrNoMatch will be returned.
+//
 // This can be used for regular expression which does not have any subgroup,
 // but as it is designed specifically for subgroup based use cases, it will
 // create a map that will not have all the matched components.
