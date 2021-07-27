@@ -105,6 +105,8 @@ func processIndentOption(marker *Marker, match *RawMarker) error {
 			marker.Indentation = &Indentation{Mode: AbsoluteIndentation}
 		case "extra":
 			marker.Indentation = &Indentation{Mode: ExtraIndentation}
+		case "align":
+			// TODO: implement
 		default:
 			return errors.New("unsupported indentation mode") // This shouldn't happen with the underlying regex
 		}
@@ -167,9 +169,8 @@ func processTargetDetail(marker *Marker, input string) error {
 	// Handle line range marker with commas
 	case strings.Contains(input, ","):
 		targetLines := []int{}
-
-		// Handle comma separated numbers
 		nums := strings.Split(input, ",")
+
 		for _, num := range nums {
 			// Handle tilde based range notation
 			if strings.Contains(num, "~") {

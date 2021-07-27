@@ -50,6 +50,23 @@ func TestNewMarker(t *testing.T) {
 				Indentation:        nil,
 			},
 		},
+		"Line array with ranges": {
+			input: &marker.RawMarker{
+				Name:           "simple-marker",
+				IsBeginFound:   true,
+				IsEndFound:     true,
+				LineToInsertAt: 3,
+				Options:        "from: ./abc.md#3~5,7~9",
+			},
+			want: &marker.Marker{
+				Name:               "simple-marker",
+				LineToInsertAt:     3,
+				TargetPath:         "./abc.md",
+				TargetExportMarker: "",
+				TargetLines:        []int{3, 4, 5, 7, 8, 9},
+				Indentation:        nil,
+			},
+		},
 		"Exporter": {
 			input: &marker.RawMarker{
 				Name:           "simple-marker",
@@ -162,6 +179,16 @@ func TestNewMarkerFail(t *testing.T) {
 				IsEndFound:     true,
 				LineToInsertAt: 1,
 				Options:        "from: ./abc.md#3.5",
+			},
+			wantErr: marker.ErrInvalidSyntax,
+		},
+		"Invalid input for line range: multiple tildes used": {
+			input: &marker.RawMarker{
+				Name:           "dummy",
+				IsBeginFound:   true,
+				IsEndFound:     true,
+				LineToInsertAt: 1,
+				Options:        "from: ./abc.md#3~5~9",
 			},
 			wantErr: marker.ErrInvalidSyntax,
 		},
