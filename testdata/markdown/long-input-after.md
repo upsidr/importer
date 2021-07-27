@@ -16,7 +16,7 @@ You can also find the relevent binary files under [releases](https://github.com/
 ## 🚀 Examples
 
 
-Let's see what Importer does with the file in this repository [`./testdata/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
+Let's see what Importer does with the file in this repository [`./testdata/markdown/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
 
 ```markdown
 # Simple Markdown Test
@@ -30,11 +30,11 @@ Any content here will be removed by Importer.
 Content after marker is left untouched.
 ```
 
-When you run `importer purge ./testdata/simple-before.md`:
+When you run `importer purge ./testdata/markdown/simple-before.md`:
 
 ```bash
-$ importer purge ./testdata/simple-before.md
-$ cat ./testdata/simple-before.md
+$ importer purge ./testdata/markdown/simple-before.md
+$ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
 <!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
@@ -43,11 +43,11 @@ $ cat ./testdata/simple-before.md
 Content after marker is left untouched.
 ```
 
-When you run `importer generate ./testdata/simple-before.md`:
+When you run `importer generate ./testdata/markdown/simple-before.md`:
 
 ```bash
-$ importer generate ./testdata/simple-before.md
-$ cat ./testdata/simple-before.md
+$ importer generate ./testdata/markdown/simple-before.md
+$ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
 <!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
