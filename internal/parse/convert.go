@@ -129,19 +129,18 @@ func processTargetPath(marker *file.Marker, input string) error {
 //   - Line selection, e.g. "1,5,7" meaning line 1, 5 and 7.
 func processTargetDetail(marker *file.Marker, input string) error {
 	exportMarker := regexp.MustCompile(`\[(\S+)\]`)
+	exportMarkerRegex := exportMarker.FindStringSubmatch(input)
 
-	markerRegex := exportMarker.FindStringSubmatch(input)
 	switch {
 	// Handle export marker
-	case markerRegex != nil:
-		marker.TargetExportMarker = string(markerRegex[1])
+	case exportMarkerRegex != nil:
+		marker.TargetExportMarker = string(exportMarkerRegex[1])
 
 	// Handle line range marker with commas
 	case strings.Contains(input, ","):
 		targetLines := []int{}
-
-		// Handle comma separated numbers
 		nums := strings.Split(input, ",")
+
 		for _, num := range nums {
 			// Handle tilde based range notation
 			if strings.Contains(num, "~") {
@@ -161,7 +160,7 @@ func processTargetDetail(marker *file.Marker, input string) error {
 			// Handle single number
 			lineNumber, err := strconv.Atoi(num)
 			if err != nil {
-				continue
+				continue // Ignore incorrect input to process the rest
 			}
 			targetLines = append(targetLines, lineNumber)
 		}
