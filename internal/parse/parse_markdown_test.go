@@ -23,13 +23,13 @@ func TestParseMarkdown(t *testing.T) {
 	}{
 		"simple test from main testdata": {
 			fileName: "dummy.md",
-			input:    strings.NewReader(golden.FileAsString(t, "../../testdata/simple-before.md")),
+			input:    strings.NewReader(golden.FileAsString(t, "../../testdata/markdown/simple-before.md")),
 			wantFile: &file.File{
 				FileName: "dummy.md",
 				ContentBefore: StringToLineStrings(t,
-					golden.FileAsString(t, "../../testdata/simple-before.md")),
+					golden.FileAsString(t, "../../testdata/markdown/simple-before.md")),
 				ContentPurged: StringToLineStrings(t,
-					golden.FileAsString(t, "../../testdata/simple-purged.md")),
+					golden.FileAsString(t, "../../testdata/markdown/simple-purged.md")),
 				Markers: map[int]*marker.Marker{
 					3: {
 						Name:           "lorem",
@@ -64,7 +64,7 @@ func TestParseMarkdown(t *testing.T) {
 					3: {
 						Name:           "some_importer",
 						LineToInsertAt: 3,
-						TargetPath:     "../../testdata/simple-before-importer.md",
+						TargetPath:     "../../testdata/markdown/simple-before-importer.md",
 						TargetLineFrom: 1,
 						TargetLineTo:   2,
 					},

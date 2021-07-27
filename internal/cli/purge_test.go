@@ -17,12 +17,12 @@ func TestPurge(t *testing.T) {
 		wantFile string
 	}{
 		"markdown": {
-			inputFile: "../../testdata/simple-before.md",
-			wantFile:  "../../testdata/simple-purged.md",
+			inputFile: "../../testdata/markdown/simple-before.md",
+			wantFile:  "../../testdata/markdown/simple-purged.md",
 		},
 		"markdown long input": {
-			inputFile: "../../testdata/long-input-after.md",
-			wantFile:  "../../testdata/long-input-purged.md",
+			inputFile: "../../testdata/markdown/long-input-after.md",
+			wantFile:  "../../testdata/markdown/long-input-purged.md",
 		},
 	}
 
