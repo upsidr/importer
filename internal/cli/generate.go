@@ -30,12 +30,12 @@ This approach allows the input file to be full of Importer markes without actual
 				Destination: &generateTargetFile,
 			},
 		},
-		Action: executeGenerateCLI,
+		Action: executeGenerate,
 	}
 	generateTargetFile string
 )
 
-func executeGenerateCLI(cmd *cli.Context) error {
+func executeGenerate(cmd *cli.Context) error {
 	args := cmd.Args()
 	// TODO: add some util func to hande all common error cases
 	if args.Len() < 1 {
@@ -63,7 +63,7 @@ func generate(fileName string, targetFilepath string) error {
 		return err
 	}
 
-	err = file.ProcessAnnotations()
+	err = file.ProcessMarkers()
 	if err != nil {
 		return err
 	}

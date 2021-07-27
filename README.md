@@ -35,41 +35,41 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 
 <!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#[simple] == -->
 
-Let's see what Importer does with the file in this repository [`./testdata/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
+Let's see what Importer does with the file in this repository [`./testdata/markdown/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
 
 ```markdown
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 
 Any content here will be removed by Importer.
 
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
 ```
 
-When you run `importer purge ./testdata/simple-before.md`:
+When you run `importer purge ./testdata/markdown/simple-before.md`:
 
 ```bash
-$ importer purge ./testdata/simple-before.md
-$ cat ./testdata/simple-before.md
+$ importer purge ./testdata/markdown/simple-before.md
+$ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
 ```
 
-When you run `importer generate ./testdata/simple-before.md`:
+When you run `importer generate ./testdata/markdown/simple-before.md`:
 
 ```bash
-$ importer generate ./testdata/simple-before.md
-$ cat ./testdata/simple-before.md
+$ importer generate ./testdata/markdown/simple-before.md
+$ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -80,7 +80,7 @@ Excepteur sint occaecat cupidatat non proident,
 sunt in culpa qui officia deserunt mollit anim id est laborum."
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
 ```
 
 <!-- == imptr: getting-started-example-short / end == -->
@@ -122,13 +122,13 @@ You can find actually running CI setup in [`.github/workflows/importer-markdown-
 
 <!-- == imptr: getting-started-github-action / end == -->
 
-## 🖋 Annotations and Markers
+## 🖋 Markers
 
-### Importer Annotation
+### Importer Marker
 
-<!-- == imptr: basic-annotation / begin from: ./docs/getting-started/annotations.md#[basic-annotation] == -->
+<!-- == imptr: basic-marker / begin from: ./docs/getting-started/markers.md#[basic-marker] == -->
 
-An annotation is a simple comment with special syntax, and thus is slightly different depending on file used.
+A marker is a simple comment with special syntax, and thus is slightly different depending on file used.
 
 The below is a simple example for **Markdown**.
 
@@ -136,16 +136,16 @@ The below is a simple example for **Markdown**.
 <!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
 ```
 
-![Annotation explained][annotation-explanation]
+![Marker explained][marker-explanation]
 
-[annotation-explanation]: /assets/images/annotation-explanation.png "Annotation Explanation"
+[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
 
-And there has to be a matching "end" annotation. This is much simpler, as options are all defined in the "begin" annotation.
+And there has to be a matching "end" marker. This is much simpler, as options are all defined in the "begin" marker.
 
 ```markdown
 <!-- == imptr: getting-started-install / end == -->
 ```
 
-<!-- == imptr: basic-annotation / end == -->
+<!-- == imptr: basic-marker / end == -->
 
-You can find more about the Importer Annotation [here](./docs/getting-started/annotations.md).
+You can find more about the Importer Marker [here](./docs/getting-started/markers.md).

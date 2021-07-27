@@ -52,7 +52,7 @@ func update(fileName string) error {
 		return err
 	}
 
-	err = file.ProcessAnnotations()
+	err = file.ProcessMarkers()
 	if err != nil {
 		return err
 	}

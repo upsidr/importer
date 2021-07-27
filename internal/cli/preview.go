@@ -20,13 +20,13 @@ var (
 
 This allows you to find what the file looks like after ` + "`update`" + ` or ` + "`purge`" + `.
 `,
-		Action: executePreviewCLI,
+		Action: executePreview,
 		// TODO: Add flags to see only specific preview (e.g. `importer preview file --update` for update only view)
 		// TODO: Add support for diff preview
 	}
 )
 
-func executePreviewCLI(ctx *cli.Context) error {
+func executePreview(ctx *cli.Context) error {
 	args := ctx.Args()
 	// TODO: add some util func to hande all common error cases
 	if args.Len() != 1 {
@@ -49,6 +49,11 @@ func preview(fileName string) error {
 	defer f.Close()
 
 	file, err := parse.Parse(fileName, f)
+	if err != nil {
+		return err
+	}
+
+	err = file.ProcessMarkers()
 	if err != nil {
 		return err
 	}

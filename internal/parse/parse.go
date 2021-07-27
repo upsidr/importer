@@ -6,17 +6,18 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
-	"regexp"
 
 	"github.com/upsidr/importer/internal/file"
+	"github.com/upsidr/importer/internal/marker"
+	"github.com/upsidr/importer/internal/regexpplus"
 )
 
 var (
-	ErrUnsupportedFileType   = errors.New("unsupported file type")
-	ErrNoInput               = errors.New("no file content found")
-	ErrInvalidPath           = errors.New("invalid path provided")
-	ErrInvalidSyntax         = errors.New("invalid syntax given")
-	ErrNoMatchingAnnotations = errors.New("no matching annotations found, annotation must be a begin/end pair")
+	ErrUnsupportedFileType = errors.New("unsupported file type")
+	ErrNoInput             = errors.New("no file content found")
+	ErrInvalidPath         = errors.New("invalid path provided")
+	ErrInvalidSyntax       = errors.New("invalid syntax given")
+	ErrNoMatchingMarker    = errors.New("no matching marker found, marker must be a begin/end pair")
 )
 
 // File holds onto file data.
@@ -29,7 +30,7 @@ type File struct {
 	ContentBefore [][]byte
 
 	// ContentPurged holds the file content, but removes the parts between
-	// importer annotation begin/end. The first slice represents the line
+	// Importer Marker begin/end. The first slice represents the line
 	// number, and the second is for the actual data.
 	ContentPurged [][]byte
 
@@ -37,8 +38,8 @@ type File struct {
 	// only holds the actual data in byte slice representation.
 	ContentAfter []byte
 
-	// Annotations is an array holding onto each annotation block.
-	Annotations map[int]file.Annotation
+	// Markers is an array holding onto each marker block.
+	Markers map[int]*marker.Marker
 }
 
 // Parse reads filename and input, and parses data in the file.
@@ -47,7 +48,7 @@ type File struct {
 //
 // 	1. Read input data
 // 	2. Scan each line
-// 	3. Look for regex match for annotation
+// 	3. Look for regex match for marker
 // 	4. Save matched line number and options found
 // 	5. Verify parsed data, and return
 //
@@ -62,9 +63,9 @@ func Parse(fileName string, input io.Reader) (*file.File, error) {
 
 	switch fileType {
 	case ".md":
-		return parse(ImporterAnnotationMarkdown, fileName, input)
+		return parse(marker.ImporterMarkerMarkdown, fileName, input)
 	case ".yaml", ".yml":
-		return parse(ImporterAnnotationYAML, fileName, input)
+		return parse(marker.ImporterMarkerYAML, fileName, input)
 	default:
 		return nil, fmt.Errorf("%w, '%s' provided", ErrUnsupportedFileType, fileType)
 	}
@@ -72,18 +73,17 @@ func Parse(fileName string, input io.Reader) (*file.File, error) {
 
 // parse reads file input using scanner. This reads the input line by line, and
 // store the data into File data. Parsing the data stores 3 sets of data: file
-// content as is, annotation details, and file content with all data between
-// annotation pairs purged.
-func parse(annotation string, fileName string, input io.Reader) (*file.File, error) {
+// content as is, marker details, and file content with all data between
+// marker pairs purged.
+func parse(markerRegex string, fileName string, input io.Reader) (*file.File, error) {
 	f := &file.File{FileName: fileName}
-	re := regexp.MustCompile(annotation)
 
-	annotations := map[int]*file.Annotation{}
-	matches := map[string]matchHolder{}
+	markers := map[int]*marker.Marker{}
+	rawMarkers := map[string]*marker.RawMarker{}
 
 	currentLine := 0
-	inNested := false // Flag to check if the data is between annotations
-	nestedUnder := "" // Name to check for annotation pair ending
+	inNested := false // Flag to check if the data is between markers
+	nestedUnder := "" // Name to check for marker pair ending
 
 	// NOTE:
 	// For *File.contentXyz, I'm purposely making the first item in slice empty
@@ -100,79 +100,83 @@ func parse(annotation string, fileName string, input io.Reader) (*file.File, err
 		f.ContentBefore = append(f.ContentBefore, currentStr)
 
 		// Look for marker match
-		match := re.FindStringSubmatch(currentStr)
-		if len(match) == 0 {
-			// If the line appears within some other marker set, remove the line.
-			if inNested {
+		matches, err := regexpplus.MapWithNamedSubgroups(currentStr, markerRegex)
+		if err != nil {
+			if errors.Is(err, regexpplus.ErrNoMatch) {
+				// If the line appears within some other marker set, remove the line.
+				if inNested {
+					continue
+				}
+				// Otherwise ensure the marker itself is a part of purged data.
+				f.ContentPurged = append(f.ContentPurged, currentStr)
+
+				// There is no further action needed for matched line, and thus continue.
 				continue
 			}
-			// Otherwise ensure the marker itself is a part of purged data.
-			f.ContentPurged = append(f.ContentPurged, currentStr)
 
-			// There is no further action needed for matched line, and thus continue.
-			continue
+			panic(err) // Unknown error, should not happen
 		}
 
-		// Parse regex match into groups to handle annotation
-		subgroupName := match[1] // regex 1st subgroup. Index 0 is for full string.
+		var subgroupName string
+		if importerName, found := matches["importer_name"]; found {
+			subgroupName = importerName
+		}
 
-		// Ensure this is the top most annotation. If a nested annotation is
-		// found within another annotation, ignore it. This is because we
-		// should be handling those nested annotations in those target files
-		// instead.
+		// Ensure this is the top most marker. If a nested marker is found
+		// within another marker, ignore it. This is because nested markers
+		// should be handled in those target files instead.
+		//
 		// This means, in any file in question, the parse logic only looks at
-		// one file and its direct dependencies.
-		// TODO: Handle file dependencies with AST
+		// one file and its direct dependencies, and does not try to reconcile
+		// nested dependencies.
+		//
+		// TODO: Handle nested file dependencies with AST
 		if inNested && nestedUnder != subgroupName {
 			continue
 		}
 
 		nestedUnder = subgroupName
 
-		// At this point, the annotation is important, and we need to process
+		// At this point, the marker is important, and we need to process
 		// the line further.
 		// Note that, ContentPurged does not contain any data that's wrapped
-		// between annotations. Those lines will be kept as an empty byte slice
+		// between markers. Those lines will be kept as an empty byte slice
 		// for further processing later to create ContentAfter.
 		f.ContentPurged = append(f.ContentPurged, currentStr)
 
-		// Annotations must match up to create a pair. If it isn't a proper
+		// Markers must match up to create a pair. If it isn't a proper
 		// pair, it is treated as broken. For that reason, we need to keep
 		// track of already found match.
-		matchData := matchHolder{}
-		if data, found := matches[subgroupName]; found {
+		matchData := &marker.RawMarker{Name: subgroupName}
+		if data, found := rawMarkers[subgroupName]; found {
 			// TODO: Handle case where the same subgroup name gets used multiple times.
 			matchData = data
 		}
 
-		for i, n := range re.SubexpNames() {
-			matchedContent := match[i]
-			switch n {
-			// The first subgroup is the name, which is used as the map key.
-			case "importer_name":
-				continue
-			case "importer_marker":
-				if matchedContent == "begin" {
-					inNested = true
-					matchData.isBeginFound = true
-					matchData.lineToInsertAt = len(f.ContentPurged)
-				}
-				if matchedContent == "end" {
-					inNested = false
-					nestedUnder = ""
-					matchData.isEndFound = true
-				}
-			case "importer_option":
-				if matchedContent != "" { // TODO: skipping empty string like this as end annotation shouldn't override
-					matchData.options = matchedContent
-				}
+		if importerMarker, found := matches["importer_marker"]; found {
+			switch importerMarker {
+			case "begin":
+				inNested = true
+				matchData.IsBeginFound = true
+				matchData.LineToInsertAt = len(f.ContentPurged)
+			case "end":
+				inNested = false
+				nestedUnder = ""
+				matchData.IsEndFound = true
+			default:
+				panic("unknown marker condition") // Should not happen, but putting this for possible future changes
 			}
 		}
-		matches[subgroupName] = matchData
+		if importerOption, found := matches["importer_option"]; found && importerOption != "" {
+			// skipping empty string as end marker shouldn't override
+			matchData.Options = importerOption
+		}
+
+		rawMarkers[subgroupName] = matchData
 	}
 
-	for name, data := range matches {
-		annotation, err := processMarker(name, data)
+	for _, data := range rawMarkers {
+		marker, err := marker.NewMarker(data)
 		if err != nil {
 			// TODO: err should be handled rather than simply ignored.
 			//       This is fine for now as error is used for internal logic
@@ -180,10 +184,10 @@ func parse(annotation string, fileName string, input io.Reader) (*file.File, err
 			continue
 		}
 
-		annotations[annotation.LineToInsertAt] = annotation
+		markers[marker.LineToInsertAt] = marker
 	}
 
-	f.Annotations = annotations
+	f.Markers = markers
 
 	return f, nil
 }

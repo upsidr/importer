@@ -1,5 +1,7 @@
 package file
 
+import "github.com/upsidr/importer/internal/marker"
+
 // File holds onto file data. This does not provide any file processing support
 // by itself.
 type File struct {
@@ -19,6 +21,6 @@ type File struct {
 	// only holds the actual data in byte slice representation.
 	ContentAfter []byte
 
-	// Annotations is an array holding onto each annotation block.
-	Annotations map[int]*Annotation
+	// Markers is an array holding onto each annotation block.
+	Markers map[int]*marker.Marker
 }

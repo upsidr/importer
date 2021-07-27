@@ -16,22 +16,22 @@ Importer is planning to support YAML files in the near future.
 
 Currently, `importer generate` takes in a file argument, and updates the file content in place.
 
-Instead, we are aiming to provide `importer update` to provide the same feature, while `importer generate` to output the result to stdout. This allows having a separate file that contains Importer Annotations, and a generated file as a separate file.
+Instead, we are aiming to provide `importer update` to provide the same feature, while `importer generate` to output the result to stdout. This allows having a separate file that contains Importer Markers, and a generated file as a separate file.
 
 ### Add `graph` command
 
-Currently, Importer only looks at the provided argument and its Import Target Files. When the Target File contains another Importer Annotation, it would be better to update the Target File content first.
+Currently, Importer only looks at the provided argument and its Import Target Files. When the Target File contains another Importer Marker, it would be better to update the Target File content first.
 We will need much better processing than simple regex handling, and abstract syntax tree needs to be created for this command. Also, this command needs to ensure there is no cyclic dependencies in the Importer definitions.
 
-### Support line brak in Importer Annotation and Export Marker
+### Support line brak in Importer Marker and Exporter Marker
 
-Currently Importer Annotation and Export Marker have to be a single line input. If you have a line break in them, it will be ignored. This is because how it's currently implemented, and fixing this would require a proper AST setup when parsing a file.
+Currently Importer Marker and Exporter Marker have to be a single line input. If you have a line break in them, it will be ignored. This is because how it's currently implemented, and fixing this would require a proper AST setup when parsing a file.
 
-### Add special annotations `ignore` to skip Importer run
+### Add special markers `ignore` to skip Importer run
 
 When having an automation such as `find . -name '*.md' -exec importer generate {} \;`, you may want to skip some files.
 
-This shouldn't skip Export Marker handling, though.
+This shouldn't skip Exporter Marker handling, though.
 
 ### Add `diff` command
 

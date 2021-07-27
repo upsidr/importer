@@ -1,6 +1,6 @@
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -11,4 +11,4 @@ Excepteur sint occaecat cupidatat non proident,
 sunt in culpa qui officia deserunt mollit anim id est laborum."
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.

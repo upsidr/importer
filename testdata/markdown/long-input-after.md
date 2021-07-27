@@ -1,6 +1,6 @@
 # Importer
 
-<!-- == imptr: getting-started-install / begin from: ../docs/getting-started/install.md#[homebrew-install] == -->
+<!-- == imptr: getting-started-install / begin from: ../../docs/getting-started/install.md#[homebrew-install] == -->
 
 You can get Importer with simple Homebrew command.
 
@@ -12,45 +12,45 @@ You can also find the relevent binary files under [releases](https://github.com/
 
 <!-- == imptr: getting-started-install / end == -->
 
-<!-- == imptr: getting-started-example-short / begin from: ../docs/getting-started/examples.md#1~51 == -->
+<!-- == imptr: getting-started-example-short / begin from: ../../docs/getting-started/examples.md#1~51 == -->
 ## 🚀 Examples
 
 
-Let's see what Importer does with the file in this repository [`./testdata/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
+Let's see what Importer does with the file in this repository [`./testdata/markdown/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
 
 ```markdown
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 
 Any content here will be removed by Importer.
 
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
 ```
 
-When you run `importer purge ./testdata/simple-before.md`:
+When you run `importer purge ./testdata/markdown/simple-before.md`:
 
 ```bash
-$ importer purge ./testdata/simple-before.md
-$ cat ./testdata/simple-before.md
+$ importer purge ./testdata/markdown/simple-before.md
+$ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
 ```
 
-When you run `importer generate ./testdata/simple-before.md`:
+When you run `importer generate ./testdata/markdown/simple-before.md`:
 
 ```bash
-$ importer generate ./testdata/simple-before.md
-$ cat ./testdata/simple-before.md
+$ importer generate ./testdata/markdown/simple-before.md
+$ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -61,13 +61,13 @@ Excepteur sint occaecat cupidatat non proident,
 sunt in culpa qui officia deserunt mollit anim id est laborum."
 <!-- == imptr: lorem / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.
 ```
 <!-- == imptr: getting-started-example-short / end == -->
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples.md).
 
-<!-- == imptr: getting-started-github-action / begin from: ../docs/getting-started/github-actions.md#1~32 == -->
+<!-- == imptr: getting-started-github-action / begin from: ../../docs/getting-started/github-actions.md#1~32 == -->
 ## :octocat: GitHub Action Integration
 
 
@@ -101,7 +101,7 @@ This repository uses Importer to generate some of the markdown documentation.
 You can find actually running CI setup in [`.github/workflows/importer-markdown-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml).
 <!-- == imptr: getting-started-github-action / end == -->
 
-<!-- == imptr: some_random_note / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: some_random_note / begin from: ../../docs/template/_lorem.md#5~12 == -->
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -112,7 +112,7 @@ Excepteur sint occaecat cupidatat non proident,
 sunt in culpa qui officia deserunt mollit anim id est laborum."
 <!-- == imptr: some_random_note / end == -->
 
-<!-- == imptr: import_from_proposal / begin from: ../Proposal.md#5~8 == -->
+<!-- == imptr: import_from_proposal / begin from: ../../Proposal.md#5~8 == -->
 ## What it does
 
 - In any file, you can import other file content

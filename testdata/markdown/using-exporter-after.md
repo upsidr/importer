@@ -12,4 +12,4 @@
 
 <!-- == imptr: exporter_example / end == -->
 
-Content after annotation is left untouched.
+Content after marker is left untouched.

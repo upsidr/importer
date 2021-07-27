@@ -20,11 +20,11 @@ var (
 
 Importer markers will be left intact.
 `,
-		Action: executePurgeCLI,
+		Action: executePurge,
 	}
 )
 
-func executePurgeCLI(ctx *cli.Context) error {
+func executePurge(ctx *cli.Context) error {
 	args := ctx.Args()
 	// TODO: add some util func to hande all common error cases
 	if args.Len() != 1 {
