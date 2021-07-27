@@ -10,7 +10,7 @@ import (
 	"github.com/upsidr/importer/internal/file"
 )
 
-func TestConvert(t *testing.T) {
+func TestProcessMarker(t *testing.T) {
 	cases := map[string]struct {
 		// Input
 		name  string
@@ -97,6 +97,16 @@ func TestConvert(t *testing.T) {
 				isEndFound:     true,
 				lineToInsertAt: 10,
 				options:        "from: file.txt#x~y",
+			},
+			wantErr: ErrInvalidSyntax,
+		},
+		"INVALID: indent value not int": {
+			name: "test name",
+			match: matchHolder{
+				isBeginFound:   true,
+				isEndFound:     true,
+				lineToInsertAt: 10,
+				options:        "from: ./some_file.txt#2~22 indent: absolute 999999999999999999999",
 			},
 			wantErr: ErrInvalidSyntax,
 		},

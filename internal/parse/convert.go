@@ -76,6 +76,8 @@ func processIndentOption(marker *file.Marker, match matchHolder) error {
 			marker.Indentation = &file.Indentation{Mode: file.AbsoluteIndentation}
 		case "extra":
 			marker.Indentation = &file.Indentation{Mode: file.ExtraIndentation}
+		case "align":
+			// TODO: implement
 		default:
 			return errors.New("unsupported indentation mode")
 		}
@@ -88,7 +90,7 @@ func processIndentOption(marker *file.Marker, match matchHolder) error {
 
 		length, err := strconv.Atoi(lengthInput)
 		if err != nil {
-			return err
+			return fmt.Errorf("%w, %v", ErrInvalidSyntax, err)
 		}
 		marker.Indentation.Length = length
 	}
