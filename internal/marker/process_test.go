@@ -133,6 +133,30 @@ func TestProcessSingleMarker(t *testing.T) {
           namespace: sample-namespace
 `),
 		},
+		"other: range process": {
+			callerFile: "./some_unknown_file_type",
+			marker: &Marker{
+				LineToInsertAt: 1, // Not used in this, as single annotation handling is about appending data
+				TargetPath:     "../../testdata/note.txt",
+				TargetLineFrom: 1,
+				TargetLineTo:   3,
+			},
+			want: []byte(`This is test data.
+他言語サポートのためのテスト文章。
+🍸 Emojis 🍷 Supported 🍺
+`),
+		},
+		"other: comma separated lines": {
+			callerFile: "./some_unknown_file_type",
+			marker: &Marker{
+				LineToInsertAt: 1,
+				TargetPath:     "../../testdata/note.txt",
+				TargetLines:    []int{2, 3},
+			},
+			want: []byte(`他言語サポートのためのテスト文章。
+🍸 Emojis 🍷 Supported 🍺
+`),
+		},
 
 		// ERROR CASES
 		"no target file found": {
