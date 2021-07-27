@@ -2,6 +2,7 @@ package file
 
 import (
 	"fmt"
+	"strings"
 )
 
 func (f *File) PrintAfter() error {
@@ -10,6 +11,18 @@ func (f *File) PrintAfter() error {
 }
 
 func (f *File) PrintPurged() error {
-	fmt.Printf("%s", f.ContentPurged)
+	s := combineLines(f.ContentPurged)
+	fmt.Printf("%s", s)
 	return nil
+}
+
+func (f *File) PrintBefore() error {
+	s := combineLines(f.ContentBefore)
+	fmt.Printf("%s", s)
+	return nil
+}
+
+func combineLines(ss []string) string {
+	d := strings.Join(ss, "\n")
+	return d
 }
