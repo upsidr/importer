@@ -87,6 +87,23 @@ Content after marker is left untouched.
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples.md).
 
+## 🧩 Supported Files
+
+<!-- == imptr: supported-files / begin from: ./docs/details/supported-files.md#[list] == -->
+
+| File Type | Is Supported? | File Extensions | Additional Importer Option |
+| --------- | :-----------: | --------------- | -------------------------- |
+| Markdown  |      ✅       | `.md`           |                            |
+| YAML      |      ✅       | `.yaml`, `.yml` | Indentation                |
+| HTML      |      🚧       | TBC             |                            |
+| TOML      |      🚧       | TBC             |                            |
+
+Any other file type not specified above are not supported by Importer at the moment.
+
+For requesting additional support, [please file an issue from here](https://github.com/upsidr/importer/issues/new?assignees=&labels=enhancement&template=feature-request.yaml&title=%5BFeature+Request%5D%3A+).
+
+<!-- == imptr: supported-files / end == -->
+
 ## :octocat: GitHub Action Integration
 
 <!-- == imptr: getting-started-github-action / begin from: ./docs/getting-started/github-actions.md#[with-homebrew] == -->
