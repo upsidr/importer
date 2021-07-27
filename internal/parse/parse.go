@@ -117,19 +117,20 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 			panic(err) // Unknown error, should not happen
 		}
 
-		subgroupName := ""
-
+		var subgroupName string
 		if importerName, found := matches["importer_name"]; found {
 			subgroupName = importerName
 		}
 
-		// Ensure this is the top most marker. If a nested marker is
-		// found within another marker, ignore it. This is because we
-		// should be handling those nested markers in those target files
-		// instead.
+		// Ensure this is the top most marker. If a nested marker is found
+		// within another marker, ignore it. This is because nested markers
+		// should be handled in those target files instead.
+		//
 		// This means, in any file in question, the parse logic only looks at
-		// one file and its direct dependencies.
-		// TODO: Handle file dependencies with AST
+		// one file and its direct dependencies, and does not try to reconcile
+		// nested dependencies.
+		//
+		// TODO: Handle nested file dependencies with AST
 		if inNested && nestedUnder != subgroupName {
 			continue
 		}
@@ -162,12 +163,13 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 				inNested = false
 				nestedUnder = ""
 				matchData.IsEndFound = true
+			default:
+				panic("unknown marker condition") // Should not happen, but putting this for possible future changes
 			}
 		}
-		if importerOption, found := matches["importer_option"]; found {
-			if importerOption != "" { // TODO: skipping empty string like this as end marker shouldn't override
-				matchData.Options = importerOption
-			}
+		if importerOption, found := matches["importer_option"]; found && importerOption != "" {
+			// skipping empty string as end marker shouldn't override
+			matchData.Options = importerOption
 		}
 
 		rawMarkers[subgroupName] = matchData
