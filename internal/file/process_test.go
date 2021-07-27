@@ -30,7 +30,7 @@ func TestProcessMarker(t *testing.T) {
 					2: {
 						Name:           "test annotation",
 						LineToInsertAt: 2,
-						TargetPath:     "../../testdata/note.txt",
+						TargetPath:     "../../testdata/other/note.txt",
 						TargetLines:    []int{1, 2},
 					},
 				},

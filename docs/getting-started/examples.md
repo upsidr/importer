@@ -7,7 +7,7 @@ Let's see what Importer does with the file in this repository [`./testdata/markd
 ```markdown
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 
 Any content here will be removed by Importer.
 
@@ -23,7 +23,7 @@ $ importer purge ./testdata/markdown/simple-before.md
 $ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 <!-- == imptr: lorem / end == -->
 
 Content after marker is left untouched.
@@ -36,7 +36,7 @@ $ importer generate ./testdata/markdown/simple-before.md
 $ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -110,7 +110,7 @@ $ importer preview /tmp/importer-example.md
 Content Before:
 0:      # Simple Markdown Test
 1:
-2:      <!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+2:      <!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 3:
 4:      Any content here will be removed by Importer.
 5:
@@ -123,7 +123,7 @@ Content Before:
 Content After Purged:
 0:      # Simple Markdown Test
 1:
-2:      <!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+2:      <!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 3:      <!-- == imptr: lorem / end == -->
 4:
 5:      Content after marker is left untouched.
@@ -133,7 +133,7 @@ Content After Purged:
 Content After Processed:
 1:      # Simple Markdown Test
 2:
-3:      <!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+3:      <!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 4:      "Lorem ipsum dolor sit amet,
 5:      consectetur adipiscing elit,
 6:      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

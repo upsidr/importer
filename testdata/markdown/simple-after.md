@@ -1,6 +1,6 @@
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

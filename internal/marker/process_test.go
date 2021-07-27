@@ -22,7 +22,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.md",
 			marker: &Marker{
 				LineToInsertAt: 1, // Not used in this, as single annotation handling is about appending data
-				TargetPath:     "../../testdata/note.txt",
+				TargetPath:     "../../testdata/other/note.txt",
 				TargetLineFrom: 1,
 				TargetLineTo:   3,
 			},
@@ -35,7 +35,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.md",
 			marker: &Marker{
 				LineToInsertAt: 1,
-				TargetPath:     "../../testdata/note.txt",
+				TargetPath:     "../../testdata/other/note.txt",
 				TargetLines:    []int{2, 3},
 			},
 			want: []byte(`他言語サポートのためのテスト文章。
@@ -165,7 +165,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_unknown_file_type",
 			marker: &Marker{
 				LineToInsertAt: 1, // Not used in this, as single annotation handling is about appending data
-				TargetPath:     "../../testdata/note.txt",
+				TargetPath:     "../../testdata/other/note.txt",
 				TargetLineFrom: 1,
 				TargetLineTo:   3,
 			},
@@ -178,7 +178,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_unknown_file_type",
 			marker: &Marker{
 				LineToInsertAt: 1,
-				TargetPath:     "../../testdata/note.txt",
+				TargetPath:     "../../testdata/other/note.txt",
 				TargetLines:    []int{2, 3},
 			},
 			want: []byte(`他言語サポートのためのテスト文章。

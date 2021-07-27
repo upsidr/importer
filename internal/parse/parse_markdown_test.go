@@ -34,7 +34,7 @@ func TestParseMarkdown(t *testing.T) {
 					3: {
 						Name:           "lorem",
 						LineToInsertAt: 3,
-						TargetPath:     "../docs/template/_lorem.md",
+						TargetPath:     "../../docs/template/_lorem.md",
 						TargetLineFrom: 5,
 						TargetLineTo:   12,
 					},

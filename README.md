@@ -40,7 +40,7 @@ Let's see what Importer does with the file in this repository [`./testdata/markd
 ```markdown
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 
 Any content here will be removed by Importer.
 
@@ -56,7 +56,7 @@ $ importer purge ./testdata/markdown/simple-before.md
 $ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 <!-- == imptr: lorem / end == -->
 
 Content after marker is left untouched.
@@ -69,7 +69,7 @@ $ importer generate ./testdata/markdown/simple-before.md
 $ cat ./testdata/markdown/simple-before.md
 # Simple Markdown Test
 
-<!-- == imptr: lorem / begin from: ../docs/template/_lorem.md#5~12 == -->
+<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

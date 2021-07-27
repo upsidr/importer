@@ -42,7 +42,7 @@ func TestGenerateStdout(t *testing.T) {
 			wantErrString: "no such file",
 		},
 		"error case: file not supported (.txt)": {
-			inputFile:     "../../testdata/note.txt",
+			inputFile:     "../../testdata/other/note.txt",
 			wantErrString: parse.ErrUnsupportedFileType.Error(),
 		},
 	}
