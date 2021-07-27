@@ -60,7 +60,35 @@ func TestProcessSingleMarker(t *testing.T) {
 
 `),
 		},
-		"yaml: simple import": {
+		"yaml: line range": {
+			callerFile: "./some_file.yaml",
+			marker: &Marker{
+				LineToInsertAt: 5,
+				TargetPath:     "../../testdata/simple-yaml.yaml",
+				TargetLineFrom: 2,
+				TargetLineTo:   5,
+				Indentation:    nil,
+			},
+			want: []byte(`  b:
+    c:
+      d:
+        e:
+`),
+		},
+		"yaml: comma separated lines": {
+			callerFile: "./some_file.yaml",
+			marker: &Marker{
+				LineToInsertAt: 5,
+				TargetPath:     "../../testdata/simple-yaml.yaml",
+				TargetLines:    []int{1, 2, 4},
+				Indentation:    nil,
+			},
+			want: []byte(`a:
+  b:
+      d:
+`),
+		},
+		"yaml: exporter marker": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt:     5,
@@ -81,7 +109,7 @@ func TestProcessSingleMarker(t *testing.T) {
                     k: {}
 `),
 		},
-		"yaml: absolute indentation": {
+		"yaml: exporter marker with absolute indentation": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt:     5,
@@ -97,7 +125,7 @@ func TestProcessSingleMarker(t *testing.T) {
                                 namespace: sample-namespace
 `),
 		},
-		"yaml: absolute indentation with zero indentation": {
+		"yaml: exporter marker with absolute indentation, with zero indentation": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt:     5,
@@ -113,7 +141,7 @@ func TestProcessSingleMarker(t *testing.T) {
   namespace: sample-namespace
 `),
 		},
-		"yaml: extra indentation": {
+		"yaml: exporter marker with extra indentation": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt:     5,
