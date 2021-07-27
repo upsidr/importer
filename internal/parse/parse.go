@@ -63,9 +63,9 @@ func Parse(fileName string, input io.Reader) (*file.File, error) {
 
 	switch fileType {
 	case ".md":
-		return parse(ImporterMarkerMarkdown, fileName, input)
+		return parse(marker.ImporterMarkerMarkdown, fileName, input)
 	case ".yaml", ".yml":
-		return parse(ImporterMarkerYAML, fileName, input)
+		return parse(marker.ImporterMarkerYAML, fileName, input)
 	default:
 		return nil, fmt.Errorf("%w, '%s' provided", ErrUnsupportedFileType, fileType)
 	}
