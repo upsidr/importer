@@ -53,6 +53,11 @@ func preview(fileName string) error {
 		return err
 	}
 
+	err = file.ProcessMarkers()
+	if err != nil {
+		return err
+	}
+
 	file.PrintDebugAll()
 
 	fmt.Printf(`You can replace the file content with either of the commands below:
