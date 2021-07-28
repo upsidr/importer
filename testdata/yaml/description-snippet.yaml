@@ -1,0 +1,5 @@
+# == export: for-demo / begin ==
+description: |
+  This demonstrates how importing YAML snippet is made possible, without
+  changing YAML handling at all.
+# == export: for-demo / end ==

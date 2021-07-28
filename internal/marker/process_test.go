@@ -64,7 +64,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetPath:     "../../testdata/yaml/simple-yaml.yaml",
+				TargetPath:     "../../testdata/yaml/simple-tree.yaml",
 				TargetLineFrom: 2,
 				TargetLineTo:   5,
 				Indentation:    nil,
@@ -79,7 +79,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetPath:     "../../testdata/yaml/simple-yaml.yaml",
+				TargetPath:     "../../testdata/yaml/simple-tree.yaml",
 				TargetLines:    []int{1, 2, 4},
 				Indentation:    nil,
 			},

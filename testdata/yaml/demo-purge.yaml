@@ -1,0 +1,3 @@
+title: Demo of YAML Importer
+# == imptr: description / begin from: ./description-snippet.yaml#[for-demo] ==
+# == imptr: description / end ==
