@@ -3,7 +3,7 @@
 <!-- == imptr: getting-started-install / begin from: ../../docs/getting-started/install.md#[homebrew-install] == -->
 <!-- == imptr: getting-started-install / end == -->
 
-<!-- == imptr: getting-started-example-short / begin from: ../../docs/getting-started/examples-markdown.md#1~51 == -->
+<!-- == imptr: getting-started-example-short / begin from: ../../docs/getting-started/examples-markdown.md#[steps] == -->
 <!-- == imptr: getting-started-example-short / end == -->
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples-markdown.md).
