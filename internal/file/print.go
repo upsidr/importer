@@ -39,14 +39,14 @@ func (f *File) PrintDebugBefore() {
 	defer wrapWithDivider("Content Before:")()
 
 	for i, x := range f.ContentBefore {
-		fmt.Printf("%d:\t%s\n", i, x)
+		fmt.Printf("%d:\t%s\n", i+1, x)
 	}
 }
 func (f *File) PrintDebugPurged() {
 	defer wrapWithDivider("Content After Purged:")()
 
 	for i, x := range f.ContentPurged {
-		fmt.Printf("%d:\t%s\n", i, x)
+		fmt.Printf("%d:\t%s\n", i+1, x)
 	}
 }
 func (f *File) PrintDebugAfter() {
