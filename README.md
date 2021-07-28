@@ -44,7 +44,7 @@ cat ./testdata/markdown/demo-before.md
 ```markdown
 # Markdown Demo
 
-<!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+<!-- == imptr: short-description / begin from: ./_snippet-description.md#[for-demo] == -->
 Any content here will be replaced by Importer.
 <!-- == imptr: short-description / end == -->
 ```
@@ -60,7 +60,7 @@ importer preview ./testdata/markdown/demo-before.md
 Content Before:
 1:      # Markdown Demo
 2:
-3:      <!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+3:      <!-- == imptr: short-description / begin from: ./_snippet-description.md#[for-demo] == -->
 4:      Any content here will be replaced by Importer.
 5:      <!-- == imptr: short-description / end == -->
 ---------------------------------------
@@ -69,7 +69,7 @@ Content Before:
 Content After Purged:
 1:      # Markdown Demo
 2:
-3:      <!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+3:      <!-- == imptr: short-description / begin from: ./_snippet-description.md#[for-demo] == -->
 4:      <!-- == imptr: short-description / end == -->
 ---------------------------------------
 
@@ -77,7 +77,7 @@ Content After Purged:
 Content After Processed:
 1:      # Markdown Demo
 2:
-3:      <!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+3:      <!-- == imptr: short-description / begin from: ./_snippet-description.md#[for-demo] == -->
 4:      This demonstrates how a markdown can import other file content.
 5:
 6:      Importer is a CLI tool to read and process Importer and Exporter markers.  
@@ -106,7 +106,7 @@ You can find more with 'importer help'
 ```markdown
 # Markdown Demo
 
-<!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+<!-- == imptr: short-description / begin from: ./_snippet-description.md#[for-demo] == -->
 This demonstrates how a markdown can import other file content.
 
 Importer is a CLI tool to read and process Importer and Exporter markers.  

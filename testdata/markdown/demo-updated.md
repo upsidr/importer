@@ -1,6 +1,6 @@
 # Markdown Demo
 
-<!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+<!-- == imptr: short-description / begin from: ./_snippet-description.md#[for-demo] == -->
 This demonstrates how a markdown can import other file content.
 
 Importer is a CLI tool to read and process Importer and Exporter markers.  
