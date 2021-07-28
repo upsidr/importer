@@ -12,7 +12,7 @@ You can also find the relevent binary files under [releases](https://github.com/
 
 <!-- == imptr: getting-started-install / end == -->
 
-<!-- == imptr: getting-started-example-short / begin from: ../../docs/getting-started/examples.md#1~51 == -->
+<!-- == imptr: getting-started-example-short / begin from: ../../docs/getting-started/examples-markdown.md#1~51 == -->
 ## 🚀 Examples
 
 
@@ -65,7 +65,7 @@ Content after marker is left untouched.
 ```
 <!-- == imptr: getting-started-example-short / end == -->
 
-You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples.md).
+You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples-markdown.md).
 
 <!-- == imptr: getting-started-github-action / begin from: ../../docs/getting-started/github-actions.md#1~32 == -->
 ## :octocat: GitHub Action Integration

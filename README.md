@@ -33,7 +33,7 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 
 ## 🚀 Examples
 
-<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#[simple-markdown] == -->
+<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-markdown.md#[simple-markdown] == -->
 
 **COMMAND**: Check file content before processing
 
@@ -124,7 +124,7 @@ You can find this file [`./testdata/markdown/demo-before.md`](https://raw.github
 
 <!-- == imptr: getting-started-example-short / end == -->
 
-You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples.md).
+You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples-markdown.md).
 
 ## 🧩 Supported Files
 
