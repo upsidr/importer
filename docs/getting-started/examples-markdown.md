@@ -47,7 +47,7 @@ You can find more with 'importer help'
 
 ### Steps With Markdown
 
-<!-- == export: simple-markdown / begin == -->
+<!-- == export: steps / begin == -->
 
 **COMMAND**: Check file content before processing
 
@@ -130,7 +130,7 @@ This can be easily integrated into CI/CD and automation setup.
 
 You can find this file [`./testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md).
 
-<!-- == export: simple-markdown / end == -->
+<!-- == export: steps / end == -->
 
 ### Full Example
 
