@@ -84,10 +84,8 @@ Content After Processed:
 
 You can replace the file content with either of the commands below:
 
-- 'importer update ./testdata/markdown/demo-before.md'
-  Replace the file content with the processed file, importing all annotated references.
-- 'importer purge ./testdata/markdown/demo-before.md' 
-  Replace the file content by removing all data between annotation pairs.
+  importer update ./testdata/markdown/demo-before.md     Replace the file content with the Importer processed file.
+  importer purge ./testdata/markdown/demo-before.md      Replace the file content by removing all data between marker pairs.
 
 You can find more with 'importer help'
 ```
