@@ -33,13 +33,15 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 
 ## 🚀 Examples
 
-<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#[simple] == -->
+<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#[simple-markdown] == -->
 
-> With Markdown [`./testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md)
+**COMMAND**: Check file content before processing
 
 ```bash
 cat ./testdata/markdown/demo-before.md
 ```
+
+**OUTPUT**
 
 ```markdown
 # Markdown Demo
@@ -49,10 +51,15 @@ Any content here will be replaced by Importer.
 <!-- == imptr: short-description / end == -->
 ```
 
-> Preview how Importer processes the above file
+**COMMAND**: Preview how Importer processes the above file
+
+```bash
+importer preview ./testdata/markdown/demo-before.md
+```
+
+**OUTPUT**
 
 ```console
-$ importer preview ./testdata/markdown/demo-before.md
 ---------------------------------------
 Content Before:
 1:      # Markdown Demo
@@ -90,7 +97,7 @@ You can replace the file content with either of the commands below:
 You can find more with 'importer help'
 ```
 
-> Update file with Importer processing
+**COMMAND**: Update file with Importer processing
 
 ```bash
 {
@@ -99,6 +106,8 @@ You can find more with 'importer help'
   cat ./testdata/markdown/demo-updated.md
 }
 ```
+
+**OUTPUT**
 
 ```markdown
 # Markdown Demo
@@ -111,6 +120,7 @@ This can be easily integrated into CI/CD and automation setup.
 <!-- == imptr: short-description / end == -->
 ```
 
+You can find this file [`./testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md).
 
 <!-- == imptr: getting-started-example-short / end == -->
 
