@@ -2,7 +2,7 @@
 
 ### With YAML
 
-<!-- == export: simple-yaml / begin == -->
+<!-- == export: preview / begin == -->
 
 ```console
 $ importer preview ./testdata/yaml/demo-before.yaml
@@ -39,4 +39,4 @@ You can replace the file content with either of the commands below:
 You can find more with 'importer help'
 ```
 
-<!-- == export: simple-yaml / end == -->
+<!-- == export: preview / end == -->

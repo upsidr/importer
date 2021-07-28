@@ -33,7 +33,7 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 
 ## 🚀 Examples
 
-<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-yaml.md#[simple-yaml] == -->
+<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-yaml.md#[preview] == -->
 
 ```console
 $ importer preview ./testdata/yaml/demo-before.yaml
