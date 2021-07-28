@@ -64,7 +64,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetPath:     "../../testdata/yaml/simple-tree.yaml",
+				TargetPath:     "../../testdata/yaml/snippet-simple-tree.yaml",
 				TargetLineFrom: 2,
 				TargetLineTo:   5,
 				Indentation:    nil,
@@ -79,7 +79,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetPath:     "../../testdata/yaml/simple-tree.yaml",
+				TargetPath:     "../../testdata/yaml/snippet-simple-tree.yaml",
 				TargetLines:    []int{1, 2, 4},
 				Indentation:    nil,
 			},
@@ -92,7 +92,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt:     5,
-				TargetPath:         "../../testdata/yaml/with-exporter.yaml",
+				TargetPath:         "../../testdata/yaml/snippet-with-exporter.yaml",
 				TargetExportMarker: "long-tree",
 				Indentation:        nil,
 			},
@@ -113,7 +113,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt:     5,
-				TargetPath:         "../../testdata/yaml/with-exporter.yaml",
+				TargetPath:         "../../testdata/yaml/snippet-with-exporter.yaml",
 				TargetExportMarker: "metadata-only",
 				Indentation: &Indentation{
 					Mode:   AbsoluteIndentation,
@@ -129,7 +129,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt:     5,
-				TargetPath:         "../../testdata/yaml/with-exporter.yaml",
+				TargetPath:         "../../testdata/yaml/snippet-with-exporter.yaml",
 				TargetExportMarker: "metadata-only",
 				Indentation: &Indentation{
 					Mode:   AbsoluteIndentation,
@@ -145,7 +145,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt:     5,
-				TargetPath:         "../../testdata/yaml/with-exporter.yaml",
+				TargetPath:         "../../testdata/yaml/snippet-with-exporter.yaml",
 				TargetExportMarker: "sample-nested",
 				Indentation: &Indentation{
 					Mode:   ExtraIndentation,
