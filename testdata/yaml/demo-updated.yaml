@@ -1,5 +1,5 @@
 title: Demo of YAML Importer
-# == imptr: description / begin from: ./_snippet-description.yaml#[for-demo] ==
+# == imptr: description / begin from: ./snippet-description.yaml#[for-demo] ==
 description: |
   This demonstrates how importing YAML snippet is made possible, without
   changing YAML handling at all.

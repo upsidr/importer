@@ -46,7 +46,7 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.md",
 			marker: &Marker{
 				LineToInsertAt:     1,
-				TargetPath:         "../../testdata/markdown/_snippet-with-exporter.md",
+				TargetPath:         "../../testdata/markdown/snippet-with-exporter.md",
 				TargetExportMarker: "test_exporter",
 			},
 			want: []byte(`
