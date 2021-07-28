@@ -5,7 +5,7 @@
 <!-- == export: simple-yaml / begin == -->
 
 ```console
-./importer preview ./testdata/yaml/demo-before.yaml
+$ importer preview ./testdata/yaml/demo-before.yaml
 ---------------------------------------
 Content Before:
 1:      title: Demo of YAML Importer

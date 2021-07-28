@@ -36,7 +36,7 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 <!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-yaml.md#[simple-yaml] == -->
 
 ```console
-./importer preview ./testdata/yaml/demo-before.yaml
+$ importer preview ./testdata/yaml/demo-before.yaml
 ---------------------------------------
 Content Before:
 1:      title: Demo of YAML Importer
