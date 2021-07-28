@@ -30,8 +30,8 @@ func TestGenerateStdout(t *testing.T) {
 			wantFile:  "../../testdata/markdown/simple-updated.md",
 		},
 		"markdown with exporter": {
-			inputFile: "../../testdata/markdown/using-exporter-before.md",
-			wantFile:  "../../testdata/markdown/using-exporter-updated.md",
+			inputFile: "../../testdata/markdown/import-with-exporter-before.md",
+			wantFile:  "../../testdata/markdown/import-with-exporter-updated.md",
 		},
 		"error case: file not found": {
 			inputFile:     "does_not_exist",
@@ -81,8 +81,8 @@ func TestGenerateToFile(t *testing.T) {
 			wantFile:  "../../testdata/markdown/simple-updated.md",
 		},
 		"markdown with exporter": {
-			inputFile: "../../testdata/markdown/using-exporter-before.md",
-			wantFile:  "../../testdata/markdown/using-exporter-updated.md",
+			inputFile: "../../testdata/markdown/import-with-exporter-before.md",
+			wantFile:  "../../testdata/markdown/import-with-exporter-updated.md",
 		},
 	}
 
