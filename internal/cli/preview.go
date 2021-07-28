@@ -62,10 +62,10 @@ func preview(fileName string) error {
 
 	fmt.Printf(`You can replace the file content with either of the commands below:
 
-- 'importer update %s'
-  Replace the file content with the processed file, importing all annotated references.
-- 'importer purge %s' 
-  Replace the file content by removing all data between annotation pairs.
+	importer update %s
+		Replace the file content with the Importer processed file.
+	importer purge %s
+		Replace the file content by removing all data between marker pairs.
 
 You can find more with 'importer help'
 `, fileName, fileName)
