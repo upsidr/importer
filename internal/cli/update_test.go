@@ -22,7 +22,7 @@ func TestUpdate(t *testing.T) {
 		},
 		"markdown with exporter": {
 			inputFile: "../../testdata/markdown/using-exporter-before.md",
-			wantFile:  "../../testdata/markdown/using-exporter-after.md",
+			wantFile:  "../../testdata/markdown/using-exporter-updated.md",
 		},
 	}
 
