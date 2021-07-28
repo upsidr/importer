@@ -35,52 +35,61 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 
 <!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples.md#[simple] == -->
 
-Let's see what Importer does with the file in this repository [`./testdata/markdown/simple-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/simple-before.md).
+### With Markdown [`./testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md)
+
+```bash
+cat ./testdata/markdown/demo-before.md
+```
 
 ```markdown
-# Simple Markdown Test
+# Markdown Demo
 
-<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
-
-Any content here will be removed by Importer.
-
-<!-- == imptr: lorem / end == -->
-
-Content after marker is left untouched.
+<!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+Any content here will be replaced by Importer.
+<!-- == imptr: short-description / end == -->
 ```
 
-When you run `importer purge ./testdata/markdown/simple-before.md`:
+**Importer in Action**
 
-```bash
-$ importer purge ./testdata/markdown/simple-before.md
-$ cat ./testdata/markdown/simple-before.md
-# Simple Markdown Test
+```console
+$ importer preview ./testdata/markdown/demo-before.md
+---------------------------------------
+Content Before:
+1:      # Markdown Demo
+2:
+3:      <!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+4:      Any content here will be replaced by Importer.
+5:      <!-- == imptr: short-description / end == -->
+---------------------------------------
 
-<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
-<!-- == imptr: lorem / end == -->
+---------------------------------------
+Content After Purged:
+1:      # Markdown Demo
+2:
+3:      <!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+4:      <!-- == imptr: short-description / end == -->
+---------------------------------------
 
-Content after marker is left untouched.
-```
+---------------------------------------
+Content After Processed:
+1:      # Markdown Demo
+2:
+3:      <!-- == imptr: short-description / begin from: ./description-snippet.md#[for-demo] == -->
+4:      This demonstrates how a markdown can import other file content.
+5:
+6:      Importer is a CLI tool to read and process Importer and Exporter markers.  
+7:      This can be easily integrated into CI/CD and automation setup.
+8:      <!-- == imptr: short-description / end == -->
+---------------------------------------
 
-When you run `importer generate ./testdata/markdown/simple-before.md`:
+You can replace the file content with either of the commands below:
 
-```bash
-$ importer generate ./testdata/markdown/simple-before.md
-$ cat ./testdata/markdown/simple-before.md
-# Simple Markdown Test
+- 'importer update ./testdata/markdown/demo-before.md'
+  Replace the file content with the processed file, importing all annotated references.
+- 'importer purge ./testdata/markdown/demo-before.md' 
+  Replace the file content by removing all data between annotation pairs.
 
-<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
-"Lorem ipsum dolor sit amet,
-consectetur adipiscing elit,
-sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident,
-sunt in culpa qui officia deserunt mollit anim id est laborum."
-<!-- == imptr: lorem / end == -->
-
-Content after marker is left untouched.
+You can find more with 'importer help'
 ```
 
 <!-- == imptr: getting-started-example-short / end == -->
