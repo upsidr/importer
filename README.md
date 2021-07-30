@@ -33,31 +33,10 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 
 ## 🚀 Examples
 
-<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-markdown.md#[steps] == -->
-
-**COMMAND**: Check file content before processing
-
-```bash
-cat ./testdata/markdown/demo-before.md
-```
-
-```markdown
-# Markdown Demo
-
-<!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-
-Any content here will be replaced by Importer.
-
-<!-- == imptr: short-description / end == -->
-```
-
-**COMMAND**: Preview how Importer processes the above file
-
-```bash
-importer preview ./testdata/markdown/demo-before.md
-```
+<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-markdown.md#[preview] == -->
 
 ```console
+$ importer preview ./testdata/markdown/demo-before.md
 ---------------------------------------
 Content Before:
 1:      # Markdown Demo
@@ -94,31 +73,6 @@ You can replace the file content with either of the commands below:
 
 You can find more with 'importer help'
 ```
-
-**COMMAND**: Update file with Importer processing
-
-```bash
-{
-  cp ./testdata/markdown/demo-before.md ./testdata/markdown/demo-updated.md
-  importer update ./testdata/markdown/demo-updated.md
-  cat ./testdata/markdown/demo-updated.md
-}
-```
-
-```markdown
-# Markdown Demo
-
-<!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-
-This demonstrates how a markdown can import other file content.
-
-Importer is a CLI tool to read and process Importer and Exporter markers.  
-This can be easily integrated into CI/CD and automation setup.
-
-<!-- == imptr: short-description / end == -->
-```
-
-You can find this file [`./testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md).
 
 <!-- == imptr: getting-started-example-short / end == -->
 
