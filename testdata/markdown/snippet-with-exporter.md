@@ -11,7 +11,7 @@ This will be exported as "simple_instruction".
 <!-- == export: simple_instruction / end == -->
 ```
 
-With the above, you can simplify Importer Marker. You can find more in `using-exporter-before.md` and `using-exporter-after.md`
+With the above, you can simplify Importer Marker. You can find more in `import-with-exporter-before.md` and `import-with-exporter-updated.md`
 
 ## Exporter data
 

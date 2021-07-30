@@ -1,6 +1,7 @@
-# Simple Markdown Test
+# Test Note
 
-<!-- == imptr: lorem / begin from: ../../docs/template/_lorem.md#5~12 == -->
+This file contains note that's used in other markdown files.
+
 "Lorem ipsum dolor sit amet,
 consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -9,6 +10,3 @@ quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequa
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 Excepteur sint occaecat cupidatat non proident,
 sunt in culpa qui officia deserunt mollit anim id est laborum."
-<!-- == imptr: lorem / end == -->
-
-Content after marker is left untouched.

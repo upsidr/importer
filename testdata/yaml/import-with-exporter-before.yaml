@@ -3,7 +3,10 @@ data:
     This is to demonstrate how Importer can manage your YAML files.
     ...
 
-  # == imptr: metadata / begin from: ./with-exporter.yaml#[metadata-only] indent: absolute 2 ==
+  # == imptr: metadata / begin from: ./snippet-with-exporter.yaml#[metadata-only] indent: absolute 2 ==
+  anything: here
+  would: be
+  purged: by Importer
   # == imptr: metadata / end ==
 
   some-data:

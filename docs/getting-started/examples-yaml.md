@@ -9,7 +9,7 @@ $ importer preview ./testdata/yaml/demo-before.yaml
 ---------------------------------------
 Content Before:
 1:      title: Demo of YAML Importer
-2:      # == imptr: description / begin from: ./description-snippet.yaml#[for-demo] ==
+2:      # == imptr: description / begin from: ./snippet-description.yaml#[for-demo] ==
 3:      dummy: This will be replaced
 4:      # == imptr: description / end ==
 ---------------------------------------
@@ -17,14 +17,14 @@ Content Before:
 ---------------------------------------
 Content After Purged:
 1:      title: Demo of YAML Importer
-2:      # == imptr: description / begin from: ./description-snippet.yaml#[for-demo] ==
+2:      # == imptr: description / begin from: ./snippet-description.yaml#[for-demo] ==
 3:      # == imptr: description / end ==
 ---------------------------------------
 
 ---------------------------------------
 Content After Processed:
 1:      title: Demo of YAML Importer
-2:      # == imptr: description / begin from: ./description-snippet.yaml#[for-demo] ==
+2:      # == imptr: description / begin from: ./snippet-description.yaml#[for-demo] ==
 3:      description: |
 4:        This demonstrates how importing YAML snippet is made possible, without
 5:        changing YAML handling at all.

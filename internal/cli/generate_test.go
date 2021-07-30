@@ -27,15 +27,11 @@ func TestGenerateStdout(t *testing.T) {
 	}{
 		"markdown": {
 			inputFile: "../../testdata/markdown/simple-before.md",
-			wantFile:  "../../testdata/markdown/simple-after.md",
-		},
-		"markdown long input": {
-			inputFile: "../../testdata/markdown/long-input-purged.md",
-			wantFile:  "../../testdata/markdown/long-input-after.md",
+			wantFile:  "../../testdata/markdown/simple-updated.md",
 		},
 		"markdown with exporter": {
-			inputFile: "../../testdata/markdown/using-exporter-before.md",
-			wantFile:  "../../testdata/markdown/using-exporter-after.md",
+			inputFile: "../../testdata/markdown/import-with-exporter-before.md",
+			wantFile:  "../../testdata/markdown/import-with-exporter-updated.md",
 		},
 		"error case: file not found": {
 			inputFile:     "does_not_exist",
@@ -82,15 +78,11 @@ func TestGenerateToFile(t *testing.T) {
 	}{
 		"markdown": {
 			inputFile: "../../testdata/markdown/simple-before.md",
-			wantFile:  "../../testdata/markdown/simple-after.md",
-		},
-		"markdown long input": {
-			inputFile: "../../testdata/markdown/long-input-purged.md",
-			wantFile:  "../../testdata/markdown/long-input-after.md",
+			wantFile:  "../../testdata/markdown/simple-updated.md",
 		},
 		"markdown with exporter": {
-			inputFile: "../../testdata/markdown/using-exporter-before.md",
-			wantFile:  "../../testdata/markdown/using-exporter-after.md",
+			inputFile: "../../testdata/markdown/import-with-exporter-before.md",
+			wantFile:  "../../testdata/markdown/import-with-exporter-updated.md",
 		},
 	}
 

@@ -1,4 +1,3 @@
 title: Demo of YAML Importer
 # == imptr: description / begin from: ./snippet-description.yaml#[for-demo] ==
-dummy: This will be replaced
 # == imptr: description / end ==
