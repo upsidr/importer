@@ -11,7 +11,6 @@
 
 <!-- == export: list / end == -->
 
-
 <!-- == export: help-output / begin == -->
 
 ```console
@@ -23,7 +22,7 @@ USAGE:
    importer [command]
 
 COMMANDS:
-   preview        Provides Importer update and purge previews
+   preview        Provides previews of Importer update and purge results
    update, up     Processes Importer markers and update the file in place
    generate, gen  Processes Importer markers and send output to stdout or file
    purge          Removes all imported lines and update the file in place
