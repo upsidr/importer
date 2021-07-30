@@ -180,7 +180,7 @@ You can find actually running CI setup in [`.github/workflows/importer-markdown-
 
 ### Importer Marker
 
-<!-- == imptr: basic-marker / begin from: ./docs/getting-started/markers.md#[basic-marker] == -->
+<!-- == imptr: basic-marker / begin from: ./docs/details/markers.md#[basic-marker] == -->
 
 A marker is a simple comment with special syntax, and thus is slightly different depending on file used.
 
@@ -202,4 +202,4 @@ And there has to be a matching "end" marker. This is much simpler, as options ar
 
 <!-- == imptr: basic-marker / end == -->
 
-You can find more about the Importer Marker [here](./docs/getting-started/markers.md).
+You can find more about the Importer Marker [here](./docs/details/markers.md).
