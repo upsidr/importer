@@ -14,7 +14,7 @@ var (
 	previewCliCmd = &cli.Command{
 		Name:      "preview",
 		UsageText: rootCmdName + " preview [filename]",
-		Usage:     "Shows previews of Importer update and purge results",
+		Usage:     "Shows a preview of Importer update and purge results",
 		Description: `
 ` + "`preview`" + ` command processes the provided file and gives you a quick preview.
 

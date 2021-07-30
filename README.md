@@ -91,7 +91,7 @@ USAGE:
    importer [command]
 
 COMMANDS:
-   preview        Shows previews of Importer update and purge results
+   preview        Shows a preview of Importer update and purge results
    update, up     Processes Importer markers and update the file in place
    generate, gen  Processes Importer markers and send output to stdout or file
    purge          Removes all imported lines and update the file in place
