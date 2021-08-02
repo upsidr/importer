@@ -1,5 +1,14 @@
 # Importer
 
+Import any lines, from anywhere
+
+[![Build Status](https://github.com/upsidr/importer/workflows/Build%20Importer/badge.svg?event=push)](build-status) | [![GitHub Release Date](https://img.shields.io/github/release-date/upsidr/importer?color=powderblue)](releases)
+
+[build-status]: https://github.com/upsidr/importer/actions
+[releases]: https://github.com/upsidr/importer/releases
+
+![Demo](/assets/images/importer-update-demo.gif)
+
 ## ✨ Install
 
 <!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
@@ -32,6 +41,9 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 </details>
 
 ## 🚀 Examples
+
+<details>
+<summary>Importer Preview</summary>
 
 <!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-markdown.md#[preview] == -->
 
@@ -75,6 +87,8 @@ You can find more with 'importer help'
 ```
 
 <!-- == imptr: getting-started-example-short / end == -->
+
+</details>
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples-markdown.md).
 
