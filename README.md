@@ -167,7 +167,7 @@ You can find more with 'importer help'
 
 <!-- == imptr: getting-started-example-short / end == -->
 
-You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples-markdown.md).
+You can find more examples [here](/docs/getting-started/examples-markdown.md).
 
 ## :octocat: GitHub Action Integration
 
