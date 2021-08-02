@@ -1,8 +1,10 @@
-## 🚀 Examples
+## 🚀 Examples with Markdown
 
-### Preview With Markdown
+### Preview
 
 <!-- == export: preview / begin == -->
+
+`importer preview` command gives you a quick look at how the file may change when `importer update` and `importer purge` are run against the provided file. This is meant to be useful for testing and debugging.
 
 ```console
 $ importer preview ./testdata/markdown/demo-before.md
@@ -45,11 +47,11 @@ You can find more with 'importer help'
 
 <!-- == export: preview / end == -->
 
-### Steps With Markdown
+### Update
 
-<!-- == export: steps / begin == -->
+<!-- == export: update / begin == -->
 
-**COMMAND**: Check file content before processing
+`importer update` imports based on Importer Markers in the given file, and update the file in place. This is useful for having a single file to manage and also import other file contents. If you want to have a template file which only holds Importer Markers and not actually the imported content, you should use `importer generate` instead.
 
 ```bash
 cat ./testdata/markdown/demo-before.md
@@ -65,9 +67,8 @@ Any content here will be replaced by Importer.
 <!-- == imptr: short-description / end == -->
 ```
 
-**COMMAND**: Preview how Importer processes the above file
-
 ```bash
+# Preview how Importer processes the above file
 importer preview ./testdata/markdown/demo-before.md
 ```
 
@@ -109,9 +110,8 @@ You can replace the file content with either of the commands below:
 You can find more with 'importer help'
 ```
 
-**COMMAND**: Update file with Importer processing
-
 ```bash
+# Update file with Importer processing
 {
   cp ./testdata/markdown/demo-before.md ./testdata/markdown/demo-updated.md
   importer update ./testdata/markdown/demo-updated.md
@@ -134,7 +134,12 @@ This can be easily integrated into CI/CD and automation setup.
 
 You can find this file [`./testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md).
 
-<!-- == export: steps / end == -->
+<!-- == export: update / end == -->
+
+### Generate
+
+<!-- == export: generate / end == -->
+<!-- == export: generate / end == -->
 
 ### Full Example
 

@@ -9,6 +9,16 @@ Import any lines, from anywhere
 
 ![Demo](/assets/images/importer-update-demo.gif)
 
+## 🌄 What is Importer?
+
+Importer is a CLI tool to allow any file to import other file content, including Markdown, YAML, to name a few. Importer uses **Importer Markers**, which is often provided as comment, to find the relevant file and import defined lines based on line numbers or other details.
+
+Files such as Markdown and YAML which are meant to be a single file input can have other file to be pulled in. Importer aims to provide this extra feature without breaking any language, and that means Importer uses code generation approach, where the **Markers** are used to update the file in place.
+
+This may seem like an unnecessary layer for simple files such as Markdown and YAML, but this allows better structure and code reuse, while retaining or even enhancing code readability.
+
+You can find more about the details of Importer in [/docs/details/details.md].
+
 ## ✨ Install
 
 <!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
@@ -112,10 +122,9 @@ You can find more about the Importer Marker [here](./docs/details/markers.md).
 
 ## 🚀 Examples
 
-<details>
-<summary>Importer Preview</summary>
-
 <!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-markdown.md#[preview] == -->
+
+`importer preview` command gives you a quick look at how the file may change when `importer update` and `importer purge` are run against the provided file. This is meant to be useful for testing and debugging.
 
 ```console
 $ importer preview ./testdata/markdown/demo-before.md
@@ -157,8 +166,6 @@ You can find more with 'importer help'
 ```
 
 <!-- == imptr: getting-started-example-short / end == -->
-
-</details>
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples-markdown.md).
 
