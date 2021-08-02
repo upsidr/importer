@@ -40,6 +40,76 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 
 </details>
 
+## 🎮 Commands
+
+<!-- == imptr: commands / begin from: ./docs/details/commands.md#[help-output] == -->
+
+```console
+$ importer -h
+NAME:
+   importer - Import any lines, from anywhere
+
+USAGE:
+   importer [command]
+
+COMMANDS:
+   preview        Shows a preview of Importer update and purge results
+   update, up     Processes Importer markers and update the file in place
+   generate, gen  Processes Importer markers and send output to stdout or file
+   purge          Removes all imported lines and update the file in place
+   help, h        Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --help, -h  show help (default: false)
+```
+
+<!-- == imptr: commands / end == -->
+
+## 🧩 Supported Files
+
+<!-- == imptr: supported-files / begin from: ./docs/details/supported-files.md#[list] == -->
+
+| File Type | Is Supported? | File Extensions | Additional Importer Option |
+| --------- | :-----------: | --------------- | -------------------------- |
+| Markdown  |      ✅       | `.md`           |                            |
+| YAML      |      ✅       | `.yaml`, `.yml` | Indentation                |
+| HTML      |      🚧       | TBC             |                            |
+| TOML      |      🚧       | TBC             |                            |
+
+Any other file type not specified above are not supported by Importer at the moment.
+
+For requesting additional support, [please file an issue from here](https://github.com/upsidr/importer/issues/new?assignees=&labels=enhancement&template=feature-request.yaml&title=%5BFeature+Request%5D%3A+).
+
+<!-- == imptr: supported-files / end == -->
+
+## 🖋 Markers
+
+### Importer Marker
+
+<!-- == imptr: basic-marker / begin from: ./docs/details/markers.md#[basic-marker] == -->
+
+A marker is a simple comment with special syntax, and thus is slightly different depending on file used.
+
+The below is a simple example for **Markdown**.
+
+```markdown
+<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
+```
+
+![Marker explained][marker-explanation]
+
+[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
+
+And there has to be a matching "end" marker. This is much simpler, as options are all defined in the "begin" marker.
+
+```markdown
+<!-- == imptr: getting-started-install / end == -->
+```
+
+<!-- == imptr: basic-marker / end == -->
+
+You can find more about the Importer Marker [here](./docs/details/markers.md).
+
 ## 🚀 Examples
 
 <details>
@@ -92,48 +162,6 @@ You can find more with 'importer help'
 
 You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples-markdown.md).
 
-## 🎮 Commands
-
-<!-- == imptr: commands / begin from: ./docs/details/commands.md#[help-output] == -->
-
-```console
-$ importer -h
-NAME:
-   importer - Import any lines, from anywhere
-
-USAGE:
-   importer [command]
-
-COMMANDS:
-   preview        Shows a preview of Importer update and purge results
-   update, up     Processes Importer markers and update the file in place
-   generate, gen  Processes Importer markers and send output to stdout or file
-   purge          Removes all imported lines and update the file in place
-   help, h        Shows a list of commands or help for one command
-
-GLOBAL OPTIONS:
-   --help, -h  show help (default: false)
-```
-
-<!-- == imptr: commands / end == -->
-
-## 🧩 Supported Files
-
-<!-- == imptr: supported-files / begin from: ./docs/details/supported-files.md#[list] == -->
-
-| File Type | Is Supported? | File Extensions | Additional Importer Option |
-| --------- | :-----------: | --------------- | -------------------------- |
-| Markdown  |      ✅       | `.md`           |                            |
-| YAML      |      ✅       | `.yaml`, `.yml` | Indentation                |
-| HTML      |      🚧       | TBC             |                            |
-| TOML      |      🚧       | TBC             |                            |
-
-Any other file type not specified above are not supported by Importer at the moment.
-
-For requesting additional support, [please file an issue from here](https://github.com/upsidr/importer/issues/new?assignees=&labels=enhancement&template=feature-request.yaml&title=%5BFeature+Request%5D%3A+).
-
-<!-- == imptr: supported-files / end == -->
-
 ## :octocat: GitHub Action Integration
 
 <!-- == imptr: getting-started-github-action / begin from: ./docs/getting-started/github-actions.md#[with-homebrew] == -->
@@ -168,31 +196,3 @@ This repository uses Importer to generate some of the markdown documentation.
 You can find actually running CI setup in [`.github/workflows/importer-markdown-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml).
 
 <!-- == imptr: getting-started-github-action / end == -->
-
-## 🖋 Markers
-
-### Importer Marker
-
-<!-- == imptr: basic-marker / begin from: ./docs/details/markers.md#[basic-marker] == -->
-
-A marker is a simple comment with special syntax, and thus is slightly different depending on file used.
-
-The below is a simple example for **Markdown**.
-
-```markdown
-<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
-```
-
-![Marker explained][marker-explanation]
-
-[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
-
-And there has to be a matching "end" marker. This is much simpler, as options are all defined in the "begin" marker.
-
-```markdown
-<!-- == imptr: getting-started-install / end == -->
-```
-
-<!-- == imptr: basic-marker / end == -->
-
-You can find more about the Importer Marker [here](./docs/details/markers.md).
