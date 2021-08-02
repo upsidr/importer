@@ -17,7 +17,7 @@ Files such as Markdown and YAML which are meant to be a single file input can ha
 
 This may seem like an unnecessary layer for simple files such as Markdown and YAML, but this allows better structure and code reuse, while retaining or even enhancing code readability.
 
-You can find more about the details of Importer in [/docs/details/details.md].
+You can find more about the details of Importer design [here](/docs/details/details.md).
 
 ## ✨ Install
 
