@@ -160,6 +160,54 @@ You can find these files here:
 ### Generate
 
 <!-- == export: generate / end == -->
+
+`importer generate` imports based on Importer Markers in the given file, and write the result to stdout or file. This can be used for debugging, or create a template file with Importer Markers but keep the file purely for Importer Markers.
+
+> 🕹 COMMAND
+
+```bash
+# Check demo file before update
+cat ./testdata/markdown/demo-before.md
+```
+
+```markdown
+# Markdown Demo
+
+<!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
+
+Any content here will be replaced by Importer.
+
+<!-- == imptr: short-description / end == -->
+```
+
+> 🕹 COMMAND
+
+```bash
+# Check the result of Importer processing
+importer generate ./testdata/markdown/demo-before.md
+
+# If you want to write to a file, you can provide --out FILENAME.
+# TODO: the below command doesn't work due to the flag handling, --out needs to be before the filename for it to work as of v0.0.1-rc7
+# importer generate ./testdata/markdown/demo-before.md --out some-target.md
+```
+
+```markdown
+# Markdown Demo
+
+<!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
+
+This demonstrates how a markdown can import other file content.
+
+Importer is a CLI tool to read and process Importer and Exporter markers.  
+This can be easily integrated into CI/CD and automation setup.
+
+<!-- == imptr: short-description / end == -->
+```
+
+You can find this files here:
+
+- [`/testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md)
+
 <!-- == export: generate / end == -->
 
 ### Full Example
