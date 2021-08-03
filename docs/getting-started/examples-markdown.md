@@ -97,7 +97,10 @@ This can be easily integrated into CI/CD and automation setup.
 <!-- == imptr: short-description / end == -->
 ```
 
-You can find this file [`./testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md).
+You can find these files here:
+
+- [`/testdata/markdown/demo-before.md`](/testdata/markdown/demo-before.md)
+- [`/testdata/markdown/demo-updated.md`](/testdata/markdown/demo-updated.md).
 
 <!-- == export: update / end == -->
 
