@@ -212,7 +212,7 @@ You can find this files here:
 
 ## 🎯 Full Example
 
-The below steps allow you to experiment Importer offerings without cloning this repository.
+The below steps allow you to experiment with the Importer offerings without cloning this repository.
 
 You need to have Importer installed.
 
