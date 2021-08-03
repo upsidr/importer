@@ -1,5 +1,9 @@
 ## 🚀 Examples with Markdown
 
+![Marker in Action][marker-in-action]
+
+[marker-in-action]: /assets/images/importer-overview.png "Marker in Action"
+
 ### Preview
 
 <!-- == export: preview / begin == -->

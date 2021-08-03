@@ -16,4 +16,4 @@ brews:
       name: homebrew-tap
     folder: Formula
     homepage: https://github.com/upsidr/importer
-    description: Import lines from anywhere
+    description: Import any lines, from anywhere
