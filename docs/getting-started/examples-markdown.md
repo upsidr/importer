@@ -67,66 +67,20 @@ Any content here will be replaced by Importer.
 <!-- == imptr: short-description / end == -->
 ```
 
-```bash
-# Preview how Importer processes the above file
-importer preview ./testdata/markdown/demo-before.md
-```
-
 ```console
----------------------------------------
-Content Before:
-1:      # Markdown Demo
-2:
-3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-4:      Any content here will be replaced by Importer.
-5:      <!-- == imptr: short-description / end == -->
----------------------------------------
-
----------------------------------------
-Content After Purged:
-1:      # Markdown Demo
-2:
-3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-4:      <!-- == imptr: short-description / end == -->
----------------------------------------
-
----------------------------------------
-Content After Processed:
-1:      # Markdown Demo
-2:
-3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-4:      This demonstrates how a markdown can import other file content.
-5:
-6:      Importer is a CLI tool to read and process Importer and Exporter markers.
-7:      This can be easily integrated into CI/CD and automation setup.
-8:      <!-- == imptr: short-description / end == -->
----------------------------------------
-
-You can replace the file content with either of the commands below:
-
-  importer update ./testdata/markdown/demo-before.md     Replace the file content with the Importer processed file.
-  importer purge ./testdata/markdown/demo-before.md      Replace the file content by removing all data between marker pairs.
-
-You can find more with 'importer help'
-```
-
-```bash
 # Update file with Importer processing
-{
+$ {
   cp ./testdata/markdown/demo-before.md ./testdata/markdown/demo-updated.md
   importer update ./testdata/markdown/demo-updated.md
   cat ./testdata/markdown/demo-updated.md
 }
-```
-
-```markdown
 # Markdown Demo
 
 <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
 
 This demonstrates how a markdown can import other file content.
 
-Importer is a CLI tool to read and process Importer and Exporter markers.  
+Importer is a CLI tool to read and process Importer and Exporter markers.
 This can be easily integrated into CI/CD and automation setup.
 
 <!-- == imptr: short-description / end == -->
