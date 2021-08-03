@@ -255,6 +255,8 @@ Let's check out 3 commands below.
 - `importer purge`
 - `importer update`
 
+#### `importer preview`
+
 Preview allows you to see how Importer processed the file.
 
 ```bash
