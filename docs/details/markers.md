@@ -2,6 +2,10 @@
 
 # Markers
 
+![Marker in Action][marker-in-action]
+
+[marker-in-action]: /assets/images/importer-overview.png "Marker in Action"
+
 ## 📌 Importer Marker
 
 Importer's most important syntax is its markers. Each marker has `begin` and `end` to ensure easy usage and reproducibility.
