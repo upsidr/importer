@@ -54,8 +54,11 @@ You can find more with 'importer help'
 `importer update` imports based on Importer Markers in the given file, and update the file in place. This is useful for having a single file to manage and also import other file contents. If you want to have a template file which only holds Importer Markers and not actually the imported content, you should use `importer generate` instead.
 
 ```bash
+# 🕹 COMMAND
 cat ./testdata/markdown/demo-before.md
 ```
+
+> OUTPUT
 
 ```markdown
 # Markdown Demo
@@ -67,20 +70,27 @@ Any content here will be replaced by Importer.
 <!-- == imptr: short-description / end == -->
 ```
 
-```console
+```bash
+# 🕹 COMMAND
+
 # Update file with Importer processing
-$ {
+{
   cp ./testdata/markdown/demo-before.md ./testdata/markdown/demo-updated.md
   importer update ./testdata/markdown/demo-updated.md
   cat ./testdata/markdown/demo-updated.md
 }
+```
+
+> OUTPUT
+
+```markdown
 # Markdown Demo
 
 <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
 
 This demonstrates how a markdown can import other file content.
 
-Importer is a CLI tool to read and process Importer and Exporter markers.
+Importer is a CLI tool to read and process Importer and Exporter markers.  
 This can be easily integrated into CI/CD and automation setup.
 
 <!-- == imptr: short-description / end == -->
