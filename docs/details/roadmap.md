@@ -2,21 +2,9 @@
 
 The items here are expected to be complete before v1.0 release. The items are not in priority order, though the top most ones tend to be tackled earlier.
 
-### Support YAML files
-
-YAML is another file type that needs to be a single file input, and thus you cannot pull in other content.
-
-Importer is planning to support YAML files in the near future.
-
 ### Add `--dry-run` flag
 
 `importer preview` does very basic preview of how the file would be updated. This should be updated so that when running Importer command with flag `--dry-run` would get the output to stdout.
-
-### Add `generate` and `update` commands
-
-Currently, `importer generate` takes in a file argument, and updates the file content in place.
-
-Instead, we are aiming to provide `importer update` to provide the same feature, while `importer generate` to output the result to stdout. This allows having a separate file that contains Importer Markers, and a generated file as a separate file.
 
 ### Add `graph` command
 

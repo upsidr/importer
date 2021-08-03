@@ -1,5 +1,24 @@
 # Importer
 
+Import any lines, from anywhere
+
+[![Build Status](https://github.com/upsidr/importer/workflows/Build%20Importer/badge.svg?event=push)](build-status) | [![GitHub Release Date](https://img.shields.io/github/release-date/upsidr/importer?color=powderblue)](releases)
+
+[build-status]: https://github.com/upsidr/importer/actions
+[releases]: https://github.com/upsidr/importer/releases
+
+![Demo](/assets/images/importer-update-demo.gif)
+
+## 🌄 What is Importer?
+
+Importer is a CLI tool to allow any file to import other file content, including Markdown, YAML, to name a few. Importer uses **Importer Markers**, which are often provided as comment, to find the relevant file and import defined lines based on line numbers and other details.
+
+Files such as Markdown and YAML which are meant to be a single file input can have other file to be pulled in. Importer aims to provide this extra feature without breaking any language, and that means Importer uses code generation approach, where the **Markers** are used to update the file in place.
+
+This may seem like an unnecessary layer for simple files such as Markdown and YAML, but this allows better structure and code reuse, while retaining or even enhancing code readability.
+
+You can find more about the details of Importer design [here](/docs/details/details.md).
+
 ## ✨ Install
 
 <!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
@@ -30,53 +49,6 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 <!-- == imptr: install-with-go / end == -->
 
 </details>
-
-## 🚀 Examples
-
-<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-markdown.md#[preview] == -->
-
-```console
-$ importer preview ./testdata/markdown/demo-before.md
----------------------------------------
-Content Before:
-1:      # Markdown Demo
-2:
-3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-4:      Any content here will be replaced by Importer.
-5:      <!-- == imptr: short-description / end == -->
----------------------------------------
-
----------------------------------------
-Content After Purged:
-1:      # Markdown Demo
-2:
-3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-4:      <!-- == imptr: short-description / end == -->
----------------------------------------
-
----------------------------------------
-Content After Processed:
-1:      # Markdown Demo
-2:
-3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-4:      This demonstrates how a markdown can import other file content.
-5:
-6:      Importer is a CLI tool to read and process Importer and Exporter markers.
-7:      This can be easily integrated into CI/CD and automation setup.
-8:      <!-- == imptr: short-description / end == -->
----------------------------------------
-
-You can replace the file content with either of the commands below:
-
-  importer update ./testdata/markdown/demo-before.md     Replace the file content with the Importer processed file.
-  importer purge ./testdata/markdown/demo-before.md      Replace the file content by removing all data between marker pairs.
-
-You can find more with 'importer help'
-```
-
-<!-- == imptr: getting-started-example-short / end == -->
-
-You can find more examples [here](https://github.com/upsidr/importer/blob/main/docs/getting-started/examples-markdown.md).
 
 ## 🎮 Commands
 
@@ -120,6 +92,83 @@ For requesting additional support, [please file an issue from here](https://gith
 
 <!-- == imptr: supported-files / end == -->
 
+## 🖋 Markers
+
+### Importer Marker
+
+<!-- == imptr: basic-marker / begin from: ./docs/details/markers.md#[basic-marker] == -->
+
+A marker is a simple comment with special syntax, and thus is slightly different depending on file used.
+
+The below is a simple example for **Markdown**.
+
+```markdown
+<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
+```
+
+![Marker explained][marker-explanation]
+
+[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
+
+And there has to be a matching "end" marker. This is much simpler, as options are all defined in the "begin" marker.
+
+```markdown
+<!-- == imptr: getting-started-install / end == -->
+```
+
+<!-- == imptr: basic-marker / end == -->
+
+You can find more about the Importer Marker [here](./docs/details/markers.md).
+
+## 🚀 Examples
+
+<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-markdown.md#[preview] == -->
+
+`importer preview` command gives you a quick look at how the file may change when `importer update` and `importer purge` are run against the provided file. This is meant to be useful for testing and debugging.
+
+```console
+$ importer preview ./testdata/markdown/demo-before.md
+---------------------------------------
+Content Before:
+1:      # Markdown Demo
+2:
+3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
+4:      Any content here will be replaced by Importer.
+5:      <!-- == imptr: short-description / end == -->
+---------------------------------------
+
+---------------------------------------
+Content After Purged:
+1:      # Markdown Demo
+2:
+3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
+4:      <!-- == imptr: short-description / end == -->
+---------------------------------------
+
+---------------------------------------
+Content After Processed:
+1:      # Markdown Demo
+2:
+3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
+4:      This demonstrates how a markdown can import other file content.
+5:
+6:      Importer is a CLI tool to read and process Importer and Exporter markers.
+7:      This can be easily integrated into CI/CD and automation setup.
+8:      <!-- == imptr: short-description / end == -->
+---------------------------------------
+
+You can replace the file content with either of the commands below:
+
+  importer update ./testdata/markdown/demo-before.md     Replace the file content with the Importer processed file.
+  importer purge ./testdata/markdown/demo-before.md      Replace the file content by removing all data between marker pairs.
+
+You can find more with 'importer help'
+```
+
+<!-- == imptr: getting-started-example-short / end == -->
+
+You can find more examples [here](/docs/getting-started/examples-markdown.md).
+
 ## :octocat: GitHub Action Integration
 
 <!-- == imptr: getting-started-github-action / begin from: ./docs/getting-started/github-actions.md#[with-homebrew] == -->
@@ -154,31 +203,3 @@ This repository uses Importer to generate some of the markdown documentation.
 You can find actually running CI setup in [`.github/workflows/importer-markdown-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml).
 
 <!-- == imptr: getting-started-github-action / end == -->
-
-## 🖋 Markers
-
-### Importer Marker
-
-<!-- == imptr: basic-marker / begin from: ./docs/details/markers.md#[basic-marker] == -->
-
-A marker is a simple comment with special syntax, and thus is slightly different depending on file used.
-
-The below is a simple example for **Markdown**.
-
-```markdown
-<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
-```
-
-![Marker explained][marker-explanation]
-
-[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
-
-And there has to be a matching "end" marker. This is much simpler, as options are all defined in the "begin" marker.
-
-```markdown
-<!-- == imptr: getting-started-install / end == -->
-```
-
-<!-- == imptr: basic-marker / end == -->
-
-You can find more about the Importer Marker [here](./docs/details/markers.md).
