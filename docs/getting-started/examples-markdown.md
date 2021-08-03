@@ -266,34 +266,34 @@ importer preview /tmp/importer-example.md
 <summary>Expand to see the full output</summary>
 
 ```console
----------------
+---------------------------------------
 Content Before:
-0:      # Simple Markdown Test
-1:
-2:      <!-- == imptr: lorem / begin from: ../../testdata/markdown/snippet-lorem.md#5~12 == -->
-3:
-4:      Any content here will be removed by Importer.
-5:
-6:      <!-- == imptr: lorem / end == -->
-7:
-8:      Content after marker is left untouched.
----------------
-
----------------
-Content After Purged:
-0:      # Simple Markdown Test
-1:
-2:      <!-- == imptr: lorem / begin from: ../../testdata/markdown/snippet-lorem.md#5~12 == -->
-3:      <!-- == imptr: lorem / end == -->
+1:      # Simple Markdown Test
+2:
+3:      <!-- == imptr: lorem / begin from: ./snippet-lorem.md#5~12 == -->
 4:
-5:      Content after marker is left untouched.
----------------
+5:      Any content here will be removed by Importer.
+6:
+7:      <!-- == imptr: lorem / end == -->
+8:
+9:      Content after marker is left untouched.
+---------------------------------------
 
----------------
+---------------------------------------
+Content After Purged:
+1:      # Simple Markdown Test
+2:
+3:      <!-- == imptr: lorem / begin from: ./snippet-lorem.md#5~12 == -->
+4:      <!-- == imptr: lorem / end == -->
+5:
+6:      Content after marker is left untouched.
+---------------------------------------
+
+---------------------------------------
 Content After Processed:
 1:      # Simple Markdown Test
 2:
-3:      <!-- == imptr: lorem / begin from: ../../testdata/markdown/snippet-lorem.md#5~12 == -->
+3:      <!-- == imptr: lorem / begin from: ./snippet-lorem.md#5~12 == -->
 4:      "Lorem ipsum dolor sit amet,
 5:      consectetur adipiscing elit,
 6:      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -305,14 +305,12 @@ Content After Processed:
 12:     <!-- == imptr: lorem / end == -->
 13:
 14:     Content after marker is left untouched.
----------------
+---------------------------------------
 
 You can replace the file content with either of the commands below:
 
-- 'importer generate testdata/simple-before.md'
-  Replace the file content with the processed file, importing all annotated references.
-- 'importer purge testdata/simple-before.md'
-  Replace the file content by removing all data between marker pairs.
+  importer update /tmp/importer-example.md     Replace the file content with the Importer processed file.
+  importer purge /tmp/importer-example.md      Replace the file content by removing all data between marker pairs.
 
 You can find more with 'importer help'
 ```
