@@ -74,6 +74,7 @@ Any content here will be replaced by Importer.
 
 ```bash
 # Update file with Importer processing.
+#
 # Because Importer updates the file in place, this is making a copy of the
 # "-before" file, and running importer update against the copied file of
 # "-updated" file.
@@ -101,6 +102,58 @@ You can find these files here:
 
 - [`/testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md)
 - [`/testdata/markdown/demo-updated.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-updated.md)
+
+<!-- == export: update / end == -->
+
+### Purge
+
+<!-- == export: purge / begin == -->
+
+`importer purge` removes any lines between Importer Markers in the given file, and update the file in place. The same operation is executed for `importer update` before importing all the lines, but this "purge" is sometimes useful to see the file without extra data imported.
+
+> 🕹 COMMAND
+
+```bash
+# Check demo file before update
+cat ./testdata/markdown/demo-before.md
+```
+
+```markdown
+# Markdown Demo
+
+<!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
+
+Any content here will be replaced by Importer.
+
+<!-- == imptr: short-description / end == -->
+```
+
+> 🕹 COMMAND
+
+```bash
+# Purge any text between Importer Markers.
+#
+# Because Importer updates the file in place, this is making a copy of the
+# "-before" file, and running importer update against the copied file of
+# "-puged" file.
+{
+  cp ./testdata/markdown/demo-before.md ./testdata/markdown/demo-purged.md
+  importer purge ./testdata/markdown/demo-purged.md
+  cat ./testdata/markdown/demo-purged.md
+}
+```
+
+```markdown
+# Markdown Demo
+
+<!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
+<!-- == imptr: short-description / end == -->
+```
+
+You can find these files here:
+
+- [`/testdata/markdown/demo-before.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-before.md)
+- [`/testdata/markdown/demo-purged.md`](https://raw.githubusercontent.com/upsidr/importer/main/testdata/markdown/demo-purged.md)
 
 <!-- == export: update / end == -->
 
