@@ -53,12 +53,11 @@ You can find more with 'importer help'
 
 `importer update` imports based on Importer Markers in the given file, and update the file in place. This is useful for having a single file to manage and also import other file contents. If you want to have a template file which only holds Importer Markers and not actually the imported content, you should use `importer generate` instead.
 
+> 🕹 COMMAND
+
 ```bash
-# 🕹 COMMAND
 cat ./testdata/markdown/demo-before.md
 ```
-
-> OUTPUT
 
 ```markdown
 # Markdown Demo
@@ -70,8 +69,9 @@ Any content here will be replaced by Importer.
 <!-- == imptr: short-description / end == -->
 ```
 
+> 🕹 COMMAND
+
 ```bash
-# 🕹 COMMAND
 
 # Update file with Importer processing
 {
@@ -80,8 +80,6 @@ Any content here will be replaced by Importer.
   cat ./testdata/markdown/demo-updated.md
 }
 ```
-
-> OUTPUT
 
 ```markdown
 # Markdown Demo
