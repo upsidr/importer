@@ -210,9 +210,11 @@ You can find this files here:
 
 <!-- == export: generate / end == -->
 
-### Full Example
+## 🎯 Full Example
 
-The below allows you to experiment Importer offering without cloning this repository.
+The below steps allow you to experiment Importer offerings without cloning this repository.
+
+You need to have Importer installed.
 
 ```bash
 {
@@ -247,16 +249,16 @@ EOF
 }
 ```
 
-Importer currently supports 3 commands:
+Let's check out 3 commands below.
 
 - `importer preview`
 - `importer purge`
-- `importer generate`
+- `importer update`
 
 Preview allows you to see how Importer processed the file.
 
 ```bash
-$ importer preview /tmp/importer-example.md
+importer preview /tmp/importer-example.md
 ```
 
 <details>
@@ -345,7 +347,14 @@ Content after marker is left untouched.
 
 </details>
 
-#### `importer generate`
+#### `importer update`
+
+```bash
+{
+    importer update /tmp/importer-example.md
+    cat /tmp/importer-example.md
+}
+```
 
 <details>
 
