@@ -56,6 +56,7 @@ You can find more with 'importer help'
 > 🕹 COMMAND
 
 ```bash
+# Check demo file before update
 cat ./testdata/markdown/demo-before.md
 ```
 
@@ -72,8 +73,10 @@ Any content here will be replaced by Importer.
 > 🕹 COMMAND
 
 ```bash
-
-# Update file with Importer processing
+# Update file with Importer processing.
+# Because Importer updates the file in place, this is making a copy of the
+# "-before" file, and running importer update against the copied file of
+# "-updated" file.
 {
   cp ./testdata/markdown/demo-before.md ./testdata/markdown/demo-updated.md
   importer update ./testdata/markdown/demo-updated.md
