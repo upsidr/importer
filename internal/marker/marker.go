@@ -25,10 +25,9 @@ type Marker struct {
 	TargetPath string
 
 	TargetExportMarker string
-
-	TargetLines    []int
-	TargetLineFrom int
-	TargetLineTo   int
+	TargetLines        []int
+	TargetLineFrom     int
+	TargetLineTo       int
 
 	Indentation *Indentation
 
@@ -41,12 +40,14 @@ const (
 	// Reserve 0 value as invalid
 	AbsoluteIndentation IndentationMode = iota + 1
 	ExtraIndentation
+	AlignIndentation
 )
 
 // Indentation holds additional indentation handling option.
 type Indentation struct {
-	Mode   IndentationMode
-	Length int
+	Mode              IndentationMode
+	Length            int
+	MarkerIndentation int
 }
 
 func NewMarker(raw *RawMarker) (*Marker, error) {
@@ -106,7 +107,12 @@ func processIndentOption(marker *Marker, match *RawMarker) error {
 		case "extra":
 			marker.Indentation = &Indentation{Mode: ExtraIndentation}
 		case "align":
-			// TODO: implement
+			markerIndentation := len(match.PrecedingIndentation) - len(strings.TrimLeft(match.PrecedingIndentation, " ")) // Naïve count
+			marker.Indentation = &Indentation{
+				Mode:              AlignIndentation,
+				MarkerIndentation: markerIndentation,
+			}
+			return nil // Align option does not care length information
 		default:
 			return errors.New("unsupported indentation mode") // This shouldn't happen with the underlying regex
 		}
