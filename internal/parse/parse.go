@@ -171,6 +171,10 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 			// skipping empty string as end marker shouldn't override
 			matchData.Options = importerOption
 		}
+		if markerIndentation, found := matches["importer_marker_indentation"]; found && markerIndentation != "" {
+			// skipping empty string as end marker shouldn't override
+			matchData.PrecedingIndentation = markerIndentation
+		}
 
 		rawMarkers[subgroupName] = matchData
 	}

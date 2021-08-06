@@ -3,18 +3,21 @@ package marker
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/upsidr/importer/internal/regexpplus"
 )
 
-// ProcessMarker processes the marker data to generate the byte array of import
-// target. Marker validation is assumed by using NewMarker.
+// ProcessMarkerData processes the marker data to generate the byte array of
+// import target. Marker validation is assumed by using NewMarker.
 //
 // `importingFilePath` input is used for resolving relative filepath to find
 // the import target.
-func (m *Marker) ProcessMarker(importingFilePath string) ([]byte, error) {
+func (m *Marker) ProcessMarkerData(importingFilePath string) ([]byte, error) {
 	// TODO: Add support for URL https://github.com/upsidr/importer/issues/14
 
 	// Make sure the files are read based on the relative path
@@ -94,9 +97,10 @@ func (m *Marker) processSingleMarkerMarkdown(file *os.File) ([]byte, error) {
 func (m *Marker) processSingleMarkerYAML(file *os.File) ([]byte, error) {
 	result := []byte{}
 
-	reExport := regexp.MustCompile(ExporterMarkerYAML)
-	withinExportMarker := false
-	markerIndentation := 0
+	// reExport := regexp.MustCompile(ExporterMarkerYAML)
+	isNested := false
+	nestedUnder := ""
+	exporterMarkerIndentation := 0
 	currentLine := 0
 
 	scanner := bufio.NewScanner(file)
@@ -106,45 +110,63 @@ func (m *Marker) processSingleMarkerYAML(file *os.File) ([]byte, error) {
 		lineString := scanner.Text()
 		lineData := scanner.Bytes()
 
-		// Find Exporter Marker
-		match := reExport.FindStringSubmatch(lineString)
-		if len(match) != 0 {
-			// match[1] is export_marker_indent
-			if len(match[1]) > 0 {
-				markerIndentation = len(match[1])
-			}
-
-			// match[2] is export_marker_name
-			if match[2] == m.TargetExportMarker {
-				withinExportMarker = true
-			}
-			// match[3] is exporter_marker_condition
-			if match[3] == "end" {
-				withinExportMarker = false
-				markerIndentation = 0
-			}
-			continue
-		}
-
-		// Handle export marker imports
-		if withinExportMarker {
-			lineData = adjustIndentation(lineData, markerIndentation, m)
-			result = append(result, lineData...)
-			continue
-		}
-
-		// Handle line number imports
-		if currentLine >= m.TargetLineFrom &&
-			currentLine <= m.TargetLineTo {
-			lineData = adjustIndentation(lineData, markerIndentation, m)
-			result = append(result, lineData...)
-			continue
-		}
-		for _, l := range m.TargetLines {
-			if currentLine == l {
-				lineData = adjustIndentation(lineData, markerIndentation, m)
+		switch {
+		// Handle line number range
+		case m.TargetLineFrom > 0:
+			if currentLine >= m.TargetLineFrom &&
+				currentLine <= m.TargetLineTo {
+				lineData = append(lineData, br)
 				result = append(result, lineData...)
 				continue
+			}
+
+		// Handle line number slice
+		case len(m.TargetLines) > 0:
+			for _, l := range m.TargetLines {
+				if currentLine == l {
+					lineData = append(lineData, br)
+					result = append(result, lineData...)
+					continue
+				}
+			}
+
+		// Handle ExporterMarker
+		case m.TargetExportMarker != "":
+			// Find Exporter Marker
+			matches, err := regexpplus.MapWithNamedSubgroups(lineString, ExporterMarkerYAML)
+			if errors.Is(err, regexpplus.ErrNoMatch) {
+				// This line is not Exporter Marker. If there has been some
+				// marker found already, append the line and continue
+				if isNested {
+					lineData = adjustIndentation(lineData, exporterMarkerIndentation, m.Indentation)
+					result = append(result, lineData...)
+				}
+				continue
+			}
+			if err != nil {
+				panic(err) // Unknown error, should not happen
+			}
+
+			if exporterName, found := matches["export_marker_name"]; found {
+				// Ignore unrelated marker
+				if exporterName != m.TargetExportMarker || exporterName == "" {
+					continue
+				}
+
+				if x, found := matches["export_marker_indent"]; found {
+					indent := len(x) - len(strings.TrimLeft(x, " "))
+					exporterMarkerIndentation = indent
+				}
+
+				if exporterCondition, found := matches["exporter_marker_condition"]; found {
+					if exporterName == nestedUnder && exporterCondition == "end" {
+						isNested = false
+						exporterMarkerIndentation = 0
+						continue
+					}
+				}
+				nestedUnder = exporterName
+				isNested = true
 			}
 		}
 	}
@@ -184,39 +206,73 @@ func (m *Marker) processSingleMarkerOther(file *os.File) ([]byte, error) {
 	return result, nil
 }
 
-func adjustIndentation(lineData []byte, markerIndentation int, marker *Marker) []byte {
+func adjustIndentation(lineData []byte, exporterMarkerIndent int, importerIndentation *Indentation) []byte {
 	// If no indentation setup is done, simply return as is
-	if marker.Indentation == nil {
+	if importerIndentation == nil {
 		lineData = append(lineData, br)
 		return lineData
 	}
 
-	lineString := string(lineData)
-	indentLength := marker.Indentation.Length
 	// Check which indentation adjustment is used.
 	// Absolute adjustment takes precedence over extra indentation.
-	switch marker.Indentation.Mode {
+	switch importerIndentation.Mode {
 	case AbsoluteIndentation:
-		actualIndent := len(lineString) - len(strings.TrimLeft(lineString, " "))
-		switch {
-		// Marker appears with more indentation than Absolute, and thus strip
-		// extra indentations.
-		case markerIndentation > indentLength:
-			indentAdjustment := markerIndentation - indentLength
-			lineData = lineData[indentAdjustment:]
-
-		// Marker has less indentation than Absolute wants, and thus prepend
-		// the indent diff.
-		case markerIndentation < indentLength:
-			indentAdjustment := indentLength - markerIndentation
-			lineData = prependWhitespaces(lineData, indentAdjustment)
-		case actualIndent < markerIndentation:
-			// TODO: Handle case where indentation is less than marker indentation
-		}
+		lineData = handleAbsoluteIndentation(lineData, exporterMarkerIndent, importerIndentation.Length)
 	case ExtraIndentation:
-		lineData = prependWhitespaces(lineData, indentLength)
+		lineData = prependWhitespaces(lineData, importerIndentation.Length)
+	case AlignIndentation:
+		lineData = handleAbsoluteIndentation(lineData, exporterMarkerIndent, importerIndentation.MarkerIndentation)
 	}
 	lineData = append(lineData, br)
+	return lineData
+}
+
+// handleAbsoluteIndentation updates the lineData with provided indentation.
+//
+// There are 3 different indent information to handle:
+//
+//   A. Indent target in absolute value
+//   B. Original preceding indent in the lineData
+//   C. Indent of Exporter Marker
+//
+// With the absolute indentation handling, A and B are obviously required. For
+// C, it is important that YAML tree structure is persisted, and thus it is
+// crucial to know how much indent Exporter Marker has.
+//
+// With the above covered, there are a few cases to handle:
+//
+//   1. Original lineData has more indentation than target indentation
+//   2. Original lineData has fewer indentation than target indentation
+//   3. Original lineData has fewer preceding indentation than Importer Marker
+//
+// For the Case 1. and 2., the diff needs to be calculated to ensure correct
+// indentation.
+//
+// For the Case 3., it's not clear what we should expect. This is currently not
+// handled, and it may need to be an error.
+func handleAbsoluteIndentation(lineData []byte, exportMarkerIndent, targetIndent int) []byte {
+	lineString := string(lineData)
+	currenttIndent := len(lineString) - len(strings.TrimLeft(lineString, " "))
+
+	switch {
+	// Case 1.
+	// Marker appears with more indentation than Absolute, and thus strip
+	// extra indentations.
+	case exportMarkerIndent >= targetIndent:
+		indentAdjustment := exportMarkerIndent - targetIndent
+		return lineData[indentAdjustment:]
+
+	// Case 2.
+	// Marker has less indentation than Absolute wants, and thus prepend
+	// the indent diff.
+	case exportMarkerIndent < targetIndent:
+		indentAdjustment := targetIndent - exportMarkerIndent
+		return prependWhitespaces(lineData, indentAdjustment)
+
+	// Case 3.
+	case currenttIndent < exportMarkerIndent:
+		// TODO: Handle case where indentation is less than marker indentation
+	}
 	return lineData
 }
 

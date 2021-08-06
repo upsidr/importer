@@ -1,0 +1,18 @@
+data:
+  description: |
+    Test align logic
+    ...
+
+  some:
+    indentation:
+      for:
+        demo:
+          # == imptr: abc-tree / begin from: ./snippet-with-exporter.yaml#[long-tree] indent: align ==
+          anything: here
+          would: be
+          purged: by Importer
+          # == imptr: abc-tree / end ==
+
+  some-data:
+    description: |
+      any data outside of Importer Markers are unaffected.
