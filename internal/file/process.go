@@ -24,7 +24,7 @@ func (f *File) ProcessMarkers() error {
 		// Marker is found for the given line. Before proceeding to the
 		// next line, handle marker and import the target data.
 		if marker, found := f.Markers[line+1]; found {
-			processed, err := marker.ProcessMarker(f.FileName)
+			processed, err := marker.ProcessMarkerData(f.FileName)
 			if err != nil {
 				fmt.Printf("warning: %s\n", err)
 				continue
