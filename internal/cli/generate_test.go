@@ -33,6 +33,10 @@ func TestGenerateStdout(t *testing.T) {
 			inputFile: "../../testdata/markdown/import-with-exporter-before.md",
 			wantFile:  "../../testdata/markdown/import-with-exporter-updated.md",
 		},
+		"yaml with exporter and align": {
+			inputFile: "../../testdata/yaml/align-with-exporter-before.yaml",
+			wantFile:  "../../testdata/yaml/align-with-exporter-updated.yaml",
+		},
 		"error case: file not found": {
 			inputFile:     "does_not_exist",
 			wantErrString: "no such file",
