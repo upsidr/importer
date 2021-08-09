@@ -75,7 +75,22 @@ func TestProcessSingleMarker(t *testing.T) {
         e:
 `),
 		},
-		"yaml: line range with URL": {
+		"yaml: line range with URL, github.com": {
+			callerFile: "./some_file.yaml",
+			marker: &Marker{
+				LineToInsertAt: 5,
+				TargetURL:      "https://github.com/upsidr/importer/blob/main/testdata/yaml/snippet-simple-tree.yaml",
+				TargetLineFrom: 2,
+				TargetLineTo:   5,
+				Indentation:    nil,
+			},
+			want: []byte(`  b:
+    c:
+      d:
+        e:
+`),
+		},
+		"yaml: line range with URL, raw.githubusercontent.com": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
@@ -251,6 +266,58 @@ func TestProcessSingleMarker(t *testing.T) {
 					t.Errorf("error did not match:\n    want: %v\n    got:  %v", tc.wantErr, err)
 				}
 				return
+			}
+
+			if diff := cmp.Diff(string(tc.want), string(result)); diff != "" {
+				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestPreprocessURL(t *testing.T) {
+	cases := map[string]struct {
+		input   string
+		want    string
+		wantErr error
+	}{
+		"github.com -> raw: based on branch": {
+			input: "https://github.com/upsidr/importer/blob/main/README.md",
+			want:  "https://raw.githubusercontent.com/upsidr/importer/main/README.md",
+		},
+		"github.com -> raw: based on commit": {
+			input: "https://github.com/upsidr/importer/blob/a81365f65633be66972c5b071ba9db6bc44ffeb3/README.md",
+			want:  "https://raw.githubusercontent.com/upsidr/importer/a81365f65633be66972c5b071ba9db6bc44ffeb3/README.md",
+		},
+		"github.com -> raw: directory 'blob' is ignored": {
+			input: "https://github.com/upsidr/importer/blob/main/blob/blob/README.md",
+			want:  "https://raw.githubusercontent.com/upsidr/importer/main/blob/blob/README.md",
+		},
+		"github.com as is: directory input": {
+			input: "https://github.com/upsidr/importer/tree/main/cmd/importer",
+			want:  "https://github.com/upsidr/importer/tree/main/cmd/importer",
+		},
+		"github.com as is: some other content": {
+			input: "https://github.com/explore",
+			want:  "https://github.com/explore",
+		},
+		"non-github.com: return as is": {
+			input: "https://google.com/something",
+			want:  "https://google.com/something",
+		},
+
+		// ERROR CASE
+		"invalid path": {
+			input:   "something",
+			wantErr: ErrInvalidPath,
+		},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			result, err := preprocessURL(tc.input)
+			if (err != nil) && !errors.Is(err, tc.wantErr) {
+				t.Fatalf("error mismatch\n    error = %v\n    wantErr %v", err, tc.wantErr)
 			}
 
 			if diff := cmp.Diff(string(tc.want), string(result)); diff != "" {

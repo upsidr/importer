@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -35,7 +36,11 @@ func (m *Marker) ProcessMarkerData(importingFilePath string) ([]byte, error) {
 		defer f.Close()
 		file = f
 	case m.TargetURL != "":
-		r, err := http.Get(m.TargetURL)
+		u, err := preprocessURL(m.TargetURL)
+		if err != nil {
+			return nil, err
+		}
+		r, err := http.Get(u)
 		if err != nil {
 			return nil, err // TODO: test coverage
 		}
@@ -218,4 +223,32 @@ func (m *Marker) processSingleMarkerOther(file io.Reader) ([]byte, error) {
 		}
 	}
 	return result, nil
+}
+
+// preprocessURL checks the incoming address input and returns the updated
+// URL.
+//
+// This includes updates such as github.com address to be based on
+// raw.githubusercontent.com for easier reference.
+func preprocessURL(address string) (string, error) {
+	u, err := url.ParseRequestURI(address)
+	if err != nil {
+		return "", fmt.Errorf("%w, %v", ErrInvalidPath, err)
+	}
+
+	// For non-github.com address, simply return as is
+	if u.Host != "github.com" {
+		return address, nil
+	}
+
+	// TODO: naïve implementation, this won't work for username "blob" or repo name "blob"
+	ps := strings.SplitN(u.Path, "/blob/", 2)
+	if len(ps) == 1 {
+		return address, nil
+	}
+
+	u.Host = "raw.githubusercontent.com"
+	u.Path = strings.Join(ps, "/")
+
+	return u.String(), nil
 }
