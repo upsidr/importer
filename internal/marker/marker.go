@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"net/url"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -23,6 +24,7 @@ type Marker struct {
 	LineToInsertAt int
 
 	TargetPath string
+	TargetURL  string
 
 	TargetExportMarker string
 	TargetLines        []int
@@ -136,18 +138,25 @@ func processIndentOption(marker *Marker, match *RawMarker) error {
 // processTargetPath processes string input of import target path.
 //
 // Target path can be 2 forms.
-//   - Relative or absolute path to local file
 //   - URL to retrieve the file from
-//
-// TODO: URL handling to be supported
+//   - Relative or absolute path to local file
 func processTargetPath(marker *Marker, input string) error {
-	// TODO: Add more validation
-	_, file := filepath.Split(input)
-	if file == "" {
-		return fmt.Errorf("%w, directory cannot be imported", ErrInvalidPath)
+	switch {
+	// TODO: Naïve implementation, fix this
+	case strings.HasPrefix(input, "http://"),
+		strings.HasPrefix(input, "https://"):
+		_, err := url.ParseRequestURI(input)
+		if err != nil {
+			return err
+		}
+		marker.TargetURL = input
+	default:
+		_, file := filepath.Split(input)
+		if file == "" {
+			return fmt.Errorf("%w, directory cannot be imported", ErrInvalidPath)
+		}
+		marker.TargetPath = input
 	}
-
-	marker.TargetPath = input
 
 	return nil
 }

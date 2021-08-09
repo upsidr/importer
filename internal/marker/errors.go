@@ -10,4 +10,5 @@ var (
 	ErrNoMatchingMarker    = errors.New("no matching marker found, marker must be a begin/end pair")
 	ErrMissingOption       = errors.New("missing option")
 	ErrMissingName         = errors.New("unnamed marker cannot be used")
+	ErrNoFileInput         = errors.New("no target file input provided")
 )

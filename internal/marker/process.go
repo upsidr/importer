@@ -2,8 +2,11 @@ package marker
 
 import (
 	"bufio"
-	"bytes"
 	"errors"
+	"fmt"
+	"io"
+	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -18,18 +21,34 @@ import (
 // `importingFilePath` input is used for resolving relative filepath to find
 // the import target.
 func (m *Marker) ProcessMarkerData(importingFilePath string) ([]byte, error) {
-	// TODO: Add support for URL https://github.com/upsidr/importer/issues/14
-
-	// Make sure the files are read based on the relative path
-	dir := filepath.Dir(importingFilePath)
-	targetPath := dir + "/" + m.TargetPath
-	file, err := os.Open(targetPath)
-	if err != nil {
-		// Purposely returning the byte slice as it contains data that were
-		// populated prior to hitting this func
-		return nil, err
+	var file io.Reader
+	switch {
+	case m.TargetPath != "":
+		// Make sure the files are read based on the relative path
+		dir := filepath.Dir(importingFilePath)
+		targetPath := dir + "/" + m.TargetPath
+		f, err := os.Open(targetPath)
+		if err != nil {
+			// Purposely returning the byte slice as it contains data that were
+			// populated prior to hitting this func
+			return nil, err
+		}
+		defer f.Close()
+		file = f
+	case m.TargetURL != "":
+		u, err := preprocessURL(m.TargetURL)
+		if err != nil {
+			return nil, err
+		}
+		r, err := http.Get(u)
+		if err != nil {
+			return nil, err // TODO: test coverage
+		}
+		defer r.Body.Close()
+		file = r.Body
+	default:
+		return nil, fmt.Errorf("%w", ErrNoFileInput)
 	}
-	defer file.Close()
 
 	fileType := filepath.Ext(importingFilePath)
 	switch fileType {
@@ -44,7 +63,7 @@ func (m *Marker) ProcessMarkerData(importingFilePath string) ([]byte, error) {
 
 const br = byte('\n')
 
-func (m *Marker) processSingleMarkerMarkdown(file *os.File) ([]byte, error) {
+func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 	result := []byte{}
 
 	reExport := regexp.MustCompile(ExporterMarkerMarkdown)
@@ -94,7 +113,7 @@ func (m *Marker) processSingleMarkerMarkdown(file *os.File) ([]byte, error) {
 	return result, nil
 }
 
-func (m *Marker) processSingleMarkerYAML(file *os.File) ([]byte, error) {
+func (m *Marker) processSingleMarkerYAML(file io.Reader) ([]byte, error) {
 	result := []byte{}
 
 	// reExport := regexp.MustCompile(ExporterMarkerYAML)
@@ -173,7 +192,7 @@ func (m *Marker) processSingleMarkerYAML(file *os.File) ([]byte, error) {
 	return result, nil
 }
 
-func (m *Marker) processSingleMarkerOther(file *os.File) ([]byte, error) {
+func (m *Marker) processSingleMarkerOther(file io.Reader) ([]byte, error) {
 	result := []byte{}
 
 	currentLine := 0
@@ -206,82 +225,30 @@ func (m *Marker) processSingleMarkerOther(file *os.File) ([]byte, error) {
 	return result, nil
 }
 
-func adjustIndentation(lineData []byte, exporterMarkerIndent int, importerIndentation *Indentation) []byte {
-	// If no indentation setup is done, simply return as is
-	if importerIndentation == nil {
-		lineData = append(lineData, br)
-		return lineData
+// preprocessURL checks the incoming address input and returns the updated
+// URL.
+//
+// This includes updates such as github.com address to be based on
+// raw.githubusercontent.com for easier reference.
+func preprocessURL(address string) (string, error) {
+	u, err := url.ParseRequestURI(address)
+	if err != nil {
+		return "", fmt.Errorf("%w, %v", ErrInvalidPath, err)
 	}
 
-	// Check which indentation adjustment is used.
-	// Absolute adjustment takes precedence over extra indentation.
-	switch importerIndentation.Mode {
-	case AbsoluteIndentation:
-		lineData = handleAbsoluteIndentation(lineData, exporterMarkerIndent, importerIndentation.Length)
-	case ExtraIndentation:
-		lineData = prependWhitespaces(lineData, importerIndentation.Length)
-	case AlignIndentation:
-		lineData = handleAbsoluteIndentation(lineData, exporterMarkerIndent, importerIndentation.MarkerIndentation)
+	// For non-github.com address, simply return as is
+	if u.Host != "github.com" {
+		return address, nil
 	}
-	lineData = append(lineData, br)
-	return lineData
-}
 
-// handleAbsoluteIndentation updates the lineData with provided indentation.
-//
-// There are 3 different indent information to handle:
-//
-//   A. Indent target in absolute value
-//   B. Original preceding indent in the lineData
-//   C. Indent of Exporter Marker
-//
-// With the absolute indentation handling, A and B are obviously required. For
-// C, it is important that YAML tree structure is persisted, and thus it is
-// crucial to know how much indent Exporter Marker has.
-//
-// With the above covered, there are a few cases to handle:
-//
-//   1. Original lineData has more indentation than target indentation
-//   2. Original lineData has fewer indentation than target indentation
-//   3. Original lineData has fewer preceding indentation than Importer Marker
-//
-// For the Case 1. and 2., the diff needs to be calculated to ensure correct
-// indentation.
-//
-// For the Case 3., it's not clear what we should expect. This is currently not
-// handled, and it may need to be an error.
-func handleAbsoluteIndentation(lineData []byte, exportMarkerIndent, targetIndent int) []byte {
-	lineString := string(lineData)
-	currenttIndent := len(lineString) - len(strings.TrimLeft(lineString, " "))
-
-	switch {
-	// Case 1.
-	// Marker appears with more indentation than Absolute, and thus strip
-	// extra indentations.
-	case exportMarkerIndent >= targetIndent:
-		indentAdjustment := exportMarkerIndent - targetIndent
-		return lineData[indentAdjustment:]
-
-	// Case 2.
-	// Marker has less indentation than Absolute wants, and thus prepend
-	// the indent diff.
-	case exportMarkerIndent < targetIndent:
-		indentAdjustment := targetIndent - exportMarkerIndent
-		return prependWhitespaces(lineData, indentAdjustment)
-
-	// Case 3.
-	case currenttIndent < exportMarkerIndent:
-		// TODO: Handle case where indentation is less than marker indentation
+	// TODO: naïve implementation, this won't work for username "blob" or repo name "blob"
+	ps := strings.SplitN(u.Path, "/blob/", 2)
+	if len(ps) == 1 {
+		return address, nil
 	}
-	return lineData
-}
 
-func prependWhitespaces(x []byte, count int) []byte {
-	empty := bytes.Repeat([]byte(" "), count)
-	// x = append(x, empty...)
-	// copy(x[count:], x)
-	// copy(x, empty)
-	// return x
+	u.Host = "raw.githubusercontent.com"
+	u.Path = strings.Join(ps, "/")
 
-	return append(empty, x...)
+	return u.String(), nil
 }
