@@ -75,6 +75,21 @@ func TestProcessSingleMarker(t *testing.T) {
         e:
 `),
 		},
+		"yaml: line range with URL": {
+			callerFile: "./some_file.yaml",
+			marker: &Marker{
+				LineToInsertAt: 5,
+				TargetURL:      "https://raw.githubusercontent.com/upsidr/importer/main/testdata/yaml/snippet-simple-tree.yaml",
+				TargetLineFrom: 2,
+				TargetLineTo:   5,
+				Indentation:    nil,
+			},
+			want: []byte(`  b:
+    c:
+      d:
+        e:
+`),
+		},
 		"yaml: comma separated lines": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
@@ -216,6 +231,16 @@ func TestProcessSingleMarker(t *testing.T) {
 			},
 			wantErr: os.ErrNotExist,
 		},
+		"no target file information provided": {
+			callerFile: "./some_file.md",
+			marker: &Marker{
+				LineToInsertAt:     1,
+				TargetPath:         "", // important
+				TargetURL:          "", // important
+				TargetExportMarker: "test_exporter",
+			},
+			wantErr: ErrNoFileInput,
+		},
 	}
 
 	for name, tc := range cases {
@@ -230,67 +255,6 @@ func TestProcessSingleMarker(t *testing.T) {
 
 			if diff := cmp.Diff(string(tc.want), string(result)); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
-			}
-		})
-	}
-}
-
-func TestHandleAbsoluteIndentation(t *testing.T) {
-	cases := map[string]struct {
-		originalSlice        []byte
-		exporterMarkerIndent int
-		targetIndent         int
-
-		want []byte
-	}{
-		"case 1. - original data has more indent": {
-			originalSlice:        []byte("        abcdef"), // 8 spaces
-			exporterMarkerIndent: 6,                        // remove 6
-			targetIndent:         4,
-			want:                 []byte("      abcdef"), // This is 8 - 6 + 4 = 6
-		},
-		"case 2. - original data has less indent": {
-			originalSlice:        []byte("    abcdef"), // 4 spaces
-			exporterMarkerIndent: 2,                    // remove 2
-			targetIndent:         10,
-			want:                 []byte("            abcdef"), // This is 4 - 2 + 10 = 12
-		},
-	}
-	for name, tc := range cases {
-		t.Run(name, func(t *testing.T) {
-			got := handleAbsoluteIndentation(tc.originalSlice, tc.exporterMarkerIndent, tc.targetIndent)
-
-			if diff := cmp.Diff(tc.want, got); diff != "" {
-				t.Errorf("prepend result didn't match (-want / +got)\n%s", diff)
-			}
-		})
-	}
-}
-
-func TestPrependWhitespaces(t *testing.T) {
-	cases := map[string]struct {
-		originalSlice   []byte
-		whitespaceCount int
-
-		want []byte
-	}{
-		"indentation": {
-			originalSlice:   []byte("abcdef"),
-			whitespaceCount: 6,
-			want:            []byte("      abcdef"),
-		},
-		"extra indentation": {
-			originalSlice:   []byte("  abcdef"),
-			whitespaceCount: 6,
-			want:            []byte("        abcdef"),
-		},
-	}
-	for name, tc := range cases {
-		t.Run(name, func(t *testing.T) {
-			got := prependWhitespaces(tc.originalSlice, tc.whitespaceCount)
-
-			if diff := cmp.Diff(tc.want, got); diff != "" {
-				t.Errorf("prepend result didn't match (-want / +got)\n%s", diff)
 			}
 		})
 	}
