@@ -37,6 +37,10 @@ func TestGenerateStdout(t *testing.T) {
 			inputFile: "../../testdata/yaml/align-with-exporter-before.yaml",
 			wantFile:  "../../testdata/yaml/align-with-exporter-updated.yaml",
 		},
+		"yaml with exporter and align, k8s": {
+			inputFile: "../../testdata/yaml/k8s-color-svc-before.yaml",
+			wantFile:  "../../testdata/yaml/k8s-color-svc-updated.yaml",
+		},
 		"error case: file not found": {
 			inputFile:     "does_not_exist",
 			wantErrString: "no such file",
