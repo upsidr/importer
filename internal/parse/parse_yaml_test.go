@@ -50,6 +50,41 @@ func TestParseYAML(t *testing.T) {
 				Markers: map[int]*marker.Marker{},
 			},
 		},
+		"unbalanced indentation": {
+			fileName: "dummy.yaml",
+			input: strings.NewReader(`
+data:
+  # == imptr: some_importer / begin from: ./testdata/yaml/exporter-example.yaml#[random-data] indent: align ==
+  content-to-be-purged: this will be removed
+      # == imptr: some_importer / end ==
+`),
+			wantFile: &file.File{
+				FileName: "dummy.yaml",
+				ContentBefore: StringToLineStrings(t, `
+data:
+  # == imptr: some_importer / begin from: ./testdata/yaml/exporter-example.yaml#[random-data] indent: align ==
+  content-to-be-purged: this will be removed
+      # == imptr: some_importer / end ==
+`),
+				ContentPurged: StringToLineStrings(t, `
+data:
+  # == imptr: some_importer / begin from: ./testdata/yaml/exporter-example.yaml#[random-data] indent: align ==
+      # == imptr: some_importer / end ==
+`),
+				Markers: map[int]*marker.Marker{
+					3: {
+						Name:               "some_importer",
+						LineToInsertAt:     3,
+						TargetPath:         "./testdata/yaml/exporter-example.yaml",
+						TargetExportMarker: "random-data",
+						Indentation: &marker.Indentation{
+							Mode:              marker.AlignIndentation,
+							MarkerIndentation: 2, // not 6
+						},
+					},
+				},
+			},
+		},
 
 		// ===================
 		// Invalid cases below

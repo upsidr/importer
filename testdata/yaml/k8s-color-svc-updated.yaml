@@ -1,0 +1,69 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: color-svc-only-green
+  labels:
+    app.kubernetes.io/name: color-svc-only-green
+spec:
+  ports:
+    - name: http
+      port: 8800
+      targetPort: 8800
+  selector:
+    app.kubernetes.io/name: color-svc-only-green
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: color-svc-only-green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: color-svc-only-green
+      app.kubernetes.io/version: v1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: color-svc-only-green
+        app.kubernetes.io/version: v1
+    spec:
+      serviceAccountName: color-svc
+      containers:
+        # == imptr: latest-color-svc / begin from: ./snippet-k8s-color-svc.yaml#[latest-svc] indent: align ==
+        - image: docker.io/rytswd/color-svc:latest
+          name: color-svc
+          command:
+            - color-svc
+          ports:
+            - containerPort: 8800
+          # == imptr: latest-color-svc / end ==
+
+          env:
+            # == imptr: color-svc-default-envs / begin from: ./snippet-k8s-color-svc.yaml#[basic-envs] indent: align ==
+            - name: ENABLE_DELAY
+              value: "true"
+            - name: DELAY_DURATION_MILLISECOND
+              value: "500"
+            - name: ENABLE_CORS
+              value: "true"
+            # == imptr: color-svc-default-envs / end ==
+            - name: DISABLE_RED
+              value: "true"
+            - name: DISABLE_GREEN
+              value: "false" # The same as default
+            - name: DISABLE_BLUE
+              value: "true"
+            - name: DISABLE_YELLOW
+              value: "true"
+
+          # == imptr: resource-footprint / begin from: ./snippet-k8s-resource.yaml#[min-resource] indent: align ==
+          resources:
+            requests:
+              cpu: 10m
+              memory: 10Mi
+            limits:
+              cpu: 30m
+              memory: 30Mi
+          # == imptr: resource-footprint / end ==

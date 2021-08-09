@@ -1,0 +1,39 @@
+containers:
+  # == export: latest-svc / begin ==
+  - image: docker.io/rytswd/color-svc:latest
+    name: color-svc
+    command:
+      - color-svc
+    ports:
+      - containerPort: 8800
+  # == export: latest-svc / end ==
+
+  # == export: v0.1.0 / begin ==
+  - image: docker.io/rytswd/color-svc:0.1.0
+    name: color-svc
+    command:
+      - color-svc
+    ports:
+      - containerPort: 8800
+  # == export: v0.1.0 / end ==
+
+envs:
+  # == export: basic-envs / begin ==
+  - name: ENABLE_DELAY
+    value: "true"
+  - name: DELAY_DURATION_MILLISECOND
+    value: "500"
+  - name: ENABLE_CORS
+    value: "true"
+  # == export: basic-envs / end ==
+
+  # == export: disable-all-colours / begin ==
+  - name: DISABLE_RED
+    value: "true"
+  - name: DISABLE_GREEN
+    value: "true"
+  - name: DISABLE_BLUE
+    value: "true"
+  - name: DISABLE_YELLOW
+    value: "true"
+  # == export: enable-all-colours / end ==
