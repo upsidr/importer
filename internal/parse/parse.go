@@ -163,6 +163,7 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 				inNested = false
 				nestedUnder = ""
 				matchData.IsEndFound = true
+				continue
 			default:
 				panic("unknown marker condition") // Should not happen, but putting this for possible future changes
 			}
