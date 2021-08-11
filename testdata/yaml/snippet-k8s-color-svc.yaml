@@ -36,4 +36,4 @@ envs:
     value: "true"
   - name: DISABLE_YELLOW
     value: "true"
-  # == export: enable-all-colours / end ==
+  # == export: disable-all-colours / end ==
