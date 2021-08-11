@@ -25,7 +25,16 @@ This allows you to find what the file looks like after ` + "`update`" + ` or ` +
 		// TODO: Add flags to see only specific preview (e.g. `importer preview file --update` for update only view)
 		// TODO: Add support for diff preview
 	}
+	previewPurge   bool
+	previewUpdate  bool
+	previewLineNum bool
 )
+
+func init() {
+	previewCliCmd.Flags().BoolVarP(&previewPurge, "purge", "p", false, "Show only purged result")
+	previewCliCmd.Flags().BoolVarP(&previewUpdate, "update", "u", false, "Show only updated result")
+	previewCliCmd.Flags().BoolVar(&previewLineNum, "lines", false, "Show line numbers")
+}
 
 func executePreview(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
@@ -58,16 +67,35 @@ func preview(fileName string) error {
 		return err
 	}
 
-	file.PrintDebugAll()
+	// If no flag is provided, print all
+	if !previewPurge && !previewUpdate {
+		file.PrintDebugAll()
 
-	fileLen := len(fileName) + 2
-	fmt.Printf(`You can replace the file content with either of the commands below:
+		fileLen := len(fileName) + 2
+		fmt.Printf(`You can replace the file content with either of the commands below:
 
   importer update %-*s   Replace the file content with the Importer processed file.
   importer purge %-*s    Replace the file content by removing all data between marker pairs.
 
 You can find more with 'importer help'
 `, fileLen, fileName, fileLen, fileName)
+		return nil
+	}
+
+	if previewPurge {
+		if previewLineNum {
+			file.PrintDebugPurged()
+		} else {
+			file.PrintPurged()
+		}
+	}
+	if previewUpdate {
+		if previewLineNum {
+			file.PrintDebugAfter()
+		} else {
+			file.PrintAfter()
+		}
+	}
 
 	return nil
 }

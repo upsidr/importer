@@ -6,6 +6,8 @@ import (
 
 var (
 	rootCmdName = "importer"
+
+	isDryRun bool
 )
 
 func Run(args []string) error {
