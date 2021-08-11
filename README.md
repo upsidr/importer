@@ -56,21 +56,23 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
 
 ```console
 $ importer -h
-NAME:
-   importer - Import any lines, from anywhere
+Import any lines, from anywhere
 
-USAGE:
-   importer [command]
+Usage:
+  importer [command]
 
-COMMANDS:
-   preview        Shows a preview of Importer update and purge results
-   update, up     Processes Importer markers and update the file in place
-   generate, gen  Processes Importer markers and send output to stdout or file
-   purge          Removes all imported lines and update the file in place
-   help, h        Shows a list of commands or help for one command
+Available Commands:
+  completion  generate the autocompletion script for the specified shell
+  generate    Processes Importer markers and send output to stdout or file
+  help        Help about any command
+  preview     Shows a preview of Importer update and purge results
+  purge       Removes all imported lines and update the file in place
+  update      Processes Importer markers and update the file in place
 
-GLOBAL OPTIONS:
-   --help, -h  show help (default: false)
+Flags:
+  -h, --help   help for importer
+
+Use "importer [command] --help" for more information about a command.
 ```
 
 <!-- == imptr: commands / end == -->
