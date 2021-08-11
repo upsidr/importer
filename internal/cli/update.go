@@ -7,6 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/upsidr/importer/internal/file"
 	"github.com/upsidr/importer/internal/parse"
 )
 
@@ -23,6 +24,10 @@ This does not support creating a new file, nor send the result to stdout. For su
 		RunE: executeUpdate,
 	}
 )
+
+func init() {
+	updateCmd.Flags().BoolVar(&isDryRun, "dry-run", false, "Run without updating the file")
+}
 
 func executeUpdate(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
@@ -45,17 +50,22 @@ func update(fileName string) error {
 	}
 	defer f.Close()
 
-	file, err := parse.Parse(fileName, f)
+	fi, err := parse.Parse(fileName, f)
 	if err != nil {
 		return err
 	}
 
-	err = file.ProcessMarkers()
+	err = fi.ProcessMarkers()
 	if err != nil {
 		return err
 	}
 
-	err = file.ReplaceWithAfter()
+	switch {
+	case isDryRun:
+		err = fi.ReplaceWithAfter(file.WithDryRun())
+	default:
+		err = fi.ReplaceWithAfter()
+	}
 	if err != nil {
 		return err
 	}
