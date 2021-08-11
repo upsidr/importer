@@ -5,34 +5,32 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/cobra"
 
 	"github.com/upsidr/importer/internal/parse"
 )
 
 var (
-	updateCmd = &cli.Command{
-		Name:      "update",
-		Aliases:   []string{"up"},
-		UsageText: rootCmdName + " update [filename]",
-		Usage:     "Processes Importer markers and update the file in place",
-		Description: `
+	updateCmd = &cobra.Command{
+		Aliases: []string{"up"},
+		Use:     "update [filename]",
+		Short:   "Processes Importer markers and update the file in place",
+		Long: `
 ` + "`update`" + ` command parses the provided file and processes the Import markers in place.
 
 This does not support creating a new file, nor send the result to stdout. For such use cases, use ` + "`generate`" + ` command
 `,
-		Action: executeUpdate,
+		RunE: executeUpdate,
 	}
 )
 
-func executeUpdate(ctx *cli.Context) error {
-	args := ctx.Args()
+func executeUpdate(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
-	if args.Len() != 1 {
+	if len(args) != 1 {
 		return errors.New("error: incorrect argument, you can only pass in 1 argument")
 	}
 
-	arg := args.First()
+	arg := args[0]
 	if err := update(arg); err != nil {
 		return fmt.Errorf("error: handling generate, %v", err)
 	}

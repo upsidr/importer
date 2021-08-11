@@ -5,33 +5,31 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/cobra"
 
 	"github.com/upsidr/importer/internal/parse"
 )
 
 var (
-	purgeCliCmd = &cli.Command{
-		Name:      "purge",
-		UsageText: rootCmdName + " purge [filename]",
-		Usage:     "Removes all imported lines and update the file in place",
-		Description: `
+	purgeCliCmd = &cobra.Command{
+		Use:   "purge [filename]",
+		Short: "Removes all imported lines and update the file in place",
+		Long: `
 ` + "`purge`" + ` command processes the provided file and removes all the contents surrounded by Importer markers.
 
 Importer markers will be left intact.
 `,
-		Action: executePurge,
+		RunE: executePurge,
 	}
 )
 
-func executePurge(ctx *cli.Context) error {
-	args := ctx.Args()
+func executePurge(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
-	if args.Len() != 1 {
+	if len(args) != 1 {
 		return errors.New("error: incorrect argument, you can only pass in 1 argument")
 	}
 
-	arg := args.First()
+	arg := args[0]
 	if err := purge(arg); err != nil {
 		return fmt.Errorf("error: handling purge, %v", err)
 	}

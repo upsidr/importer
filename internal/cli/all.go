@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/cobra"
 )
 
 var (
@@ -9,16 +9,16 @@ var (
 )
 
 func Run(args []string) error {
-	app := &cli.App{
-		Usage:                "Import any lines, from anywhere",
-		UsageText:            rootCmdName + " [command]",
-		EnableBashCompletion: true,
+	cmd := &cobra.Command{
+		Use:   rootCmdName + " [command]",
+		Short: "Import any lines, from anywhere",
+		// Long: "To be updated",
 	}
-	app.Commands = []*cli.Command{
+	cmd.AddCommand(
 		previewCliCmd,
 		updateCmd,
 		generateCliCmd,
 		purgeCliCmd,
-	}
-	return app.Run(args)
+	)
+	return cmd.Execute()
 }

@@ -5,35 +5,35 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/cobra"
 
 	"github.com/upsidr/importer/internal/parse"
 )
 
 var (
-	previewCliCmd = &cli.Command{
-		Name:      "preview",
-		UsageText: rootCmdName + " preview [filename]",
-		Usage:     "Shows a preview of Importer update and purge results",
-		Description: `
+	previewCliCmd = &cobra.Command{
+		Aliases: []string{"pre", "p"},
+
+		Use:   "preview [filename]",
+		Short: "Shows a preview of Importer update and purge results",
+		Long: `
 ` + "`preview`" + ` command processes the provided file and gives you a quick preview.
 
 This allows you to find what the file looks like after ` + "`update`" + ` or ` + "`purge`" + `.
 `,
-		Action: executePreview,
+		RunE: executePreview,
 		// TODO: Add flags to see only specific preview (e.g. `importer preview file --update` for update only view)
 		// TODO: Add support for diff preview
 	}
 )
 
-func executePreview(ctx *cli.Context) error {
-	args := ctx.Args()
+func executePreview(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
-	if args.Len() != 1 {
+	if len(args) != 1 {
 		return errors.New("error: incorrect argument, you can only pass in 1 argument")
 	}
 
-	arg := args.First()
+	arg := args[0]
 	if err := preview(arg); err != nil {
 		return fmt.Errorf("error: handling preview, %v", err)
 	}
