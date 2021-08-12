@@ -31,13 +31,15 @@ func init() {
 
 func executeUpdate(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
-	if len(args) != 1 {
-		return errors.New("error: incorrect argument, you can only pass in 1 argument")
+
+	if len(args) < 1 {
+		return errors.New("missing file input")
 	}
 
-	arg := args[0]
-	if err := update(arg); err != nil {
-		return fmt.Errorf("error: handling generate, %v", err)
+	for _, file := range args {
+		if err := update(file); err != nil {
+			return fmt.Errorf("failed to generate, %v", err)
+		}
 	}
 
 	return nil

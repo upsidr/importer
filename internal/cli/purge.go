@@ -30,13 +30,15 @@ func init() {
 
 func executePurge(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
-	if len(args) != 1 {
-		return errors.New("error: incorrect argument, you can only pass in 1 argument")
+
+	if len(args) < 1 {
+		return errors.New("missing file input")
 	}
 
-	arg := args[0]
-	if err := purge(arg); err != nil {
-		return fmt.Errorf("error: handling purge, %v", err)
+	for _, file := range args {
+		if err := purge(file); err != nil {
+			return fmt.Errorf("failed to purge, %v", err)
+		}
 	}
 
 	return nil
