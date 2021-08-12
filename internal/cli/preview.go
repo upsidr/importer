@@ -22,7 +22,6 @@ var (
 This allows you to find what the file looks like after ` + "`update`" + ` or ` + "`purge`" + `.
 `,
 		RunE: executePreview,
-		// TODO: Add flags to see only specific preview (e.g. `importer preview file --update` for update only view)
 		// TODO: Add support for diff preview
 	}
 	previewPurge   bool
@@ -38,6 +37,7 @@ func init() {
 
 func executePreview(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
+
 	if len(args) != 1 {
 		return errors.New("error: incorrect argument, you can only pass in 1 argument")
 	}
