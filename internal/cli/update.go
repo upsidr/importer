@@ -38,7 +38,7 @@ func executeUpdate(cmd *cobra.Command, args []string) error {
 
 	for _, file := range args {
 		if err := update(file); err != nil {
-			return fmt.Errorf("failed to generate, %v", err)
+			fmt.Printf("Warning: failed to generate for '%s', %v", file, err)
 		}
 	}
 

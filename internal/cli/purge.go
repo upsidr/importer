@@ -37,7 +37,7 @@ func executePurge(cmd *cobra.Command, args []string) error {
 
 	for _, file := range args {
 		if err := purge(file); err != nil {
-			return fmt.Errorf("failed to purge, %v", err)
+			fmt.Printf("Warning: failed to purge for '%s', %v", file, err)
 		}
 	}
 
