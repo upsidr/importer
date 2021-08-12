@@ -38,6 +38,9 @@ func executeGenerate(cmd *cobra.Command, args []string) error {
 		return errors.New("incorrect argument, you need to pass in an argument")
 	}
 
+	// Suppress usage message after this point
+	cmd.SilenceUsage = true
+
 	arg := args[0]
 	out := generateTargetFile
 	if err := generate(arg, out); err != nil {

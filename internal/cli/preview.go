@@ -42,6 +42,9 @@ func executePreview(cmd *cobra.Command, args []string) error {
 		return errors.New("error: incorrect argument, you can only pass in 1 argument")
 	}
 
+	// Suppress usage message after this point
+	cmd.SilenceUsage = true
+
 	arg := args[0]
 	if err := preview(arg); err != nil {
 		return fmt.Errorf("error: handling preview, %v", err)
