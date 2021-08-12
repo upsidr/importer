@@ -12,7 +12,8 @@ import (
 
 func TestReplaceWithAfter(t *testing.T) {
 	cases := map[string]struct {
-		input *File
+		input   *File
+		options []ReplaceOption
 
 		// Output
 		want    string
@@ -29,18 +30,37 @@ func TestReplaceWithAfter(t *testing.T) {
 			},
 			want: "Completely different data",
 		},
+		"dry-run": {
+			input: &File{
+				FileName: "tmpfile.txt",
+				ContentBefore: []string{
+					"Some data",
+					"and more",
+				},
+				ContentAfter: []byte(`Completely different data`),
+			},
+			options: []ReplaceOption{
+				WithDryRun(),
+			},
+			want: "", // not written
+		},
 	}
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			err := tc.input.ReplaceWithAfter()
+			_, err := os.Create(tc.input.FileName)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer os.Remove(tc.input.FileName)
+
+			err = tc.input.ReplaceWithAfter(tc.options...)
 			if err != nil {
 				if !errors.Is(err, tc.wantErr) {
 					t.Errorf("error did not match:\n    want: %v\n    got:  %v", tc.wantErr, err)
 				}
 				return
 			}
-			defer os.Remove(tc.input.FileName)
 
 			result := golden.FileAsString(t, tc.input.FileName)
 			if diff := cmp.Diff(tc.want, result); diff != "" {
@@ -52,7 +72,8 @@ func TestReplaceWithAfter(t *testing.T) {
 
 func TestReplaceWithPurged(t *testing.T) {
 	cases := map[string]struct {
-		input *File
+		input   *File
+		options []ReplaceOption
 
 		// Output
 		want    string
@@ -72,23 +93,64 @@ func TestReplaceWithPurged(t *testing.T) {
 			},
 			want: "Some purged data\n",
 		},
+
+		"dry-run": {
+			input: &File{
+				FileName: "tmpfile.txt",
+				ContentBefore: []string{
+					"Some data",
+					"and more",
+				},
+				ContentPurged: []string{
+					"Some purged data",
+				},
+				ContentAfter: []byte(`Completely different data`),
+			},
+			options: []ReplaceOption{
+				WithDryRun(),
+			},
+			want: "", // not written
+		},
 	}
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			err := tc.input.ReplaceWithPurged()
+			_, err := os.Create(tc.input.FileName)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer os.Remove(tc.input.FileName)
+
+			err = tc.input.ReplaceWithPurged(tc.options...)
 			if err != nil {
 				if !errors.Is(err, tc.wantErr) {
 					t.Errorf("error did not match:\n    want: %v\n    got:  %v", tc.wantErr, err)
 				}
 				return
 			}
-			defer os.Remove(tc.input.FileName)
 
 			result := golden.FileAsString(t, tc.input.FileName)
 			if diff := cmp.Diff(tc.want, result); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
 			}
 		})
+	}
+}
+
+func TestReplaceFail(t *testing.T) {
+	tmp := "test_file_for_replace_fail"
+
+	f, err := os.Create(tmp)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.Remove(tmp)
+
+	// Not writeable
+	f.Chmod(0444)
+
+	err = replace(tmp, []byte(`some data`), &replaceMode{})
+	if err == nil {
+		t.Fatal("should be permission error, but got no error")
 	}
 }

@@ -33,14 +33,18 @@ func init() {
 
 func executeGenerate(cmd *cobra.Command, args []string) error {
 	// TODO: add some util func to hande all common error cases
+
 	if len(args) < 1 {
-		return errors.New("error: incorrect argument, you need to pass in an argument")
+		return errors.New("incorrect argument, you need to pass in an argument")
 	}
+
+	// Suppress usage message after this point
+	cmd.SilenceUsage = true
 
 	arg := args[0]
 	out := generateTargetFile
 	if err := generate(arg, out); err != nil {
-		return fmt.Errorf("error: handling generate, %v", err)
+		return fmt.Errorf("handling generate, %v", err)
 	}
 
 	return nil

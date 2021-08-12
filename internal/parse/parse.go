@@ -42,6 +42,10 @@ type File struct {
 	Markers map[int]*marker.Marker
 }
 
+var (
+	ErrDuplicatedMarker = errors.New("duplicated marker within a single file")
+)
+
 // Parse reads filename and input, and parses data in the file.
 //
 // The steps are as follows:
@@ -149,7 +153,11 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 		// track of already found match.
 		matchData := &marker.RawMarker{Name: subgroupName}
 		if data, found := rawMarkers[subgroupName]; found {
-			// TODO: Handle case where the same subgroup name gets used multiple times.
+			// If a marker with the same name has a pair already, return as an error.
+			// TODO: multiple 'begin' marker may still be a problem
+			if data.IsBeginFound && data.IsEndFound {
+				return nil, fmt.Errorf("%w, marker '%s' has been already processed", ErrDuplicatedMarker, subgroupName)
+			}
 			matchData = data
 		}
 

@@ -35,6 +35,9 @@ func executePurge(cmd *cobra.Command, args []string) error {
 		return errors.New("missing file input")
 	}
 
+	// Suppress usage message after this point
+	cmd.SilenceUsage = true
+
 	for _, file := range args {
 		if err := purge(file); err != nil {
 			fmt.Printf("Warning: failed to purge for '%s', %v", file, err)
