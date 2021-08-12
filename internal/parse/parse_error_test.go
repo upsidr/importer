@@ -5,6 +5,8 @@ import (
 	"io"
 	"strings"
 	"testing"
+
+	"github.com/upsidr/importer/internal/testingutil/golden"
 )
 
 func TestParseFail(t *testing.T) {
@@ -25,6 +27,11 @@ func TestParseFail(t *testing.T) {
 			fileName: "dummy.md",
 			input:    nil,
 			wantErr:  ErrNoInput,
+		},
+		"invalid marker setup": {
+			fileName: "dummy.md",
+			input:    strings.NewReader(golden.FileAsString(t, "./testdata/other/duplicated-marker.md")),
+			wantErr:  ErrDuplicatedMarker,
 		},
 	}
 
