@@ -38,11 +38,14 @@ func (m *Marker) ProcessMarkerData(importingFilePath string) ([]byte, error) {
 	case m.TargetURL != "":
 		u, err := preprocessURL(m.TargetURL)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("%w of '%s'", ErrInvalidURL, m.TargetURL)
 		}
 		r, err := http.Get(u)
 		if err != nil {
-			return nil, err // TODO: test coverage
+			return nil, fmt.Errorf("%w, %v", ErrGetMarkerTarget, err)
+		}
+		if r.StatusCode != http.StatusOK {
+			return nil, fmt.Errorf("%w of '%s'", ErrNonSuccessCode, r.Status)
 		}
 		defer r.Body.Close()
 		file = r.Body

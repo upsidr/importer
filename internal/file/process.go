@@ -26,7 +26,7 @@ func (f *File) ProcessMarkers() error {
 		if marker, found := f.Markers[line+1]; found {
 			processed, err := marker.ProcessMarkerData(f.FileName)
 			if err != nil {
-				fmt.Printf("warning: %s\n", err)
+				fmt.Printf("Warning: error while processing '%s': %s\n", marker.Name, err)
 				continue
 			}
 			result = append(result, processed...)
