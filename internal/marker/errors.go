@@ -11,4 +11,7 @@ var (
 	ErrMissingOption       = errors.New("missing option")
 	ErrMissingName         = errors.New("unnamed marker cannot be used")
 	ErrNoFileInput         = errors.New("no target file input provided")
+	ErrInvalidURL          = errors.New("invalid URL")
+	ErrGetMarkerTarget     = errors.New("failed to get marker target")
+	ErrNonSuccessCode      = errors.New("received non-success error code")
 )

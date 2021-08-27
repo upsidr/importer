@@ -256,6 +256,39 @@ func TestProcessSingleMarker(t *testing.T) {
 			},
 			wantErr: ErrNoFileInput,
 		},
+		"url access error": {
+			callerFile: "./some_file.yaml",
+			marker: &Marker{
+				LineToInsertAt: 5,
+				TargetURL:      "https://some-address-that-does-not-exist",
+				TargetLineFrom: 1,
+				TargetLineTo:   5,
+				Indentation:    nil,
+			},
+			wantErr: ErrGetMarkerTarget,
+		},
+		"404 not found error with github.com": {
+			callerFile: "./some_file.yaml",
+			marker: &Marker{
+				LineToInsertAt: 5,
+				TargetURL:      "https://github.com/does-not-exist.yml#",
+				TargetLineFrom: 1,
+				TargetLineTo:   5,
+				Indentation:    nil,
+			},
+			wantErr: ErrNonSuccessCode,
+		},
+		"invalid address": {
+			callerFile: "./some_file.yaml",
+			marker: &Marker{
+				LineToInsertAt: 5,
+				TargetURL:      "http///////",
+				TargetLineFrom: 1,
+				TargetLineTo:   5,
+				Indentation:    nil,
+			},
+			wantErr: ErrInvalidURL,
+		},
 	}
 
 	for name, tc := range cases {
