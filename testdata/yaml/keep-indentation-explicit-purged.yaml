@@ -1,0 +1,11 @@
+data:
+  description: |
+    This is to demonstrate how Importer can manage your YAML files.
+    ...
+
+  # == imptr: metadata / begin from: ./snippet-with-exporter.yaml#[metadata-only] indent: keep ==
+  # == imptr: metadata / end ==
+
+  some-data:
+    description: |
+      any data outside of Importer Markers are unaffected.
