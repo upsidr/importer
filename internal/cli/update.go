@@ -7,6 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/upsidr/importer/internal/errorsplus"
 	"github.com/upsidr/importer/internal/file"
 	"github.com/upsidr/importer/internal/parse"
 )
@@ -39,10 +40,14 @@ func executeUpdate(cmd *cobra.Command, args []string) error {
 	// Suppress usage message after this point
 	cmd.SilenceUsage = true
 
+	errs := errorsplus.Errors{}
 	for _, file := range args {
 		if err := update(file); err != nil {
-			fmt.Printf("Warning: failed to generate for '%s', %v", file, err)
+			errs = append(errs, fmt.Errorf("failed to update '%s', %v", file, err))
 		}
+	}
+	if len(errs) != 0 {
+		return errs
 	}
 
 	return nil

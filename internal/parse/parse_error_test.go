@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/upsidr/importer/internal/marker"
 	"github.com/upsidr/importer/internal/testingutil/golden"
 )
 
@@ -18,6 +19,11 @@ func TestParseFail(t *testing.T) {
 		// Output
 		wantErr error
 	}{
+		"broken marker": {
+			fileName: "dummy.yaml",
+			input:    strings.NewReader(golden.FileAsString(t, "../../testdata/broken/no-matching-marker.yaml")),
+			wantErr:  marker.ErrNoMatchingMarker,
+		},
 		"extension not supported": {
 			fileName: "no_extension",
 			input:    strings.NewReader("dummy"),

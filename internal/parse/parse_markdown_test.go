@@ -1,6 +1,7 @@
 package parse
 
 import (
+	"errors"
 	"io"
 	"strings"
 	"testing"
@@ -90,90 +91,6 @@ func TestParseMarkdown(t *testing.T) {
 				},
 			},
 		},
-
-		// ===================
-		// Invalid cases below
-		"importer option missing": {
-			fileName: "dummy.md",
-			input: strings.NewReader(`
-# Test Markdown
-
-<!-- == imptr: some_importer / begin == -->
-some data between an annotation pair, which gets purged.
-<!-- == imptr: some_importer / end == -->
-`),
-			wantFile: &file.File{
-				FileName: "dummy.md",
-				ContentBefore: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin == -->
-some data between an annotation pair, which gets purged.
-<!-- == imptr: some_importer / end == -->
-`),
-				ContentPurged: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin == -->
-<!-- == imptr: some_importer / end == -->
-`),
-				Markers: map[int]*marker.Marker{},
-			},
-		},
-		"file line range not number - lower bound": {
-			fileName: "dummy.md",
-			input: strings.NewReader(`
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ./somefile#NOT_NUMBER~2233 == -->
-some data between an annotation pair, which gets purged.
-<!-- == imptr: some_importer / end == -->
-`),
-			wantFile: &file.File{
-				FileName: "dummy.md",
-				ContentBefore: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ./somefile#NOT_NUMBER~2233 == -->
-some data between an annotation pair, which gets purged.
-<!-- == imptr: some_importer / end == -->
-`),
-				ContentPurged: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ./somefile#NOT_NUMBER~2233 == -->
-<!-- == imptr: some_importer / end == -->
-`),
-				Markers: map[int]*marker.Marker{},
-			},
-		},
-		"file line range not number - upper bound": {
-			fileName: "dummy.md",
-			input: strings.NewReader(`
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ./somefile#1~NOT_NUMBER == -->
-some data between an annotation pair, which gets purged.
-<!-- == imptr: some_importer / end == -->
-`),
-			wantFile: &file.File{
-				FileName: "dummy.md",
-				ContentBefore: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ./somefile#1~NOT_NUMBER == -->
-some data between an annotation pair, which gets purged.
-<!-- == imptr: some_importer / end == -->
-`),
-				ContentPurged: StringToLineStrings(t, `
-# Test Markdown
-
-<!-- == imptr: some_importer / begin from: ./somefile#1~NOT_NUMBER == -->
-<!-- == imptr: some_importer / end == -->
-`),
-				Markers: map[int]*marker.Marker{},
-			},
-		},
 	}
 
 	for name, tc := range cases {
@@ -190,6 +107,66 @@ some data between an annotation pair, which gets purged.
 
 			if diff := cmp.Diff(tc.wantFile, f, cmp.AllowUnexported(file.File{})); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestParseMarkdownFail(t *testing.T) {
+	cases := map[string]struct {
+		// Input
+		fileName string
+		input    io.Reader
+
+		// Output
+		wantErr error
+	}{
+		// ===================
+		// Invalid cases below
+		"importer option missing": {
+			fileName: "dummy.md",
+			input: strings.NewReader(`
+# Test Markdown
+
+<!-- == imptr: some_importer / begin == -->
+some data between an annotation pair, which gets purged.
+<!-- == imptr: some_importer / end == -->
+`),
+			wantErr: marker.ErrInvalidSyntax,
+		},
+		"file line range not number - lower bound": {
+			fileName: "dummy.md",
+			input: strings.NewReader(`
+# Test Markdown
+
+<!-- == imptr: some_importer / begin from: ./somefile#NOT_NUMBER~2233 == -->
+some data between an annotation pair, which gets purged.
+<!-- == imptr: some_importer / end == -->
+`),
+			wantErr: marker.ErrInvalidSyntax,
+		},
+		"file line range not number - upper bound": {
+			fileName: "dummy.md",
+			input: strings.NewReader(`
+# Test Markdown
+
+<!-- == imptr: some_importer / begin from: ./somefile#1~NOT_NUMBER == -->
+some data between an annotation pair, which gets purged.
+<!-- == imptr: some_importer / end == -->
+`),
+			wantErr: marker.ErrInvalidSyntax,
+		},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			fileInput := tc.input
+			if fileInput == nil {
+				fileInput = golden.FileAsReader(t, tc.fileName)
+			}
+			_, err := Parse(tc.fileName, fileInput)
+			if !errors.Is(err, tc.wantErr) {
+				t.Errorf("error did not match:\n    want: %v\n    got:  %v", tc.wantErr, err)
 			}
 		})
 	}

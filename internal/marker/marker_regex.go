@@ -15,7 +15,7 @@ var (
 	OptionFilePathIndicator = `from: (?P<importer_target_path>\S+)\s*\#(?P<importer_target_detail>[0-9a-zA-Z,-_\~]+)\s?`
 
 	// OptionIndentMode is the pattern used for specifying indentation mode.
-	OptionIndentMode = `indent: (?P<importer_indent_mode>absolute|extra|align)\s?(?P<importer_indent_length>\d*)`
+	OptionIndentMode = `indent: (?P<importer_indent_mode>absolute|extra|align|keep)\s?(?P<importer_indent_length>\d*)`
 )
 
 var (

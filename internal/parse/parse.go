@@ -7,6 +7,7 @@ import (
 	"io"
 	"path/filepath"
 
+	"github.com/upsidr/importer/internal/errorsplus"
 	"github.com/upsidr/importer/internal/file"
 	"github.com/upsidr/importer/internal/marker"
 	"github.com/upsidr/importer/internal/regexpplus"
@@ -17,7 +18,6 @@ var (
 	ErrNoInput             = errors.New("no file content found")
 	ErrInvalidPath         = errors.New("invalid path provided")
 	ErrInvalidSyntax       = errors.New("invalid syntax given")
-	ErrNoMatchingMarker    = errors.New("no matching marker found, marker must be a begin/end pair")
 )
 
 // File holds onto file data.
@@ -188,16 +188,18 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 		rawMarkers[subgroupName] = matchData
 	}
 
+	errs := errorsplus.Errors{}
 	for _, data := range rawMarkers {
 		marker, err := marker.NewMarker(data)
 		if err != nil {
-			// TODO: err should be handled rather than simply ignored.
-			//       This is fine for now as error is used for internal logic
-			//       only, but shuold be fixed.
+			errs = append(errs, err)
 			continue
 		}
 
 		markers[marker.LineToInsertAt] = marker
+	}
+	if len(errs) != 0 {
+		return nil, errs
 	}
 
 	f.Markers = markers

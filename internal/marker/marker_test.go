@@ -120,6 +120,45 @@ func TestNewMarker(t *testing.T) {
 				},
 			},
 		},
+		"Exporter with indent align": {
+			input: &marker.RawMarker{
+				Name:                 "simple-marker",
+				IsBeginFound:         true,
+				IsEndFound:           true,
+				LineToInsertAt:       3,
+				Options:              "from: ./abc.yaml#[from-exporter-marker] indent: align",
+				PrecedingIndentation: "    ",
+			},
+			want: &marker.Marker{
+				Name:               "simple-marker",
+				LineToInsertAt:     3,
+				TargetPath:         "./abc.yaml",
+				TargetExportMarker: "from-exporter-marker",
+				Indentation: &marker.Indentation{
+					Mode:              marker.AlignIndentation,
+					MarkerIndentation: 4,
+				},
+			},
+		},
+		"Exporter with indent keep": {
+			input: &marker.RawMarker{
+				Name:                 "simple-marker",
+				IsBeginFound:         true,
+				IsEndFound:           true,
+				LineToInsertAt:       3,
+				Options:              "from: ./abc.yaml#[from-exporter-marker] indent: keep",
+				PrecedingIndentation: "    ",
+			},
+			want: &marker.Marker{
+				Name:               "simple-marker",
+				LineToInsertAt:     3,
+				TargetPath:         "./abc.yaml",
+				TargetExportMarker: "from-exporter-marker",
+				Indentation: &marker.Indentation{
+					Mode: marker.KeepIndentation,
+				},
+			},
+		},
 	}
 
 	for name, tc := range cases {
