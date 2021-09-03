@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// Errors represents a slice of errors.
 type Errors []error
 
 func (es Errors) Error() string {
@@ -15,7 +16,7 @@ func (es Errors) Error() string {
 		return fmt.Sprintf("%v", es[0])
 	}
 
-	rt := "composite error:"
+	rt := "more than one error occurred:"
 	for _, e := range es {
 		if e != nil {
 			rt = fmt.Sprintf("%s\n\t%v", rt, e)
