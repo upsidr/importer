@@ -21,7 +21,7 @@ func (r *RawMarker) Validate() error {
 	}
 
 	if !r.IsBeginFound || !r.IsEndFound {
-		return fmt.Errorf("%w", ErrNoMatchingMarker)
+		return fmt.Errorf("%w for '%s', marker must be a begin/end pair", ErrNoMatchingMarker, r.Name)
 	}
 
 	return nil
