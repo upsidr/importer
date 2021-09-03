@@ -80,7 +80,7 @@ func NewMarker(raw *RawMarker) (*Marker, error) {
 func processFileOption(marker *Marker, match *RawMarker) error {
 	matches, err := regexpplus.MapWithNamedSubgroups(match.Options, OptionFilePathIndicator)
 	if err != nil {
-		return fmt.Errorf("%w, import target option is missing", ErrInvalidSyntax)
+		return fmt.Errorf("%w for '%s', import target option is missing", ErrInvalidSyntax, match.Name)
 	}
 
 	if targetPath, found := matches["importer_target_path"]; found {
@@ -116,6 +116,12 @@ func processIndentOption(marker *Marker, match *RawMarker) error {
 				MarkerIndentation: markerIndentation,
 			}
 			return nil // Align option does not care length information
+		case "keep":
+			// Keep the provided indentation, and do nothing
+			marker.Indentation = &Indentation{
+				Mode: KeepIndentation,
+			}
+			return nil
 		default:
 			return errors.New("unsupported indentation mode") // This shouldn't happen with the underlying regex
 		}
@@ -128,7 +134,7 @@ func processIndentOption(marker *Marker, match *RawMarker) error {
 
 		length, err := strconv.Atoi(lengthInput)
 		if err != nil {
-			return fmt.Errorf("%w, %v", ErrInvalidSyntax, err)
+			return fmt.Errorf("%w for '%s', %v", ErrInvalidSyntax, marker.Name, err)
 		}
 		marker.Indentation.Length = length
 	}
@@ -217,7 +223,7 @@ func processTargetDetail(marker *Marker, input string) error {
 	case strings.Contains(input, "~"):
 		lb, ub, err := getLineRangeWithTilde(input)
 		if err != nil {
-			return fmt.Errorf("%w, %v", ErrInvalidSyntax, err)
+			return fmt.Errorf("%w for '%s', %v", ErrInvalidSyntax, marker.Name, err)
 		}
 		marker.TargetLineFrom = lb
 		marker.TargetLineTo = ub
@@ -225,7 +231,7 @@ func processTargetDetail(marker *Marker, input string) error {
 	default:
 		i, err := strconv.Atoi(input)
 		if err != nil {
-			return fmt.Errorf("%w, %v", ErrInvalidSyntax, err)
+			return fmt.Errorf("%w for '%s', %v", ErrInvalidSyntax, marker.Name, err)
 		}
 		marker.TargetLines = append(marker.TargetLines, i)
 	}
@@ -234,8 +240,9 @@ func processTargetDetail(marker *Marker, input string) error {
 }
 
 var (
-	errLowerBound = errors.New("invalid lower bound in line range")
-	errUpperBound = errors.New("invalid upper bound in line range")
+	errLowerBound     = errors.New("invalid lower bound in line range")
+	errUpperBound     = errors.New("invalid upper bound in line range")
+	errMultipleTildes = errors.New("tilde cannot be used more than once")
 )
 
 func getLineRangeWithTilde(input string) (int, int, error) {
@@ -244,7 +251,7 @@ func getLineRangeWithTilde(input string) (int, int, error) {
 
 	ls := strings.Split(input, "~")
 	if len(ls) > 2 {
-		return lowerBound, upperBound, fmt.Errorf("%w, tilde cannot be used more than once", ErrInvalidSyntax)
+		return lowerBound, upperBound, fmt.Errorf("%w", errMultipleTildes)
 	}
 
 	lb := ls[0]
