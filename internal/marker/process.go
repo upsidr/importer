@@ -9,7 +9,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/upsidr/importer/internal/regexpplus"
@@ -69,7 +68,6 @@ const br = byte('\n')
 func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 	result := []byte{}
 
-	reExport := regexp.MustCompile(ExporterMarkerMarkdown)
 	withinExportMarker := false
 	currentLine := 0
 
@@ -78,14 +76,18 @@ func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 		currentLine++
 
 		// Find Exporter Marker
-		match := reExport.FindStringSubmatch(scanner.Text())
-		if len(match) != 0 {
-			// match[1] is export_marker_name
-			if match[1] == m.TargetExportMarker {
+		matches, err := regexpplus.MapWithNamedSubgroups(scanner.Text(), ExporterMarkerMarkdown)
+		if err != nil && !errors.Is(err, regexpplus.ErrNoMatch) {
+			panic(err) // Unknown error, should not happen
+		}
+
+		if len(matches) != 0 {
+			if exporterName, found := matches["export_marker_name"]; found &&
+				exporterName == m.TargetExportMarker {
 				withinExportMarker = true
 			}
-			// match[2] is exporter_marker_condition
-			if match[2] == "end" {
+			if exporterCondition, found := matches["exporter_marker_condition"]; found &&
+				exporterCondition == "end" {
 				withinExportMarker = false
 			}
 			continue
@@ -119,7 +121,6 @@ func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 func (m *Marker) processSingleMarkerYAML(file io.Reader) ([]byte, error) {
 	result := []byte{}
 
-	// reExport := regexp.MustCompile(ExporterMarkerYAML)
 	isNested := false
 	nestedUnder := ""
 	exporterMarkerIndentation := 0
