@@ -1,0 +1,4 @@
+title: Demo of YAML Importer
+# == import: description / begin from: ./snippet-description.yaml#[for-demo] ==
+dummy: This will be replaced
+# == this is not a valid marker, and thus marker pair is broken ==
