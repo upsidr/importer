@@ -18,7 +18,7 @@ test-data:
       # == export: metadata-only / end ==
   # == export: sample-nested / end ==
 
-# == export: long-tree / begin ==
+# == exporter: long-tree / begin ==
 a:
   b:
     c:
@@ -30,4 +30,4 @@ a:
                 i:
                   j:
                     k: {}
-# == export: long-tree / end ==
+# == exporter: long-tree / end ==

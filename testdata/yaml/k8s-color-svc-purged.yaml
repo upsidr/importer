@@ -31,12 +31,12 @@ spec:
     spec:
       serviceAccountName: color-svc
       containers:
-        # == imptr: latest-color-svc / begin from: ./snippet-k8s-color-svc.yaml#[latest-svc] indent: align ==
-          # == imptr: latest-color-svc / end ==
+        # == i: latest-color-svc / begin from: ./snippet-k8s-color-svc.yaml#[latest-svc] indent: align ==
+          # == i: latest-color-svc / end ==
 
           env:
-            # == imptr: color-svc-default-envs / begin from: ./snippet-k8s-color-svc.yaml#[basic-envs] indent: align ==
-            # == imptr: color-svc-default-envs / end ==
+            # == i: color-svc-default-envs / begin from: ./snippet-k8s-color-svc.yaml#[basic-envs] indent: align ==
+            # == i: color-svc-default-envs / end ==
             - name: DISABLE_RED
               value: "true"
             - name: DISABLE_GREEN
@@ -46,5 +46,5 @@ spec:
             - name: DISABLE_YELLOW
               value: "true"
 
-          # == imptr: resource-footprint / begin from: ./snippet-k8s-resource.yaml#[min-resource] indent: align ==
-          # == imptr: resource-footprint / end ==
+          # == i: resource-footprint / begin from: ./snippet-k8s-resource.yaml#[min-resource] indent: align ==
+          # == i: resource-footprint / end ==
