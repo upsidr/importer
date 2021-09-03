@@ -6,10 +6,10 @@ var (
 	// Example:
 	//   <!-- == imptr: some_importer_name / begin from: ./file.txt#2~22 == -->
 	//   <!-- == imptr: some_importer_name / end == -->
-	ImporterMarkerMarkdown = `<!-- == imptr: (?P<importer_name>\S+) \/ (?P<importer_marker>begin|end)(?P<importer_option>.*) == -->`
+	ImporterMarkerMarkdown = `<!-- == (imptr|import|importer|i): (?P<importer_name>\S+) \/ (?P<importer_marker>begin|end)(?P<importer_option>.*) == -->`
 
 	// ImporterMarkerYAML is the annotation used for importer to find match.
-	ImporterMarkerYAML = `(?P<importer_marker_indentation>\s*)# == imptr: (?P<importer_name>\S+) \/ (?P<importer_marker>begin|end)(?P<importer_option>.*) ==`
+	ImporterMarkerYAML = `(?P<importer_marker_indentation>\s*)# == (imptr|import|importer|i): (?P<importer_name>\S+) \/ (?P<importer_marker>begin|end)(?P<importer_option>.*) ==`
 
 	// OptionFilePathIndicator is the pattern used for parsing Importer file options.
 	OptionFilePathIndicator = `from: (?P<importer_target_path>\S+)\s*\#(?P<importer_target_detail>[0-9a-zA-Z,-_\~]+)\s?`
@@ -28,7 +28,7 @@ var (
 	//   You can import this content by providing option such as:
 	//     ./file_path.txt#[simple_instruction]
 	//   <!-- == export: simple_instruction / end == -->
-	ExporterMarkerMarkdown = `<!-- == export: (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) == -->`
+	ExporterMarkerMarkdown = `<!-- == (exptr|export|exporter|e): (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) == -->`
 
 	// ExporterMarkerYAML is the marker used to indicate how a file can export
 	// specific sections.
@@ -39,5 +39,5 @@ var (
 	//     # == export: random_data / begin ==
 	//     random-data: this is exported
 	//     # == export: random_data / end ==
-	ExporterMarkerYAML = `(?P<export_marker_indent>\s*)# == export: (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) ==`
+	ExporterMarkerYAML = `(?P<export_marker_indent>\s*)# == (exptr|export|exporter|e): (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) ==`
 )
