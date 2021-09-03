@@ -21,6 +21,7 @@ func adjustIndentation(lineData []byte, exporterMarkerIndent int, importerIndent
 		lineData = prependWhitespaces(lineData, importerIndentation.Length)
 	case AlignIndentation:
 		lineData = handleAbsoluteIndentation(lineData, exporterMarkerIndent, importerIndentation.MarkerIndentation)
+	case KeepIndentation: // Explicitly handling this, as it is likely that the default behaviour woulld need to change
 	}
 	lineData = append(lineData, br)
 	return lineData
