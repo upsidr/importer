@@ -44,7 +44,7 @@ func executeGenerate(cmd *cobra.Command, args []string) error {
 	arg := args[0]
 	out := generateTargetFile
 	if err := generate(arg, out); err != nil {
-		return fmt.Errorf("handling generate, %v", err)
+		return fmt.Errorf("failed to generate for '%s', %v", arg, err)
 	}
 
 	return nil
