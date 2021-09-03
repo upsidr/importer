@@ -43,6 +43,7 @@ const (
 	AbsoluteIndentation IndentationMode = iota + 1
 	ExtraIndentation
 	AlignIndentation
+	KeepIndentation
 )
 
 // Indentation holds additional indentation handling option.
