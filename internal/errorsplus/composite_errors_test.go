@@ -42,7 +42,7 @@ func TestCompositeErrors(t *testing.T) {
 				errSecond,
 			},
 			wantErr: errFirst,
-			wantErrString: `composite error:
+			wantErrString: `more than one error occurred:
 	first error
 	second error`,
 		},
@@ -53,7 +53,7 @@ func TestCompositeErrors(t *testing.T) {
 				errThird,
 			},
 			wantErr: errFirst,
-			wantErrString: `composite error:
+			wantErrString: `more than one error occurred:
 	first error
 	second error
 	third error`,
@@ -65,7 +65,7 @@ func TestCompositeErrors(t *testing.T) {
 				errFirst,
 			},
 			wantErr: errFirst,
-			wantErrString: `composite error:
+			wantErrString: `more than one error occurred:
 	first error
 	first error
 	first error`,
