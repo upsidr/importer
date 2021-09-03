@@ -17,7 +17,7 @@ type RawMarker struct {
 // Validate checks RawMarker's validity.
 func (r *RawMarker) Validate() error {
 	if r.Name == "" {
-		return fmt.Errorf("%w", ErrMissingName)
+		return fmt.Errorf("%w", ErrMissingName) // Should not happen with the current regexp setup
 	}
 
 	if !r.IsBeginFound || !r.IsEndFound {
