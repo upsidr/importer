@@ -33,6 +33,15 @@ func TestFindNamedSubgroups(t *testing.T) {
 				"a": "d", // later one takes precedence
 			},
 		},
+		"2 different named groups and 1 unnamed group": {
+			targetLine:  "abc def ghi jkl mno",
+			regexpInput: `(?P<a>a.*).*(?P<d>d)(.*)`,
+			want: map[string]string{
+				"":  "ef ghi jkl mno",
+				"a": "abc ",
+				"d": "d",
+			},
+		},
 		"2 unnamed groups": {
 			targetLine:  "abc def ghi jkl mno",
 			regexpInput: `(ab).*(de)`,
