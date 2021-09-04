@@ -90,7 +90,7 @@ Use "importer [command] --help" for more information about a command.
 
 Any other file type not specified above are not supported by Importer at the moment.
 
-For requesting additional support, [please file an issue from here](https://github.com/upsidr/importer/issues/new?assignees=&labels=enhancement&template=feature-request.yaml&title=%5BFeature+Request%5D%3A+).
+To request additional file support, please file an issue from [here](https://github.com/upsidr/importer/issues/new?assignees=&labels=enhancement&template=feature-request.yaml&title=%5BFeature+Request%5D%3A+).
 
 <!-- == imptr: supported-files / end == -->
 
@@ -202,6 +202,6 @@ jobs:
 
 This repository uses Importer to generate some of the markdown documentation.
 
-You can find actually running CI setup in [`.github/workflows/importer-markdown-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-markdown-ci.yaml).
+You can find actually running CI setup in [`.github/workflows/importer-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-ci.yaml).
 
 <!-- == imptr: getting-started-github-action / end == -->
