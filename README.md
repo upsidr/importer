@@ -120,7 +120,7 @@ And there has to be a matching "end" marker. This is much simpler, as options ar
 
 <!-- == imptr: basic-marker / end == -->
 
-You can find more about the Importer Marker [here](./docs/details/markers.md).
+You can find more about the Importer Marker [here](/docs/details/markers.md).
 
 ## 🚀 Examples
 
