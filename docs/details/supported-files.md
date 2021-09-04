@@ -11,6 +11,6 @@
 
 Any other file type not specified above are not supported by Importer at the moment.
 
-For requesting additional support, [please file an issue from here](https://github.com/upsidr/importer/issues/new?assignees=&labels=enhancement&template=feature-request.yaml&title=%5BFeature+Request%5D%3A+).
+To request additional file support, please file an issue from [here](https://github.com/upsidr/importer/issues/new?assignees=&labels=enhancement&template=feature-request.yaml&title=%5BFeature+Request%5D%3A+).
 
 <!-- == export: list / end == -->
