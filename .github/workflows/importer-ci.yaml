@@ -35,7 +35,7 @@ jobs:
       # These use locally built Importer, take off `./` for usual use cases
       - name: Run Importer against README.md
         run: ./importer update README.md
-      - name: Run Importer against README.md
+      - name: Run Importer against Merge Gatekeeper
         run: ./importer update .github/workflows/merge-gatekeeper.yaml
 
       - name: Check if README.md has any change compared to the branch
