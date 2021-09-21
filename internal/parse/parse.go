@@ -18,32 +18,7 @@ var (
 	ErrNoInput             = errors.New("no file content found")
 	ErrInvalidPath         = errors.New("invalid path provided")
 	ErrInvalidSyntax       = errors.New("invalid syntax given")
-)
-
-// File holds onto file data.
-type File struct {
-	FileName string
-
-	// ContentBefore holds the file content as it was before processing. The
-	// first slice represents the line number, and the second is for the actual
-	// data.
-	ContentBefore [][]byte
-
-	// ContentPurged holds the file content, but removes the parts between
-	// Importer Marker begin/end. The first slice represents the line
-	// number, and the second is for the actual data.
-	ContentPurged [][]byte
-
-	// ContentAfter holds the file content after the import has been run. This
-	// only holds the actual data in byte slice representation.
-	ContentAfter []byte
-
-	// Markers is an array holding onto each marker block.
-	Markers map[int]*marker.Marker
-}
-
-var (
-	ErrDuplicatedMarker = errors.New("duplicated marker within a single file")
+	ErrDuplicatedMarker    = errors.New("duplicated marker within a single file")
 )
 
 // Parse reads filename and input, and parses data in the file.
@@ -80,7 +55,17 @@ func Parse(fileName string, input io.Reader) (*file.File, error) {
 // content as is, marker details, and file content with all data between
 // marker pairs purged.
 func parse(markerRegex string, fileName string, input io.Reader) (*file.File, error) {
-	f := &file.File{FileName: fileName}
+	f := &file.File{
+		FileName: fileName,
+
+		// NOTE:
+		// For *File.contentXyz, I'm purposely making the first item in slice empty
+		// for readability. This shouldn't be necessary, but with this approach,
+		// the slice index matches the line number, and is easy to get my head
+		// around for now.
+		ContentBefore: make([]string, 0),
+		ContentPurged: make([]string, 0),
+	}
 
 	markers := map[int]*marker.Marker{}
 	rawMarkers := map[string]*marker.RawMarker{}
@@ -88,14 +73,6 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 	currentLine := 0
 	inNested := false // Flag to check if the data is between markers
 	nestedUnder := "" // Name to check for marker pair ending
-
-	// NOTE:
-	// For *File.contentXyz, I'm purposely making the first item in slice empty
-	// for readability. This shouldn't be necessary, but with this approach,
-	// the slice index matches the line number, and is easy to get my head
-	// around for now.
-	f.ContentBefore = make([]string, 0)
-	f.ContentPurged = make([]string, 0)
 
 	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
