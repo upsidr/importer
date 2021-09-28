@@ -1,7 +1,13 @@
 package file
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
+	"path/filepath"
+	"regexp"
+
+	"github.com/upsidr/importer/internal/marker"
 )
 
 const br = byte('\n')
@@ -34,4 +40,58 @@ func (f *File) ProcessMarkers() error {
 	}
 	f.ContentAfter = result
 	return nil
+}
+
+// RemoveMarkers removes Importer markers. This is useful for generated files
+// to have no marker input.
+func (f *File) RemoveMarkers() {
+	fileType := filepath.Ext(f.FileName)
+
+	var importerRe *regexp.Regexp
+	switch fileType {
+	case ".md":
+		importerRe = regexp.MustCompile(marker.ImporterMarkerMarkdown)
+	case ".yaml", ".yml":
+		importerRe = regexp.MustCompile(marker.ImporterMarkerYAML)
+	default:
+		// File that does not have supporting marker setup will be simply
+		// ignored.
+	}
+
+	var exporterRe *regexp.Regexp
+	switch fileType {
+	case ".md":
+		exporterRe = regexp.MustCompile(marker.ExporterMarkerMarkdown)
+	case ".yaml", ".yml":
+		exporterRe = regexp.MustCompile(marker.ExporterMarkerYAML)
+	default:
+		// File that does not have supporting marker setup will be simply
+		// ignored.
+	}
+
+	if importerRe == nil || exporterRe == nil {
+		return
+	}
+
+	newResult := []byte{}
+
+	scanner := bufio.NewScanner(bytes.NewReader(f.ContentAfter))
+	for scanner.Scan() {
+		currentLine := scanner.Bytes()
+		if s := importerRe.Find(currentLine); s != nil {
+			// Importer Marker found, ignore
+			continue
+		}
+		if s := exporterRe.Find(currentLine); s != nil {
+			// Exporter Marker found, ignore
+			continue
+		}
+
+		currentLine = append(currentLine, []byte("\n")...)
+		newResult = append(newResult, currentLine...)
+	}
+
+	f.ContentAfter = newResult
+
+	return
 }
