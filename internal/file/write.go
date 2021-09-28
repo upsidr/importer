@@ -7,12 +7,18 @@ import (
 )
 
 // WriteAfterTo writes the processed content to the provided filepath.
-func (f *File) WriteAfterTo(targetFilePath string) error {
+func (f *File) WriteAfterTo(targetFilePath string, disableHeader bool) error {
 	file, err := os.OpenFile(targetFilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
+
+	// If no header is needed, simply write the updated content and complete.
+	if disableHeader {
+		_, err = file.Write(f.ContentAfter)
+		return err
+	}
 
 	content := []byte{}
 	content = append(content, f.prepareGeneratedHeader(targetFilePath)...)
