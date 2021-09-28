@@ -45,14 +45,15 @@ func executeGenerate(cmd *cobra.Command, args []string) error {
 
 	arg := args[0]
 	out := generateTargetFile
-	if err := generate(arg, out); err != nil {
+	keepMarkers := generateKeepMarkers
+	if err := generate(arg, out, keepMarkers); err != nil {
 		return fmt.Errorf("failed to generate for '%s', %v", arg, err)
 	}
 
 	return nil
 }
 
-func generate(fileName string, targetFilepath string) error {
+func generate(fileName string, targetFilepath string, keepMarkers bool) error {
 	f, err := os.Open(fileName)
 	if err != nil {
 		return err
@@ -69,7 +70,7 @@ func generate(fileName string, targetFilepath string) error {
 		return err
 	}
 
-	if !generateKeepMarkers {
+	if !keepMarkers {
 		file.RemoveMarkers()
 	}
 

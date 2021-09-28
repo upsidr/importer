@@ -19,31 +19,37 @@ var updateGolden = flag.Bool("update", false, "update golden files")
 func TestGenerateStdout(t *testing.T) {
 	cases := map[string]struct {
 		// Input
-		inputFile string
+		inputFile   string
+		keepMarkers bool
 
 		// Output
 		wantFile      string
 		wantErrString string
 	}{
 		"markdown": {
-			inputFile: "../../testdata/markdown/simple-before.md",
-			wantFile:  "../../testdata/markdown/simple-updated.md",
+			inputFile:   "../../testdata/markdown/simple-before.md",
+			keepMarkers: true,
+			wantFile:    "../../testdata/markdown/simple-updated.md",
 		},
 		"markdown with exporter": {
-			inputFile: "../../testdata/markdown/import-with-exporter-before.md",
-			wantFile:  "../../testdata/markdown/import-with-exporter-updated.md",
+			inputFile:   "../../testdata/markdown/import-with-exporter-before.md",
+			keepMarkers: true,
+			wantFile:    "../../testdata/markdown/import-with-exporter-updated.md",
 		},
 		"yaml with exporter": {
-			inputFile: "../../testdata/yaml/demo-before.yaml",
-			wantFile:  "../../testdata/yaml/demo-updated.yaml",
+			inputFile:   "../../testdata/yaml/demo-before.yaml",
+			keepMarkers: true,
+			wantFile:    "../../testdata/yaml/demo-updated.yaml",
 		},
 		"yaml with exporter and align": {
-			inputFile: "../../testdata/yaml/align-with-exporter-before.yaml",
-			wantFile:  "../../testdata/yaml/align-with-exporter-updated.yaml",
+			inputFile:   "../../testdata/yaml/align-with-exporter-before.yaml",
+			keepMarkers: true,
+			wantFile:    "../../testdata/yaml/align-with-exporter-updated.yaml",
 		},
 		"yaml with exporter and align, k8s": {
-			inputFile: "../../testdata/yaml/k8s-color-svc-before.yaml",
-			wantFile:  "../../testdata/yaml/k8s-color-svc-updated.yaml",
+			inputFile:   "../../testdata/yaml/k8s-color-svc-before.yaml",
+			keepMarkers: true,
+			wantFile:    "../../testdata/yaml/k8s-color-svc-updated.yaml",
 		},
 		"error case: file not found": {
 			inputFile:     "does_not_exist",
@@ -60,7 +66,7 @@ func TestGenerateStdout(t *testing.T) {
 			fakeStdout := stdout.New(t)
 			defer fakeStdout.Close()
 
-			err := generate(tc.inputFile, "") // Empty second argument means generate writes to stdout
+			err := generate(tc.inputFile, "", tc.keepMarkers) // Empty second argument means generate writes to stdout
 			if err != nil {
 				if !strings.Contains(err.Error(), tc.wantErrString) {
 					t.Fatalf("error with generate, %v", err)
@@ -83,18 +89,21 @@ func TestGenerateStdout(t *testing.T) {
 func TestGenerateToFile(t *testing.T) {
 	cases := map[string]struct {
 		// Input
-		inputFile string
+		inputFile   string
+		keepMarkers bool
 
 		// Output
 		wantFile string
 	}{
 		"markdown": {
-			inputFile: "../../testdata/markdown/simple-before.md",
-			wantFile:  "../../testdata/markdown/simple-updated.md",
+			inputFile:   "../../testdata/markdown/simple-before.md",
+			keepMarkers: true,
+			wantFile:    "../../testdata/markdown/simple-updated.md",
 		},
 		"markdown with exporter": {
-			inputFile: "../../testdata/markdown/import-with-exporter-before.md",
-			wantFile:  "../../testdata/markdown/import-with-exporter-updated.md",
+			inputFile:   "../../testdata/markdown/import-with-exporter-before.md",
+			keepMarkers: true,
+			wantFile:    "../../testdata/markdown/import-with-exporter-updated.md",
 		},
 	}
 
@@ -105,7 +114,7 @@ func TestGenerateToFile(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			err = generate(tc.inputFile, tempFile.Name()) // Second argument for target file
+			err = generate(tc.inputFile, tempFile.Name(), tc.keepMarkers) // Second argument for target file
 			if err != nil {
 				t.Fatalf("error with generate, %v", err)
 			}
