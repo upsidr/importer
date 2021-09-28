@@ -44,9 +44,9 @@ func (f *File) prepareGeneratedHeader(targetFilePath string) []byte {
 	}
 
 	baseFile := fmt.Sprintf("%s/%s", relDir, filepath.Base(f.FileName))
-	remark := fmt.Sprintf(`improter-generated-from: %s`, baseFile)
+	note := fmt.Sprintf(`improter-generated-from: %s`, baseFile)
 
-	x := fmt.Sprintf(comment+"\n", remark)
+	x := fmt.Sprintf(comment+"\n", note)
 
 	return []byte(x)
 }
