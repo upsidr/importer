@@ -24,11 +24,13 @@ This approach allows the input file to be full of Importer markes without actual
 		Args: cobra.MinimumNArgs(1),
 		RunE: executeGenerate,
 	}
-	generateTargetFile string
+	generateTargetFile  string
+	generateKeepMarkers bool
 )
 
 func init() {
 	generateCliCmd.Flags().StringVarP(&generateTargetFile, "out", "o", "", "write to `FILE`")
+	generateCliCmd.Flags().BoolVar(&generateKeepMarkers, "keep-markers", false, "keep Importer Markers from the generated result")
 }
 
 func executeGenerate(cmd *cobra.Command, args []string) error {
@@ -43,14 +45,15 @@ func executeGenerate(cmd *cobra.Command, args []string) error {
 
 	arg := args[0]
 	out := generateTargetFile
-	if err := generate(arg, out); err != nil {
+	keepMarkers := generateKeepMarkers
+	if err := generate(arg, out, keepMarkers); err != nil {
 		return fmt.Errorf("failed to generate for '%s', %v", arg, err)
 	}
 
 	return nil
 }
 
-func generate(fileName string, targetFilepath string) error {
+func generate(fileName string, targetFilepath string, keepMarkers bool) error {
 	f, err := os.Open(fileName)
 	if err != nil {
 		return err
@@ -65,6 +68,10 @@ func generate(fileName string, targetFilepath string) error {
 	err = file.ProcessMarkers()
 	if err != nil {
 		return err
+	}
+
+	if !keepMarkers {
+		file.RemoveMarkers()
 	}
 
 	if targetFilepath != "" {

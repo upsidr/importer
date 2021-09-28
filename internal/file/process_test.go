@@ -82,3 +82,129 @@ data
 		})
 	}
 }
+
+func TestRemoveMarkers(t *testing.T) {
+	cases := map[string]struct {
+		// Input
+		file *File
+
+		// Output
+		want []byte
+	}{
+		"markdown: without importer marker": {
+			file: &File{
+				FileName: "test-file.md",
+				ContentAfter: []byte(`
+A
+B
+C
+D
+E
+
+1
+2
+3
+4
+5
+`),
+			},
+			want: []byte(`
+A
+B
+C
+D
+E
+
+1
+2
+3
+4
+5
+`),
+		},
+		"markdown: with importer marker, should be removed": {
+			file: &File{
+				FileName: "test-file.md",
+				ContentAfter: []byte(`
+<!-- == importer: abc / begin from: abc.md#1~ == -->
+A
+B
+C
+D
+E
+<!-- == importer: abc / end == -->
+
+<!-- == export: bbb / begin == -->
+1
+2
+3
+4
+5
+<!-- == export: bbb / end == -->
+`),
+			},
+			want: []byte(`
+A
+B
+C
+D
+E
+
+1
+2
+3
+4
+5
+`),
+		},
+		"yaml: with importer marker, should be removed": {
+			file: &File{
+				FileName: "test-file.yaml",
+				ContentAfter: []byte(`
+# == i: abc / begin from: some-file.yaml#[abc] ==
+a:
+  b:
+    c: data
+# == i: abc / end ==
+`),
+			},
+			want: []byte(`
+a:
+  b:
+    c: data
+`),
+		},
+		"unknown file type: keep input as is": {
+			file: &File{
+				FileName: "test-file.dummy",
+				ContentAfter: []byte(`
+YAML like file, but not considered yaml due to the file extension.
+
+# == i: abc / begin from: some-file.yaml#[abc] ==
+a:
+  b:
+    c: data
+# == i: abc / end ==
+`),
+			},
+			want: []byte(`
+YAML like file, but not considered yaml due to the file extension.
+
+# == i: abc / begin from: some-file.yaml#[abc] ==
+a:
+  b:
+    c: data
+# == i: abc / end ==
+`),
+		},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			tc.file.RemoveMarkers()
+			if diff := cmp.Diff(tc.want, tc.file.ContentAfter); diff != "" {
+				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
+			}
+		})
+	}
+}
