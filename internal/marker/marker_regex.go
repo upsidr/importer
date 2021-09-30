@@ -1,5 +1,6 @@
 package marker
 
+// Importer Marker related definitions
 var (
 	// ImporterMarkerMarkdown is the annotation used for importer to find match.
 	//
@@ -16,8 +17,12 @@ var (
 
 	// OptionIndentMode is the pattern used for specifying indentation mode.
 	OptionIndentMode = `indent: (?P<importer_indent_mode>absolute|extra|align|keep)\s?(?P<importer_indent_length>\d*)`
+
+	ImporterSkipProcessingMarkdown = `<!-- == importer-skip-update == -->`
+	ImporterSkipProcessingYAML     = `# == importer-skip-update ==`
 )
 
+// Exporter Marker related definitions
 var (
 	// ExporterMarkerMarkdown is the marker used to indicate how a file can
 	// export specific sections.

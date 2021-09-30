@@ -21,23 +21,26 @@ import (
 // the import target.
 func (m *Marker) ProcessMarkerData(importingFilePath string) ([]byte, error) {
 	var file io.Reader
-	switch {
-	case m.TargetPath != "":
+
+	targetFile := m.ImportTargetFile.File
+	switch m.ImportTargetFile.Type {
+	case PathBased:
 		// Make sure the files are read based on the relative path
 		dir := filepath.Dir(importingFilePath)
-		targetPath := dir + "/" + m.TargetPath
+		targetPath := filepath.Join(dir, targetFile)
 		f, err := os.Open(targetPath)
 		if err != nil {
+			// TODO: This note is no longer true - need to review what it was meant to be.
 			// Purposely returning the byte slice as it contains data that were
 			// populated prior to hitting this func
 			return nil, err
 		}
 		defer f.Close()
 		file = f
-	case m.TargetURL != "":
-		u, err := preprocessURL(m.TargetURL)
+	case URLBased:
+		u, err := preprocessURL(targetFile)
 		if err != nil {
-			return nil, fmt.Errorf("%w of '%s'", ErrInvalidURL, m.TargetURL)
+			return nil, fmt.Errorf("%w of '%s'", ErrInvalidURL, targetFile)
 		}
 		r, err := http.Get(u)
 		if err != nil {
@@ -83,7 +86,7 @@ func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 
 		if len(matches) != 0 {
 			if exporterName, found := matches["export_marker_name"]; found &&
-				exporterName == m.TargetExportMarker {
+				exporterName == m.ImportLogic.ExporterMarker {
 				withinExportMarker = true
 			}
 			if exporterCondition, found := matches["exporter_marker_condition"]; found &&
@@ -93,7 +96,7 @@ func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 			continue
 		}
 
-		// Handle export marker imports
+		// Handle Exporter Marker imports
 		if withinExportMarker {
 			result = append(result, scanner.Bytes()...)
 			result = append(result, br)
@@ -101,13 +104,13 @@ func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 		}
 
 		// Handle line number imports
-		if currentLine >= m.TargetLineFrom &&
-			currentLine <= m.TargetLineTo {
+		if currentLine >= m.ImportLogic.LineFrom &&
+			currentLine <= m.ImportLogic.LineTo {
 			result = append(result, scanner.Bytes()...)
 			result = append(result, br)
 			continue
 		}
-		for _, l := range m.TargetLines {
+		for _, l := range m.ImportLogic.Lines {
 			if currentLine == l {
 				result = append(result, scanner.Bytes()...)
 				result = append(result, br)
@@ -135,17 +138,17 @@ func (m *Marker) processSingleMarkerYAML(file io.Reader) ([]byte, error) {
 
 		switch {
 		// Handle line number range
-		case m.TargetLineFrom > 0:
-			if currentLine >= m.TargetLineFrom &&
-				currentLine <= m.TargetLineTo {
+		case m.ImportLogic.LineFrom > 0:
+			if currentLine >= m.ImportLogic.LineFrom &&
+				currentLine <= m.ImportLogic.LineTo {
 				lineData = append(lineData, br)
 				result = append(result, lineData...)
 				continue
 			}
 
 		// Handle line number slice
-		case len(m.TargetLines) > 0:
-			for _, l := range m.TargetLines {
+		case len(m.ImportLogic.Lines) > 0:
+			for _, l := range m.ImportLogic.Lines {
 				if currentLine == l {
 					lineData = append(lineData, br)
 					result = append(result, lineData...)
@@ -154,7 +157,7 @@ func (m *Marker) processSingleMarkerYAML(file io.Reader) ([]byte, error) {
 			}
 
 		// Handle ExporterMarker
-		case m.TargetExportMarker != "":
+		case m.ImportLogic.ExporterMarker != "":
 			// Find Exporter Marker
 			matches, err := regexpplus.MapWithNamedSubgroups(lineString, ExporterMarkerYAML)
 			if errors.Is(err, regexpplus.ErrNoMatch) {
@@ -172,7 +175,7 @@ func (m *Marker) processSingleMarkerYAML(file io.Reader) ([]byte, error) {
 
 			if exporterName, found := matches["export_marker_name"]; found {
 				// Ignore unrelated marker
-				if exporterName != m.TargetExportMarker || exporterName == "" {
+				if exporterName != m.ImportLogic.ExporterMarker || exporterName == "" {
 					continue
 				}
 
@@ -212,13 +215,13 @@ func (m *Marker) processSingleMarkerOther(file io.Reader) ([]byte, error) {
 		// separately.
 
 		// Handle line number imports
-		if currentLine >= m.TargetLineFrom &&
-			currentLine <= m.TargetLineTo {
+		if currentLine >= m.ImportLogic.LineFrom &&
+			currentLine <= m.ImportLogic.LineTo {
 			result = append(result, scanner.Bytes()...)
 			result = append(result, br)
 			continue
 		}
-		for _, l := range m.TargetLines {
+		for _, l := range m.ImportLogic.Lines {
 			if currentLine == l {
 				result = append(result, scanner.Bytes()...)
 				result = append(result, br)

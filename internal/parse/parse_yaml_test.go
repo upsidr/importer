@@ -32,10 +32,16 @@ func TestParseYAML(t *testing.T) {
 					golden.FileAsString(t, "./testdata/yaml/single-marker-purged.yaml")),
 				Markers: map[int]*marker.Marker{
 					3: {
-						Name:               "some-importer",
-						LineToInsertAt:     3,
-						TargetPath:         "./exporter-example.yaml",
-						TargetExportMarker: "random-data",
+						Name:           "some-importer",
+						LineToInsertAt: 3,
+						ImportTargetFile: marker.ImportTargetFile{
+							Type: marker.PathBased,
+							File: "./exporter-example.yaml",
+						},
+						ImportLogic: marker.ImportLogic{
+							Type:           marker.ExporterMarker,
+							ExporterMarker: "random-data",
+						},
 					},
 				},
 			},
@@ -74,10 +80,16 @@ data:
 `),
 				Markers: map[int]*marker.Marker{
 					3: {
-						Name:               "some_importer",
-						LineToInsertAt:     3,
-						TargetPath:         "./testdata/yaml/exporter-example.yaml",
-						TargetExportMarker: "random-data",
+						Name:           "some_importer",
+						LineToInsertAt: 3,
+						ImportTargetFile: marker.ImportTargetFile{
+							Type: marker.PathBased,
+							File: "./testdata/yaml/exporter-example.yaml",
+						},
+						ImportLogic: marker.ImportLogic{
+							Type:           marker.ExporterMarker,
+							ExporterMarker: "random-data",
+						},
 						Indentation: &marker.Indentation{
 							Mode:              marker.AlignIndentation,
 							MarkerIndentation: 2, // not 6

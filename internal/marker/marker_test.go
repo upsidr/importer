@@ -23,14 +23,18 @@ func TestNewMarker(t *testing.T) {
 				Options:        "from: ./abc.md#3~5",
 			},
 			want: &marker.Marker{
-				Name:               "simple-marker",
-				LineToInsertAt:     3,
-				TargetPath:         "./abc.md",
-				TargetExportMarker: "",
-				TargetLines:        nil,
-				TargetLineFrom:     3,
-				TargetLineTo:       5,
-				Indentation:        nil,
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.md",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:     marker.LineRange,
+					LineFrom: 3,
+					LineTo:   5,
+				},
+				Indentation: nil,
 			},
 		},
 		"Line array": {
@@ -42,12 +46,17 @@ func TestNewMarker(t *testing.T) {
 				Options:        "from: ./abc.md#3,4,5,6",
 			},
 			want: &marker.Marker{
-				Name:               "simple-marker",
-				LineToInsertAt:     3,
-				TargetPath:         "./abc.md",
-				TargetExportMarker: "",
-				TargetLines:        []int{3, 4, 5, 6},
-				Indentation:        nil,
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.md",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:  marker.CommaSeparatedLines,
+					Lines: []int{3, 4, 5, 6},
+				},
+				Indentation: nil,
 			},
 		},
 		"Line array with ranges": {
@@ -59,12 +68,17 @@ func TestNewMarker(t *testing.T) {
 				Options:        "from: ./abc.md#3~5,7~9",
 			},
 			want: &marker.Marker{
-				Name:               "simple-marker",
-				LineToInsertAt:     3,
-				TargetPath:         "./abc.md",
-				TargetExportMarker: "",
-				TargetLines:        []int{3, 4, 5, 7, 8, 9},
-				Indentation:        nil,
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.md",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:  marker.CommaSeparatedLines,
+					Lines: []int{3, 4, 5, 7, 8, 9},
+				},
+				Indentation: nil,
 			},
 		},
 		"Exporter": {
@@ -76,10 +90,16 @@ func TestNewMarker(t *testing.T) {
 				Options:        "from: ./abc.md#[from-exporter-marker]",
 			},
 			want: &marker.Marker{
-				Name:               "simple-marker",
-				LineToInsertAt:     3,
-				TargetPath:         "./abc.md",
-				TargetExportMarker: "from-exporter-marker",
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.md",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:           marker.ExporterMarker,
+					ExporterMarker: "from-exporter-marker",
+				},
 			},
 		},
 		"Exporter with absolute indent": {
@@ -91,10 +111,16 @@ func TestNewMarker(t *testing.T) {
 				Options:        "from: ./abc.md#[from-exporter-marker] indent: absolute 2",
 			},
 			want: &marker.Marker{
-				Name:               "simple-marker",
-				LineToInsertAt:     3,
-				TargetPath:         "./abc.md",
-				TargetExportMarker: "from-exporter-marker",
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.md",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:           marker.ExporterMarker,
+					ExporterMarker: "from-exporter-marker",
+				},
 				Indentation: &marker.Indentation{
 					Mode:   marker.AbsoluteIndentation,
 					Length: 2,
@@ -110,10 +136,16 @@ func TestNewMarker(t *testing.T) {
 				Options:        "from: ./abc.md#[from-exporter-marker] indent: extra 4",
 			},
 			want: &marker.Marker{
-				Name:               "simple-marker",
-				LineToInsertAt:     3,
-				TargetPath:         "./abc.md",
-				TargetExportMarker: "from-exporter-marker",
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.md",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:           marker.ExporterMarker,
+					ExporterMarker: "from-exporter-marker",
+				},
 				Indentation: &marker.Indentation{
 					Mode:   marker.ExtraIndentation,
 					Length: 4,
@@ -130,10 +162,16 @@ func TestNewMarker(t *testing.T) {
 				PrecedingIndentation: "    ",
 			},
 			want: &marker.Marker{
-				Name:               "simple-marker",
-				LineToInsertAt:     3,
-				TargetPath:         "./abc.yaml",
-				TargetExportMarker: "from-exporter-marker",
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.yaml",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:           marker.ExporterMarker,
+					ExporterMarker: "from-exporter-marker",
+				},
 				Indentation: &marker.Indentation{
 					Mode:              marker.AlignIndentation,
 					MarkerIndentation: 4,
@@ -150,10 +188,16 @@ func TestNewMarker(t *testing.T) {
 				PrecedingIndentation: "    ",
 			},
 			want: &marker.Marker{
-				Name:               "simple-marker",
-				LineToInsertAt:     3,
-				TargetPath:         "./abc.yaml",
-				TargetExportMarker: "from-exporter-marker",
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.yaml",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:           marker.ExporterMarker,
+					ExporterMarker: "from-exporter-marker",
+				},
 				Indentation: &marker.Indentation{
 					Mode: marker.KeepIndentation,
 				},

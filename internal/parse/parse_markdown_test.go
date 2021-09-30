@@ -35,9 +35,15 @@ func TestParseMarkdown(t *testing.T) {
 					3: {
 						Name:           "lorem",
 						LineToInsertAt: 3,
-						TargetPath:     "./snippet-lorem.md",
-						TargetLineFrom: 5,
-						TargetLineTo:   12,
+						ImportTargetFile: marker.ImportTargetFile{
+							Type: marker.PathBased,
+							File: "./snippet-lorem.md",
+						},
+						ImportLogic: marker.ImportLogic{
+							Type:     marker.LineRange,
+							LineFrom: 5,
+							LineTo:   12,
+						},
 					},
 				},
 			},
@@ -65,9 +71,15 @@ func TestParseMarkdown(t *testing.T) {
 					3: {
 						Name:           "some_importer",
 						LineToInsertAt: 3,
-						TargetPath:     "../../testdata/markdown/simple-before-importer.md",
-						TargetLineFrom: 1,
-						TargetLineTo:   2,
+						ImportTargetFile: marker.ImportTargetFile{
+							Type: marker.PathBased,
+							File: "../../testdata/markdown/simple-before-importer.md",
+						},
+						ImportLogic: marker.ImportLogic{
+							Type:     marker.LineRange,
+							LineFrom: 1,
+							LineTo:   2,
+						},
 					},
 				},
 			},
@@ -84,9 +96,15 @@ func TestParseMarkdown(t *testing.T) {
 					3: {
 						Name:           "some_importer",
 						LineToInsertAt: 3,
-						TargetPath:     "./somefile",
-						TargetLineFrom: 1,
-						TargetLineTo:   2,
+						ImportTargetFile: marker.ImportTargetFile{
+							Type: marker.PathBased,
+							File: "./somefile",
+						},
+						ImportLogic: marker.ImportLogic{
+							Type:     marker.LineRange,
+							LineFrom: 1,
+							LineTo:   2,
+						},
 					},
 				},
 			},

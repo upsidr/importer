@@ -23,17 +23,46 @@ type Marker struct {
 	Name           string
 	LineToInsertAt int
 
-	TargetPath string
-	TargetURL  string
-
-	TargetExportMarker string
-	TargetLines        []int
-	TargetLineFrom     int
-	TargetLineTo       int
+	ImportTargetFile
+	ImportLogic
 
 	Indentation *Indentation
 
 	// TODO: Add insert style such as code verbatim, details, quotes, etc.
+}
+
+type ImportTargetFileType int
+
+const (
+	// Reserve 0 value as invalid
+	PathBased ImportTargetFileType = iota + 1
+	URLBased
+)
+
+type ImportTargetFile struct {
+	Type ImportTargetFileType
+	File string
+}
+
+type ImportLogicType int
+
+const (
+	// Reserve 0 value as invalid
+	CommaSeparatedLines ImportLogicType = iota + 1
+	LineRange
+	ExporterMarker
+)
+
+type ImportLogic struct {
+	Type ImportLogicType
+
+	// TODO: Consider removing specific comma separated one, and handle
+	//       multiple LineFrom + LineTo pairs.
+	Lines    []int
+	LineFrom int
+	LineTo   int
+
+	ExporterMarker string
 }
 
 type IndentationMode int
@@ -156,13 +185,19 @@ func processTargetPath(marker *Marker, input string) error {
 		if err != nil {
 			return err
 		}
-		marker.TargetURL = input
+		marker.ImportTargetFile = ImportTargetFile{
+			Type: URLBased,
+			File: input,
+		}
 	default:
 		_, file := filepath.Split(input)
 		if file == "" {
 			return fmt.Errorf("%w, directory cannot be imported", ErrInvalidPath)
 		}
-		marker.TargetPath = input
+		marker.ImportTargetFile = ImportTargetFile{
+			Type: PathBased,
+			File: input,
+		}
 	}
 
 	return nil
@@ -186,7 +221,10 @@ func processTargetDetail(marker *Marker, input string) error {
 	switch {
 	// Handle export marker
 	case markerRegex != nil:
-		marker.TargetExportMarker = string(markerRegex[1])
+		marker.ImportLogic = ImportLogic{
+			Type:           ExporterMarker,
+			ExporterMarker: string(markerRegex[1]),
+		}
 
 	// Handle line range marker with commas
 	case strings.Contains(input, ","):
@@ -217,7 +255,10 @@ func processTargetDetail(marker *Marker, input string) error {
 			targetLines = append(targetLines, lineNumber)
 		}
 
-		marker.TargetLines = targetLines
+		marker.ImportLogic = ImportLogic{
+			Type:  CommaSeparatedLines,
+			Lines: targetLines,
+		}
 
 	// Handle single line range
 	case strings.Contains(input, "~"):
@@ -225,15 +266,22 @@ func processTargetDetail(marker *Marker, input string) error {
 		if err != nil {
 			return fmt.Errorf("%w for '%s', %v", ErrInvalidSyntax, marker.Name, err)
 		}
-		marker.TargetLineFrom = lb
-		marker.TargetLineTo = ub
+
+		marker.ImportLogic = ImportLogic{
+			Type:     LineRange,
+			LineFrom: lb,
+			LineTo:   ub,
+		}
 
 	default:
 		i, err := strconv.Atoi(input)
 		if err != nil {
 			return fmt.Errorf("%w for '%s', %v", ErrInvalidSyntax, marker.Name, err)
 		}
-		marker.TargetLines = append(marker.TargetLines, i)
+		marker.ImportLogic = ImportLogic{
+			Type:  CommaSeparatedLines,
+			Lines: []int{i},
+		}
 	}
 
 	return nil
