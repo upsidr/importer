@@ -33,7 +33,7 @@ func TestUpdate(t *testing.T) {
 
 			err := update(copiedFile)
 			if err != nil {
-				t.Fatalf("error with generate, %v", err)
+				t.Fatalf("error with update, %v", err)
 			}
 
 			if *updateGolden {
