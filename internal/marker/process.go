@@ -26,8 +26,8 @@ func (m *Marker) ProcessMarkerData(importingFilePath string) ([]byte, error) {
 	switch m.ImportTargetFile.Type {
 	case PathBased:
 		// Make sure the files are read based on the relative path
-		dir := filepath.Dir(targetFile)
-		targetPath := dir + "/" + m.ImportTargetFile.File
+		dir := filepath.Dir(importingFilePath)
+		targetPath := filepath.Join(dir, targetFile)
 		f, err := os.Open(targetPath)
 		if err != nil {
 			// TODO: This note is no longer true - need to review what it was meant to be.
