@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
+	"strings"
 
 	"github.com/upsidr/importer/internal/errorsplus"
 	"github.com/upsidr/importer/internal/file"
@@ -33,28 +34,37 @@ var (
 //
 // If any of the above steps failed, it would return an error. This function
 // does not populate the ContentAfter.
+//
+// TODO: Consider merging with the private parse method, as this public
+//       function is not adding any value at the moment.
 func Parse(fileName string, input io.Reader) (*file.File, error) {
 	if input == nil {
 		return nil, ErrNoInput
 	}
 
-	fileType := filepath.Ext(fileName)
-
-	switch fileType {
-	case ".md":
-		return parse(marker.ImporterMarkerMarkdown, fileName, input)
-	case ".yaml", ".yml":
-		return parse(marker.ImporterMarkerYAML, fileName, input)
-	default:
-		return nil, fmt.Errorf("%w, '%s' provided", ErrUnsupportedFileType, fileType)
-	}
+	return parse(fileName, input)
 }
 
 // parse reads file input using scanner. This reads the input line by line, and
 // store the data into File data. Parsing the data stores 3 sets of data: file
 // content as is, marker details, and file content with all data between
 // marker pairs purged.
-func parse(markerRegex string, fileName string, input io.Reader) (*file.File, error) {
+func parse(fileName string, input io.Reader) (*file.File, error) {
+	var importerMarkerRegex string
+	var importerSkipMarker string
+
+	fileType := filepath.Ext(fileName)
+	switch fileType {
+	case ".md":
+		importerMarkerRegex = marker.ImporterMarkerMarkdown
+		importerSkipMarker = marker.ImporterSkipProcessingMarkdown
+	case ".yaml", ".yml":
+		importerMarkerRegex = marker.ImporterMarkerYAML
+		importerSkipMarker = marker.ImporterSkipProcessingYAML
+	default:
+		return nil, fmt.Errorf("%w, '%s' provided", ErrUnsupportedFileType, fileType)
+	}
+
 	f := &file.File{
 		FileName: fileName,
 
@@ -80,8 +90,14 @@ func parse(markerRegex string, fileName string, input io.Reader) (*file.File, er
 		currentStr := scanner.Text()
 		f.ContentBefore = append(f.ContentBefore, currentStr)
 
+		// If skip marker is found, turn on the flag. This flag should disable
+		// in-place file update, but should not suppress generate or preview.
+		if strings.Contains(currentStr, importerSkipMarker) {
+			f.SkipUpdate = true
+		}
+
 		// Look for marker match
-		matches, err := regexpplus.MapWithNamedSubgroups(currentStr, markerRegex)
+		matches, err := regexpplus.MapWithNamedSubgroups(currentStr, importerMarkerRegex)
 		if err != nil {
 			if errors.Is(err, regexpplus.ErrNoMatch) {
 				// If the line appears within some other marker set, remove the line.

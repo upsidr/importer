@@ -23,4 +23,8 @@ type File struct {
 
 	// Markers is an array holding onto each annotation block.
 	Markers map[int]*marker.Marker
+
+	// SkipUpdate is used to skip updating the file in place. This is set by a
+	// special marker syntax.
+	SkipUpdate bool
 }

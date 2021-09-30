@@ -33,6 +33,13 @@ func (f *File) ReplaceWithAfter(options ...ReplaceOption) error {
 		opt(mode)
 	}
 
+	// If SkipUpdate flag is on, do not update the file.
+	if f.SkipUpdate {
+		// Perhaps it's more friendly to log that the file update is being
+		// skipped. If that's truly the case, handle it here.
+		mode.isDryRun = true
+	}
+
 	return replace(f.FileName, f.ContentAfter, mode)
 }
 
