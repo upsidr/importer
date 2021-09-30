@@ -96,7 +96,7 @@ func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 			continue
 		}
 
-		// Handle export marker imports
+		// Handle Exporter Marker imports
 		if withinExportMarker {
 			result = append(result, scanner.Bytes()...)
 			result = append(result, br)
