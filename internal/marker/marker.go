@@ -139,7 +139,7 @@ func processIndentOption(marker *Marker, match *RawMarker) error {
 		case "extra":
 			marker.Indentation = &Indentation{Mode: ExtraIndentation}
 		case "align":
-			markerIndentation := len(match.PrecedingIndentation) - len(strings.TrimLeft(match.PrecedingIndentation, " ")) // Naïve count
+			markerIndentation := len(match.PrecedingIndentation)
 			marker.Indentation = &Indentation{
 				Mode:              AlignIndentation,
 				MarkerIndentation: markerIndentation,
