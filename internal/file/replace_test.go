@@ -44,6 +44,18 @@ func TestReplaceWithAfter(t *testing.T) {
 			},
 			want: "", // not written
 		},
+		"skip-update found": {
+			input: &File{
+				FileName: "tmpfile.txt",
+				ContentBefore: []string{
+					"Some data",
+					"and more",
+				},
+				ContentAfter: []byte(`Completely different data`),
+				SkipUpdate:   true,
+			},
+			want: "", // not written
+		},
 	}
 
 	for name, tc := range cases {

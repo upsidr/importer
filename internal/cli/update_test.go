@@ -24,6 +24,10 @@ func TestUpdate(t *testing.T) {
 			inputFile: "../../testdata/markdown/import-with-exporter-before.md",
 			wantFile:  "../../testdata/markdown/import-with-exporter-updated.md",
 		},
+		"markdown with skip update": {
+			inputFile: "../../testdata/markdown/skip-update.md",
+			wantFile:  "../../testdata/markdown/skip-update.md",
+		},
 	}
 
 	for name, tc := range cases {

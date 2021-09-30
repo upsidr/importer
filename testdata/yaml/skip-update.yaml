@@ -1,0 +1,6 @@
+# == importer-skip-update ==
+
+title: Demo of YAML Importer
+# == import: description / begin from: ./snippet-description.yaml#[for-demo] ==
+dummy: This data will NOT be removed
+# == import: description / end ==
