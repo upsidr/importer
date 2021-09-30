@@ -159,7 +159,7 @@ func TestNewMarker(t *testing.T) {
 				IsEndFound:           true,
 				LineToInsertAt:       3,
 				Options:              "from: ./abc.yaml#[from-exporter-marker] indent: align",
-				PrecedingIndentation: "    ",
+				PrecedingIndentation: "  - ", // As if yaml list input is used for indentation
 			},
 			want: &marker.Marker{
 				Name:           "simple-marker",

@@ -10,7 +10,7 @@ var (
 	ImporterMarkerMarkdown = `<!-- == (imptr|import|importer|i): (?P<importer_name>\S+) \/ (?P<importer_marker>begin|end)(?P<importer_option>.*) == -->`
 
 	// ImporterMarkerYAML is the annotation used for importer to find match.
-	ImporterMarkerYAML = `(?P<importer_marker_indentation>\s*)# == (imptr|import|importer|i): (?P<importer_name>\S+) \/ (?P<importer_marker>begin|end)(?P<importer_option>.*) ==`
+	ImporterMarkerYAML = `(?P<importer_marker_indentation>.*)# == (imptr|import|importer|i): (?P<importer_name>\S+) \/ (?P<importer_marker>begin|end)(?P<importer_option>.*) ==`
 
 	// OptionFilePathIndicator is the pattern used for parsing Importer file options.
 	OptionFilePathIndicator = `from: (?P<importer_target_path>\S+)\s*\#(?P<importer_target_detail>[0-9a-zA-Z,-_\~]+)\s?`
