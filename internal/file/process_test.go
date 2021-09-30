@@ -30,8 +30,14 @@ func TestProcessMarker(t *testing.T) {
 					2: {
 						Name:           "test annotation",
 						LineToInsertAt: 2,
-						TargetPath:     "../../testdata/other/note.txt",
-						TargetLines:    []int{1, 2},
+						ImportTargetFile: marker.ImportTargetFile{
+							Type: marker.PathBased,
+							File: "../../testdata/other/note.txt",
+						},
+						ImportLogic: marker.ImportLogic{
+							Type:  marker.CommaSeparatedLines,
+							Lines: []int{1, 2},
+						},
 					},
 				},
 			},
@@ -54,8 +60,14 @@ data
 					2: {
 						Name:           "test annotation",
 						LineToInsertAt: 2,
-						TargetPath:     "../../does-not-exist.txt",
-						TargetLines:    []int{1, 2},
+						ImportTargetFile: marker.ImportTargetFile{
+							Type: marker.PathBased,
+							File: "../../does-not-exist.txt",
+						},
+						ImportLogic: marker.ImportLogic{
+							Type:  marker.CommaSeparatedLines,
+							Lines: []int{1, 2},
+						},
 					},
 				},
 			},
