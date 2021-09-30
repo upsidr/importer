@@ -22,9 +22,15 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.md",
 			marker: &Marker{
 				LineToInsertAt: 1, // Not used in this, as single annotation handling is about appending data
-				TargetPath:     "../../testdata/other/note.txt",
-				TargetLineFrom: 1,
-				TargetLineTo:   3,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/other/note.txt",
+				},
+				ImportLogic: ImportLogic{
+					Type:     LineRange,
+					LineFrom: 1,
+					LineTo:   3,
+				},
 			},
 			want: []byte(`This is test data.
 他言語サポートのためのテスト文章。
@@ -35,8 +41,14 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.md",
 			marker: &Marker{
 				LineToInsertAt: 1,
-				TargetPath:     "../../testdata/other/note.txt",
-				TargetLines:    []int{2, 3},
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/other/note.txt",
+				},
+				ImportLogic: ImportLogic{
+					Type:  CommaSeparatedLines,
+					Lines: []int{2, 3},
+				},
 			},
 			want: []byte(`他言語サポートのためのテスト文章。
 🍸 Emojis 🍷 Supported 🍺
@@ -45,9 +57,15 @@ func TestProcessSingleMarker(t *testing.T) {
 		"markdown: exporter marker": {
 			callerFile: "./some_file.md",
 			marker: &Marker{
-				LineToInsertAt:     1,
-				TargetPath:         "../../testdata/markdown/snippet-with-exporter.md",
-				TargetExportMarker: "test_exporter",
+				LineToInsertAt: 1,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/markdown/snippet-with-exporter.md",
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "test_exporter",
+				},
 			},
 			want: []byte(`
 ✨✨✨✨✨✨✨✨
@@ -64,10 +82,16 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetPath:     "../../testdata/yaml/snippet-simple-tree.yaml",
-				TargetLineFrom: 2,
-				TargetLineTo:   5,
-				Indentation:    nil,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/yaml/snippet-simple-tree.yaml",
+				},
+				ImportLogic: ImportLogic{
+					Type:     LineRange,
+					LineFrom: 2,
+					LineTo:   5,
+				},
+				Indentation: nil,
 			},
 			want: []byte(`  b:
     c:
@@ -75,14 +99,20 @@ func TestProcessSingleMarker(t *testing.T) {
         e:
 `),
 		},
-		"yaml: line range with URL, github.com": {
+		"yaml: line range with URL, github.com - this may fail if GitHub is down": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetURL:      "https://github.com/upsidr/importer/blob/main/testdata/yaml/snippet-simple-tree.yaml",
-				TargetLineFrom: 2,
-				TargetLineTo:   5,
-				Indentation:    nil,
+				ImportTargetFile: ImportTargetFile{
+					Type: URLBased,
+					File: "https://github.com/upsidr/importer/blob/main/testdata/yaml/snippet-simple-tree.yaml",
+				},
+				ImportLogic: ImportLogic{
+					Type:     LineRange,
+					LineFrom: 2,
+					LineTo:   5,
+				},
+				Indentation: nil,
 			},
 			want: []byte(`  b:
     c:
@@ -94,10 +124,16 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetURL:      "https://raw.githubusercontent.com/upsidr/importer/main/testdata/yaml/snippet-simple-tree.yaml",
-				TargetLineFrom: 2,
-				TargetLineTo:   5,
-				Indentation:    nil,
+				ImportTargetFile: ImportTargetFile{
+					Type: URLBased,
+					File: "https://raw.githubusercontent.com/upsidr/importer/main/testdata/yaml/snippet-simple-tree.yaml",
+				},
+				ImportLogic: ImportLogic{
+					Type:     LineRange,
+					LineFrom: 2,
+					LineTo:   5,
+				},
+				Indentation: nil,
 			},
 			want: []byte(`  b:
     c:
@@ -109,9 +145,15 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetPath:     "../../testdata/yaml/snippet-simple-tree.yaml",
-				TargetLines:    []int{1, 2, 4},
-				Indentation:    nil,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/yaml/snippet-simple-tree.yaml",
+				},
+				ImportLogic: ImportLogic{
+					Type:  LineRange,
+					Lines: []int{1, 2, 4},
+				},
+				Indentation: nil,
 			},
 			want: []byte(`a:
   b:
@@ -121,10 +163,16 @@ func TestProcessSingleMarker(t *testing.T) {
 		"yaml: exporter marker": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
-				LineToInsertAt:     5,
-				TargetPath:         "../../testdata/yaml/snippet-with-exporter.yaml",
-				TargetExportMarker: "long-tree",
-				Indentation:        nil,
+				LineToInsertAt: 5,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/yaml/snippet-with-exporter.yaml",
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "long-tree",
+				},
+				Indentation: nil,
 			},
 			want: []byte(`a:
   b:
@@ -142,9 +190,15 @@ func TestProcessSingleMarker(t *testing.T) {
 		"yaml: exporter marker with absolute indentation": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
-				LineToInsertAt:     5,
-				TargetPath:         "../../testdata/yaml/snippet-with-exporter.yaml",
-				TargetExportMarker: "metadata-only",
+				LineToInsertAt: 5,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/yaml/snippet-with-exporter.yaml",
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "metadata-only",
+				},
 				Indentation: &Indentation{
 					Mode:   AbsoluteIndentation,
 					Length: 30,
@@ -158,9 +212,15 @@ func TestProcessSingleMarker(t *testing.T) {
 		"yaml: exporter marker with absolute indentation, with zero indentation": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
-				LineToInsertAt:     5,
-				TargetPath:         "../../testdata/yaml/snippet-with-exporter.yaml",
-				TargetExportMarker: "metadata-only",
+				LineToInsertAt: 5,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/yaml/snippet-with-exporter.yaml",
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "metadata-only",
+				},
 				Indentation: &Indentation{
 					Mode:   AbsoluteIndentation,
 					Length: 0,
@@ -174,9 +234,15 @@ func TestProcessSingleMarker(t *testing.T) {
 		"yaml: exporter marker with extra indentation": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
-				LineToInsertAt:     5,
-				TargetPath:         "../../testdata/yaml/snippet-with-exporter.yaml",
-				TargetExportMarker: "sample-nested",
+				LineToInsertAt: 5,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/yaml/snippet-with-exporter.yaml",
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "sample-nested",
+				},
 				Indentation: &Indentation{
 					Mode:   ExtraIndentation,
 					Length: 2,
@@ -194,9 +260,15 @@ func TestProcessSingleMarker(t *testing.T) {
 		"yaml: exporter marker with align indentation": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
-				LineToInsertAt:     5,
-				TargetPath:         "../../testdata/yaml/snippet-with-exporter.yaml",
-				TargetExportMarker: "sample-nested",
+				LineToInsertAt: 5,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/yaml/snippet-with-exporter.yaml",
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "sample-nested",
+				},
 				Indentation: &Indentation{
 					Mode:              AlignIndentation,
 					MarkerIndentation: 10,
@@ -215,9 +287,15 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_unknown_file_type",
 			marker: &Marker{
 				LineToInsertAt: 1, // Not used in this, as single annotation handling is about appending data
-				TargetPath:     "../../testdata/other/note.txt",
-				TargetLineFrom: 1,
-				TargetLineTo:   3,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/other/note.txt",
+				},
+				ImportLogic: ImportLogic{
+					Type:     LineRange,
+					LineFrom: 1,
+					LineTo:   3,
+				},
 			},
 			want: []byte(`This is test data.
 他言語サポートのためのテスト文章。
@@ -228,8 +306,14 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_unknown_file_type",
 			marker: &Marker{
 				LineToInsertAt: 1,
-				TargetPath:     "../../testdata/other/note.txt",
-				TargetLines:    []int{2, 3},
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/other/note.txt",
+				},
+				ImportLogic: ImportLogic{
+					Type:  LineRange,
+					Lines: []int{2, 3},
+				},
 			},
 			want: []byte(`他言語サポートのためのテスト文章。
 🍸 Emojis 🍷 Supported 🍺
@@ -240,30 +324,62 @@ func TestProcessSingleMarker(t *testing.T) {
 		"no target file found": {
 			callerFile: "./some_file.md",
 			marker: &Marker{
-				LineToInsertAt:     1,
-				TargetPath:         "../../does-not-exist.md",
-				TargetExportMarker: "test_exporter",
+				LineToInsertAt: 1,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../does-not-exist.md",
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "test_exporter",
+				},
 			},
 			wantErr: os.ErrNotExist,
 		},
-		"no target file information provided": {
+		"no target file information provided - path": {
 			callerFile: "./some_file.md",
 			marker: &Marker{
-				LineToInsertAt:     1,
-				TargetPath:         "", // important
-				TargetURL:          "", // important
-				TargetExportMarker: "test_exporter",
+				LineToInsertAt: 1,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "", // Important
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "test_exporter",
+				},
 			},
 			wantErr: ErrNoFileInput,
+		},
+		"no target file information provided - URL": {
+			callerFile: "./some_file.md",
+			marker: &Marker{
+				LineToInsertAt: 1,
+				ImportTargetFile: ImportTargetFile{
+					Type: URLBased,
+					File: "", // Important
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "test_exporter",
+				},
+			},
+			wantErr: ErrInvalidURL,
 		},
 		"url access error": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetURL:      "https://some-address-that-does-not-exist",
-				TargetLineFrom: 1,
-				TargetLineTo:   5,
-				Indentation:    nil,
+				ImportTargetFile: ImportTargetFile{
+					Type: URLBased,
+					File: "https://some-address-that-does-not-exist",
+				},
+				ImportLogic: ImportLogic{
+					Type:     LineRange,
+					LineFrom: 1,
+					LineTo:   5,
+				},
+				Indentation: nil,
 			},
 			wantErr: ErrGetMarkerTarget,
 		},
@@ -271,10 +387,16 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetURL:      "https://github.com/does-not-exist.yml#",
-				TargetLineFrom: 1,
-				TargetLineTo:   5,
-				Indentation:    nil,
+				ImportTargetFile: ImportTargetFile{
+					Type: URLBased,
+					File: "https://github.com/does-not-exist.yml#",
+				},
+				ImportLogic: ImportLogic{
+					Type:     LineRange,
+					LineFrom: 1,
+					LineTo:   5,
+				},
+				Indentation: nil,
 			},
 			wantErr: ErrNonSuccessCode,
 		},
@@ -282,10 +404,16 @@ func TestProcessSingleMarker(t *testing.T) {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
 				LineToInsertAt: 5,
-				TargetURL:      "http///////",
-				TargetLineFrom: 1,
-				TargetLineTo:   5,
-				Indentation:    nil,
+				ImportTargetFile: ImportTargetFile{
+					Type: URLBased,
+					File: "http///////",
+				},
+				ImportLogic: ImportLogic{
+					Type:     LineRange,
+					LineFrom: 1,
+					LineTo:   5,
+				},
+				Indentation: nil,
 			},
 			wantErr: ErrInvalidURL,
 		},
