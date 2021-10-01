@@ -44,5 +44,5 @@ var (
 	//     # == export: random_data / begin ==
 	//     random-data: this is exported
 	//     # == export: random_data / end ==
-	ExporterMarkerYAML = `(?P<export_marker_indent>\s*)# == (exptr|export|exporter|e): (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) ==`
+	ExporterMarkerYAML = `(?P<export_marker_indent>.*)# == (exptr|export|exporter|e): (?P<export_marker_name>\S+) \/ (?P<exporter_marker_condition>begin|end) ==`
 )

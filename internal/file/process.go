@@ -8,6 +8,7 @@ import (
 	"regexp"
 
 	"github.com/upsidr/importer/internal/marker"
+	"github.com/upsidr/importer/internal/regexpplus"
 )
 
 const br = byte('\n')
@@ -78,13 +79,47 @@ func (f *File) RemoveMarkers() {
 	scanner := bufio.NewScanner(bytes.NewReader(f.ContentAfter))
 	for scanner.Scan() {
 		currentLine := scanner.Bytes()
-		if s := importerRe.Find(currentLine); s != nil {
-			// Importer Marker found, ignore
-			continue
+
+		if s := importerRe.Find(currentLine); len(s) != 0 {
+			matches, err := regexpplus.MapWithNamedSubgroupsRegexp(string(currentLine), importerRe)
+			if err != nil {
+				panic(err) // Unknown error, should not happen
+			}
+			precedingData := []byte("")
+			// If regexp contains importer_marker_indentation, keep that untouched.
+			if m, ok := matches["importer_marker_indentation"]; ok {
+				precedingData = []byte(m)
+			}
+
+			markerRemoved := importerRe.ReplaceAll(currentLine, precedingData)
+
+			// If the given line only contains marker and some spaces, simply
+			// remove the entire line.
+			if b := bytes.TrimSpace(markerRemoved); len(b) == 0 {
+				continue
+			}
+			currentLine = markerRemoved
 		}
-		if s := exporterRe.Find(currentLine); s != nil {
-			// Exporter Marker found, ignore
-			continue
+
+		if s := exporterRe.Find(currentLine); len(s) != 0 {
+			matches, err := regexpplus.MapWithNamedSubgroupsRegexp(string(currentLine), exporterRe)
+			if err != nil {
+				panic(err) // Unknown error, should not happen
+			}
+			precedingData := []byte("")
+			// If regexp contains export_marker_indent, keep that untouched.
+			if m, ok := matches["export_marker_indent"]; ok {
+				precedingData = []byte(m)
+			}
+
+			markerRemoved := exporterRe.ReplaceAll(currentLine, precedingData)
+
+			// If the given line only contains marker and some spaces, simply
+			// remove the entire line.
+			if b := bytes.TrimSpace(markerRemoved); len(b) == 0 {
+				continue
+			}
+			currentLine = markerRemoved
 		}
 
 		currentLine = append(currentLine, []byte("\n")...)
@@ -92,6 +127,4 @@ func (f *File) RemoveMarkers() {
 	}
 
 	f.ContentAfter = newResult
-
-	return
 }
