@@ -186,6 +186,46 @@ a:
     c: data
 `),
 		},
+		"yaml: importer marker is removed but the rest of the line is kept": {
+			file: &File{
+				FileName: "test-file.yaml",
+				ContentAfter: []byte(`
+data:
+  - # == i: abc / begin from: some-file.yaml#[abc] ==
+    a:
+      b:
+        c: data
+    # == i: abc / end ==
+`),
+			},
+			want: []byte(`
+data:
+  - 
+    a:
+      b:
+        c: data
+`),
+		},
+		"yaml: exporter marker is removed but the rest of the line is kept": {
+			file: &File{
+				FileName: "test-file.yaml",
+				ContentAfter: []byte(`
+data:
+  - # == e: abc / begin ==
+    a:
+      b:
+        c: data
+    # == i: abc / end ==
+`),
+			},
+			want: []byte(`
+data:
+  - 
+    a:
+      b:
+        c: data
+`),
+		},
 		"unknown file type: keep input as is": {
 			file: &File{
 				FileName: "test-file.dummy",
@@ -214,7 +254,7 @@ a:
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
 			tc.file.RemoveMarkers()
-			if diff := cmp.Diff(tc.want, tc.file.ContentAfter); diff != "" {
+			if diff := cmp.Diff(string(tc.want), string(tc.file.ContentAfter)); diff != "" {
 				t.Errorf("parsed result didn't match (-want / +got)\n%s", diff)
 			}
 		})
