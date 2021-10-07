@@ -33,9 +33,9 @@ Other markers are used to update Importer behaviours.
 - Any name of your choice, with no whitespace character.
 - The same name cannot be used in a single file.
 
-### ℹ️ Separate with ` / `
+### ℹ️ Separate with `/`
 
-- Add separator using ` / `. The spaces around the `/` are required as of now.
+- Add separator using `/`. The spaces around the `/` are required as of now.
 
 ### 3️⃣ Either `begin` or `end`
 
@@ -45,10 +45,12 @@ Other markers are used to update Importer behaviours.
 
 This includes target file to import from, etc.
 
-- `from: FILENAME#OPTION`: Define where import from.
-  - `FILENAME`: Import from the `FILENAME`, the location of target file can be a URL or relative path from the source file.
-  - `OPTION`: Define which lines to import.
-    - `NUM1~NUM2`: Import line range from `NUM1` to `NUM2`. Leaving `NUM1` empty means from the beginning of the file. Leaving `NUM2` empty means to the end of the file.
+- `from: FILENAME#OPTION`: Define where to import from.
+  - `FILENAME`: Specify the location of target file, which can be a URL or relative path from the source file.
+  - `OPTION`: Define which line(s) to import.
+    - `NUM1~NUM2`: Import line range from `NUM1` to `NUM2`.\
+      Leaving `NUM1` empty means from the beginning of the file.\
+      Leaving `NUM2` empty means to the end of the file.
     - `NUM1,NUM2`: Import each lines specified (e.g. `NUM1`, `NUM2`) one by one.
     - `[Exporter-Marker]`: Import lines based on Exporter Markers defined in the target file.
 - `indent: [align|absolute NUM|extra NUM|keep]`: Update indentation for the imported data.
