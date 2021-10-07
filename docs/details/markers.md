@@ -26,11 +26,16 @@ Other markers are used to update Importer behaviours.
 
 - Tell Importer to start the import setup.
 - This can be represented with `importer`, `import`, `imptr` or `i`.
+- Do not forget to add `:` at the end.
 
 ### 2️⃣ Importer Marker Name
 
 - Any name of your choice, with no whitespace character.
 - The same name cannot be used in a single file.
+
+### ℹ️ Separate with ` / `
+
+- Add separator using ` / `. The spaces around the `/` are required as of now.
 
 ### 3️⃣ Either `begin` or `end`
 
