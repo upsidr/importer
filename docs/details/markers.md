@@ -187,7 +187,7 @@ You can find more with 'importer help'
 - Any name of your choice, with no whitespace character.
 - The same name cannot be used in a single file.
 
-### 📃 Separate with `/`
+#### 📃 Separate with `/`
 
 - Add separator using `/`. The spaces around the `/` are required as of now.
 
