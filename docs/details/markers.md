@@ -5,6 +5,17 @@
 **Markers** are a simple comment with special syntax Importer understands. There
 are several types of markers.
 
+## Overview
+
+Importer has the following markers.
+
+| Name                 | Description                                                     |
+| -------------------- | --------------------------------------------------------------- |
+| Importer Marker      | The main marker, used to import data from other file.           |
+| Exporter Marker      | Supplemental markers used to define line range in target files. |
+| Skip Importer Update | Special marker to suppress `importer update`.                   |
+| Auto Generated Note  | Special marker for `importer generate` information.             |
+
 ## Basic Syntax
 
 The markers always follow the pattern of `== some-importer-marker-input ==`.
