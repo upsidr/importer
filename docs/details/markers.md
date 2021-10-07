@@ -54,8 +54,6 @@ Other markers are used to update Importer behaviours.
 
 ### 4️⃣ Importer Marker Details
 
-This includes target file to import from, etc.
-
 - `from: FILENAME#OPTION`: Define where to import from.
   - `FILENAME`: Specify the location of target file, which can be a URL or relative path from the source file.
   - `OPTION`: Define which line(s) to import.
@@ -64,6 +62,15 @@ This includes target file to import from, etc.
       Leaving `NUM2` empty means to the end of the file.
     - `NUM1,NUM2`: Import each lines specified (e.g. `NUM1`, `NUM2`) one by one.
     - `[Exporter-Marker]`: Import lines based on Exporter Markers defined in the target file.
+
+| Name                       | Example         | Description                                                                                                                                                                                                                                                                                                 |
+| -------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Target Path                | `from: xyz.md`  | Defines where to import from. This is a relative path from the file containing the marker.<br /><br /> **Known Limitations**: Path cannot contain whitespace characters.                                                                                                                                    |
+| Separator                  | `#`             | This is to separate Target Path and Target Detail. It can have as many preceding whispace characters.                                                                                                                                                                                                       |
+| Target Detail - Line Range | `[1~33]`        | Imports only provided line ranges. You can omit before or after `~` to indicate the range starts from the beginning of the file, or ends at the end of the file.                                                                                                                                            |
+| Target Detail - Line List  | `[1,2,5]`       | Imports only provided lines. The lines are comma separated, and you can also use line range in the same target detail. <br /><br /> **Known Limitations**: The order of lines is not persisted, and thus if you define `[3,2,1]`, you would actually see lines imported as line#1, line#2, and then line#3. |
+| Target Detail - Marker     | `[some-marker]` | Searches for the matching Export Marker in the target file. More about Export Marke below. <br /><br /> **Known Limitations**: You can only provide single marker.                                                                                                                                          |
+
 - `indent: [align|absolute NUM|extra NUM|keep]`: Update indentation for the imported data.
   - `align`: Align to the indentation of Importer Marker.
   - `absolute NUM` (e.g. `absolute 2`): Update indentation to `NUM` spaces. This ignores the original indentation from the imported data, but keeps the tree structure.
