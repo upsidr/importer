@@ -9,14 +9,20 @@ are several types of markers.
 
 The markers always follow the pattern of `== some-importer-marker-input ==`.
 
-In case of YAML, this would be `# == some-importer-marker-input ==`.  
+In case of YAML, this would be `# == some-importer-marker-input ==`.\
 In case of markdown, this would be `<!-- == some-importer-marker-input == -->`.
 
 ## Marker Types - Pairs
 
-### `== import: NAME / begin from: FILENAME ==`
+### Importer Marker: `== import: NAME / begin from: FILENAME ==`
 
 The main marker for importing data from other file.
+
+This needs to be closed with `== import: NAME / end ==`.
+
+### Exporter Marker: `== export: NAME / begin ==`
+
+Exporter Markers can be used to mark specific lines as import target. This allows Importer to not specify the line range, but simply rely on the exporter markers to find which lines to import.
 
 ### List
 
