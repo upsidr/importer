@@ -14,6 +14,12 @@ In case of markdown, this would be `<!-- == some-importer-marker-input == -->`.
 
 ## Marker Types - Pairs
 
+### `== import: NAME / begin from: FILENAME ==`
+
+The main marker for importing data from other file.
+
+### List
+
 The marker pairs are the most common and useful markers.
 
 The pair needs to have the same "name", and should have "begin" and "end".
