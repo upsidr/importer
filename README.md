@@ -113,7 +113,7 @@ To request additional file support, please file an issue from [here](https://git
 
 <!-- == imptr: basic-marker / end == -->
 
-You can find more about the Importer Marker [here](/docs/details/markers.md).
+You can find more about the markers [here](/docs/details/markers.md).
 
 ## 🚀 Examples
 
@@ -189,7 +189,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Importer against README.md
-        run: importer generate README.md
+        run: importer update README.md
       - name: Check if README.md has any change compared to the branch
         run: |
           git status --short
@@ -198,6 +198,6 @@ jobs:
 
 This repository uses Importer to generate some of the markdown documentation.
 
-You can find actually running CI setup in [`.github/workflows/importer-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-ci.yaml).
+You can find actually running CI setup in [`.github/workflows/importer-ci.yaml`](/.github/workflows/importer-ci.yaml).
 
 <!-- == imptr: getting-started-github-action / end == -->

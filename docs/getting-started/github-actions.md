@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Importer against README.md
-        run: importer generate README.md
+        run: importer update README.md
       - name: Check if README.md has any change compared to the branch
         run: |
           git status --short
@@ -29,6 +29,6 @@ jobs:
 
 This repository uses Importer to generate some of the markdown documentation.
 
-You can find actually running CI setup in [`.github/workflows/importer-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-ci.yaml).
+You can find actually running CI setup in [`.github/workflows/importer-ci.yaml`](/.github/workflows/importer-ci.yaml).
 
 <!-- == export: with-homebrew / end == -->
