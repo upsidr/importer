@@ -17,6 +17,10 @@ Files such as Markdown and YAML which are meant to be a single file input can ha
 
 This may seem like an unnecessary layer for simple files such as Markdown and YAML, but this allows better structure and code reuse, while retaining or even enhancing code readability.
 
+![Marker in Action][marker-in-action]
+
+[marker-in-action]: /assets/images/importer-overview.png "Marker in Action"
+
 You can find more about the details of Importer design [here](/docs/details/details.md).
 
 ## ✨ Install
