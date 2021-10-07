@@ -104,12 +104,12 @@ To request additional file support, please file an issue from [here](https://git
 
 **Markers** are a simple comment with special syntax Importer understands. Importer is a simple CLI tool, and these markers are the key to make all the import and export to happen. There are several types of markers.
 
-| Name                 | Description                                                     |
-| -------------------- | --------------------------------------------------------------- |
-| Importer Marker      | The main marker, used to import data from other file.           |
-| Exporter Marker      | Supplemental markers used to define line range in target files. |
-| Skip Importer Update | Special marker to suppress `importer update`.                   |
-| Auto Generated Note  | Special marker for `importer generate` information.             |
+| Name                 | Description                                                    |
+| -------------------- | -------------------------------------------------------------- |
+| Importer Marker      | Main marker, used to import data from other file.              |
+| Exporter Marker      | Supplemental marker used to define line range in target files. |
+| Skip Importer Update | Special marker to suppress `importer update`.                  |
+| Auto Generated Note  | Special marker for `importer generate` information.            |
 
 ![Marker explained][marker-explanation]
 
