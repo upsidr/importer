@@ -201,7 +201,7 @@ You can find more with 'importer help'
 <summary>Preview Importer CLI in action</summary>
 
 ```console
-importer preview testdata/yaml/k8s-color-svc-before.yaml
+$ importer preview testdata/yaml/k8s-color-svc-before.yaml
 ---------------------------------------
 Content Before:
 1:      ---
