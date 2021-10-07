@@ -17,6 +17,10 @@ Files such as Markdown and YAML which are meant to be a single file input can ha
 
 This may seem like an unnecessary layer for simple files such as Markdown and YAML, but this allows better structure and code reuse, while retaining or even enhancing code readability.
 
+![Marker in Action][marker-in-action]
+
+[marker-in-action]: /assets/images/importer-overview.png "Marker in Action"
+
 You can find more about the details of Importer design [here](/docs/details/details.md).
 
 ## ✨ Install
@@ -96,31 +100,20 @@ To request additional file support, please file an issue from [here](https://git
 
 ## 🖋 Markers
 
-### Importer Marker
-
 <!-- == imptr: basic-marker / begin from: ./docs/details/markers.md#[basic-marker] == -->
 
-A marker is a simple comment with special syntax, and thus is slightly different depending on file used.
+**Markers** are a simple comment with special syntax Importer understands. Importer is a simple CLI tool, and these markers are the key to make all the import and export to happen. There are several types of markers.
 
-The below is a simple example for **Markdown**.
-
-```markdown
-<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
-```
-
-![Marker explained][marker-explanation]
-
-[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
-
-And there has to be a matching "end" marker. This is much simpler, as options are all defined in the "begin" marker.
-
-```markdown
-<!-- == imptr: getting-started-install / end == -->
-```
+| Name                 | Description                                                    |
+| -------------------- | -------------------------------------------------------------- |
+| Importer Marker      | Main marker, used to import data from other file.              |
+| Exporter Marker      | Supplemental marker used to define line range in target files. |
+| Skip Importer Update | Special marker to suppress `importer update`.                  |
+| Auto Generated Note  | Special marker for `importer generate` information.            |
 
 <!-- == imptr: basic-marker / end == -->
 
-You can find more about the Importer Marker [here](/docs/details/markers.md).
+You can find more about the markers [here](/docs/details/markers.md).
 
 ## 🚀 Examples
 
@@ -169,7 +162,10 @@ You can find more with 'importer help'
 
 <!-- == imptr: getting-started-example-short / end == -->
 
-You can find more examples [here](/docs/getting-started/examples-markdown.md).
+You can find more examples:
+
+- [For Markdown](/docs/getting-started/examples-markdown.md)
+- [For YAML](/docs/getting-started/examples-yaml.md)
 
 ## :octocat: GitHub Action Integration
 
@@ -193,7 +189,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Importer against README.md
-        run: importer generate README.md
+        run: importer update README.md
       - name: Check if README.md has any change compared to the branch
         run: |
           git status --short
@@ -202,6 +198,6 @@ jobs:
 
 This repository uses Importer to generate some of the markdown documentation.
 
-You can find actually running CI setup in [`.github/workflows/importer-ci.yaml`](https://github.com/upsidr/importer/blob/main/.github/workflows/importer-ci.yaml).
+You can find actually running CI setup in [`.github/workflows/importer-ci.yaml`](/.github/workflows/importer-ci.yaml).
 
 <!-- == imptr: getting-started-github-action / end == -->

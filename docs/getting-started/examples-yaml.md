@@ -1,8 +1,10 @@
-## 🚀 Examples
+## 🚀 Examples with YAML
 
-### Preview With YAML
+### Preview
 
 <!-- == export: preview / begin == -->
+
+`importer preview` command gives you a quick look at how the file may change when `importer update` and `importer purge` are run against the provided file. This is meant to be useful for testing and debugging.
 
 ```console
 $ importer preview ./testdata/yaml/demo-before.yaml
