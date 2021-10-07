@@ -112,7 +112,7 @@ You can find more with 'importer help'
 
 </details>
 
-#### With `/testdata/yaml/snippet-description.yaml`
+#### With `/testdata/yaml/snippet-description.yaml` using Exporter Marker
 
 <details>
 <summary>Preview Importer CLI in action</summary>
