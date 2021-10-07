@@ -14,27 +14,27 @@ In case of markdown, this would be `<!-- == some-importer-marker-input == -->`.
 
 ## Marker Types - Pairs
 
-### Importer Marker
+## Importer Marker
 
 ![Importer Marker Syntax](/assets/images/importer-marker-syntax.png)
 
 > NOTE: The above example is from [`/testdata/markdown/simple-before.md`](/testdata/markdown/simple-before.md).
 
-#### 1️⃣ Importer Marker Type
+### 1️⃣ Importer Marker Type
 
 - Tell Importer to start the import setup.
 - This can be represented with `importer`, `import`, `imptr` or `i`.
 
-#### 2️⃣ Importer Marker Name
+### 2️⃣ Importer Marker Name
 
 - Any name of your choice, with no whitespace character.
 - The same name cannot be used in a single file.
 
-#### 3️⃣ Either `begin` or `end`
+### 3️⃣ Either `begin` or `end`
 
 - Each Importer Marker must be a pair to operate.
 
-#### 4️⃣ Importer Marker Details
+### 4️⃣ Importer Marker Details
 
 This includes target file to import from, etc.
 
