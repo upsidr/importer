@@ -34,7 +34,16 @@ Each Importer Marker must be a pair to operate.
 
 #### 4️⃣ Importer Marker Details
 
-This includes target file to import from, etc. Find more below.
+This includes target file to import from, etc.
+
+- `from: FILENAME#1~22`:
+- `indent: [align|absolute NUM|extra NUM|keep]`: Update indentation for the imported data.
+  - `align`: Align to the indentation of Importer Marker.
+  - `absolute NUM` (e.g. `absolute 2`): Update indentation to NUM spaces. This ignores the original indentation from the imported data, but keeps the tree structure.
+  - `extra NUM` (e.g. `extra 4`): Add extra indentation of NUM spaces.
+  - `keep` (default): Keep the indentation from the imported data.
+
+---
 
 The main marker for importing data from other file.
 
