@@ -96,9 +96,10 @@ To request additional file support, please file an issue from [here](https://git
 
 ## 🖋 Markers
 
-### Importer Marker
-
 <!-- == imptr: basic-marker / begin from: ./docs/details/markers.md#[basic-marker] == -->
+
+**Markers** are a simple comment with special syntax Importer understands. There
+are several types of markers.
 
 ![Marker explained][marker-explanation]
 

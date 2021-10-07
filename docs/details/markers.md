@@ -2,12 +2,12 @@
 
 # Markers
 
-**Markers** are a simple comment with special syntax Importer understands. There
-are several types of markers.
-
 ## 🌗 Overview
 
 <!-- == export: basic-marker / begin == -->
+
+**Markers** are a simple comment with special syntax Importer understands. There
+are several types of markers.
 
 ![Marker explained][marker-explanation]
 
