@@ -168,8 +168,6 @@ You can find more with 'importer help'
 
 </details>
 
----
-
 ## Exporter Marker
 
 ![Exporter Marker Syntax](/assets/images/exporter-marker-syntax.png)
@@ -194,8 +192,6 @@ You can find more with 'importer help'
 ### 3️⃣ Either `begin` or `end`
 
 - Each Exporter Marker must be a pair to operate.
-
----
 
 ## Other Markers
 
