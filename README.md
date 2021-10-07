@@ -162,7 +162,10 @@ You can find more with 'importer help'
 
 <!-- == imptr: getting-started-example-short / end == -->
 
-You can find more examples [here](/docs/getting-started/examples-markdown.md).
+You can find more examples:
+
+- [For Markdown](/docs/getting-started/examples-markdown.md).
+- [For YAML](/docs/getting-started/examples-yaml.md).
 
 ## :octocat: GitHub Action Integration
 
