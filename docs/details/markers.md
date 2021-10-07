@@ -52,6 +52,28 @@ This includes target file to import from, etc.
 
 ---
 
+### Exporter Marker
+
+![Exporter Marker Syntax](/assets/images/exporter-marker-syntax.png)
+
+> NOTE: The above example is from [`/testdata/yaml/snippet-k8s-resource.yaml`](/testdata/yaml/snippet-k8s-resource.yaml).
+
+#### 1️⃣ Exporter Marker Type
+
+- Tell Importer to start the export setup.
+- This can be represented with `exporter`, `export`, `exptr` or `e`.
+
+#### 2️⃣ Importer Marker Name
+
+- Any name of your choice, with no whitespace character.
+- The same name cannot be used in a single file.
+
+#### 3️⃣ Either `begin` or `end`
+
+- Each Exporter Marker must be a pair to operate.
+
+---
+
 The main marker for importing data from other file.
 
 This needs to be closed with `== import: NAME / end ==`.
