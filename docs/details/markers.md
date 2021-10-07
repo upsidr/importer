@@ -9,18 +9,16 @@
 **Markers** are a simple comment with special syntax Importer understands. There
 are several types of markers.
 
-![Marker explained][marker-explanation]
-
-[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
-
-Importer has the following markers.
-
 | Name                 | Description                                                     |
 | -------------------- | --------------------------------------------------------------- |
 | Importer Marker      | The main marker, used to import data from other file.           |
 | Exporter Marker      | Supplemental markers used to define line range in target files. |
 | Skip Importer Update | Special marker to suppress `importer update`.                   |
 | Auto Generated Note  | Special marker for `importer generate` information.             |
+
+![Marker explained][marker-explanation]
+
+[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
 
 <!-- == export: basic-marker / end == -->
 
