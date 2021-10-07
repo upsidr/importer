@@ -16,7 +16,7 @@ That's why Importer was created. You can stick to simple file format, but when i
 
 ## Implementation Details
 
-Importer is a simple regular expression file reader. It looks for special Importer Marker comments, which have no meaning in that given language, but Importer can parse such comment and wires up other file content. [You can find more about Importer Marker here.](../getting-started/annotatinos.md)
+Importer is a simple regular expression file reader. It looks for special Importer Marker comments, which have no meaning in that given language, but Importer can parse such comment and wires up other file content. [You can find more about Importer Marker here.](/docs/getting-started/annotatinos.md)
 
 In language like Markdown and YAML, a single file is made to be as is, meaning you cannot import other files. This makes them really simple and easy to get started, but when you try to do something a bit more involved, it becomes difficult to maintain very quickly.
 
