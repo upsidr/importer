@@ -82,7 +82,7 @@ Other markers are used to update Importer behaviours.
 <summary>Preview Importer CLI in action</summary>
 
 ```console
-$ importer preview testdata/markdown/simple-before.md
+$ importer preview ./testdata/markdown/simple-before.md
 ---------------------------------------
 Content Before:
 1:      # Simple Markdown Test
@@ -126,8 +126,8 @@ Content After Processed:
 
 You can replace the file content with either of the commands below:
 
-  importer update testdata/markdown/simple-before.md     Replace the file content with the Importer processed file.
-  importer purge testdata/markdown/simple-before.md      Replace the file content by removing all data between marker pairs.
+  importer update ./testdata/markdown/simple-before.md     Replace the file content with the Importer processed file.
+  importer purge ./testdata/markdown/simple-before.md      Replace the file content by removing all data between marker pairs.
 
 You can find more with 'importer help'
 ```
@@ -140,14 +140,14 @@ You can find more with 'importer help'
 <summary>Preview Importer CLI in action</summary>
 
 ```console
-$ cat testdata/yaml/snippet-description.yaml
+$ cat ./testdata/yaml/snippet-description.yaml
 # == export: for-demo / begin ==
 description: |
   This demonstrates how importing YAML snippet is made possible, without
   changing YAML handling at all.
 # == export: for-demo / end ==
 
-$ importer preview testdata/yaml/demo-before.yaml
+$ importer preview ./testdata/yaml/demo-before.yaml
 ---------------------------------------
 Content Before:
 1:      title: Demo of YAML Importer
@@ -175,8 +175,8 @@ Content After Processed:
 
 You can replace the file content with either of the commands below:
 
-  importer update testdata/yaml/demo-before.yaml     Replace the file content with the Importer processed file.
-  importer purge testdata/yaml/demo-before.yaml      Replace the file content by removing all data between marker pairs.
+  importer update ./testdata/yaml/demo-before.yaml     Replace the file content with the Importer processed file.
+  importer purge ./testdata/yaml/demo-before.yaml      Replace the file content by removing all data between marker pairs.
 
 You can find more with 'importer help'
 ```
@@ -216,7 +216,7 @@ You can find more with 'importer help'
 <summary>Preview Importer CLI in action</summary>
 
 ```console
-$ importer preview testdata/yaml/k8s-color-svc-before.yaml
+$ importer preview ./testdata/yaml/k8s-color-svc-before.yaml
 ---------------------------------------
 Content Before:
 1:      ---
@@ -408,8 +408,8 @@ Content After Processed:
 
 You can replace the file content with either of the commands below:
 
-  importer update testdata/yaml/k8s-color-svc-before.yaml     Replace the file content with the Importer processed file.
-  importer purge testdata/yaml/k8s-color-svc-before.yaml      Replace the file content by removing all data between marker pairs.
+  importer update ./testdata/yaml/k8s-color-svc-before.yaml     Replace the file content with the Importer processed file.
+  importer purge ./testdata/yaml/k8s-color-svc-before.yaml      Replace the file content by removing all data between marker pairs.
 
 You can find more with 'importer help'
 ```
