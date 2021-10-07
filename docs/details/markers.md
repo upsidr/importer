@@ -50,6 +50,59 @@ This includes target file to import from, etc.
   - `extra NUM` (e.g. `extra 4`): Add extra indentation of `NUM` spaces.
   - `keep` (default): Keep the indentation from the imported data.
 
+#### Example
+
+```console
+$ importer preview testdata/markdown/simple-before.md
+---------------------------------------
+Content Before:
+1:      # Simple Markdown Test
+2:
+3:      <!-- == imptr: lorem / begin from: ./snippet-lorem.md#5~12 == -->
+4:
+5:      Any content here will be removed by Importer.
+6:
+7:      <!-- == imptr: lorem / end == -->
+8:
+9:      Content after marker is left untouched.
+---------------------------------------
+
+---------------------------------------
+Content After Purged:
+1:      # Simple Markdown Test
+2:
+3:      <!-- == imptr: lorem / begin from: ./snippet-lorem.md#5~12 == -->
+4:      <!-- == imptr: lorem / end == -->
+5:
+6:      Content after marker is left untouched.
+---------------------------------------
+
+---------------------------------------
+Content After Processed:
+1:      # Simple Markdown Test
+2:
+3:      <!-- == imptr: lorem / begin from: ./snippet-lorem.md#5~12 == -->
+4:      "Lorem ipsum dolor sit amet,
+5:      consectetur adipiscing elit,
+6:      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+7:      Ut enim ad minim veniam,
+8:      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+9:      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+10:     Excepteur sint occaecat cupidatat non proident,
+11:     sunt in culpa qui officia deserunt mollit anim id est laborum."
+12:     <!-- == imptr: lorem / end == -->
+13:
+14:     Content after marker is left untouched.
+---------------------------------------
+
+You can replace the file content with either of the commands below:
+
+  importer update testdata/markdown/simple-before.md     Replace the file content with the Importer processed file.
+  importer purge testdata/markdown/simple-before.md      Replace the file content by removing all data between marker pairs.
+
+You can find more with 'importer help'
+```
+
 ---
 
 ### Exporter Marker
