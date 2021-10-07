@@ -193,6 +193,214 @@ You can find more with 'importer help'
 
 - Each Exporter Marker must be a pair to operate.
 
+### Examples
+
+#### Import with `/testdata/yaml/snippet-k8s-resource.yaml`
+
+<details>
+<summary>Preview Importer CLI in action</summary>
+
+```console
+importer preview testdata/yaml/k8s-color-svc-before.yaml
+---------------------------------------
+Content Before:
+1:      ---
+2:      apiVersion: v1
+3:      kind: Service
+4:      metadata:
+5:        name: color-svc-only-green
+6:        labels:
+7:          app.kubernetes.io/name: color-svc-only-green
+8:      spec:
+9:        ports:
+10:         - name: http
+11:           port: 8800
+12:           targetPort: 8800
+13:       selector:
+14:         app.kubernetes.io/name: color-svc-only-green
+15:     ---
+16:     apiVersion: apps/v1
+17:     kind: Deployment
+18:     metadata:
+19:       name: color-svc-only-green
+20:     spec:
+21:       replicas: 1
+22:       selector:
+23:         matchLabels:
+24:           app.kubernetes.io/name: color-svc-only-green
+25:           app.kubernetes.io/version: v1
+26:       template:
+27:         metadata:
+28:           labels:
+29:             app.kubernetes.io/name: color-svc-only-green
+30:             app.kubernetes.io/version: v1
+31:         spec:
+32:           serviceAccountName: color-svc
+33:           containers:
+34:             # == i: latest-color-svc / begin from: ./snippet-k8s-color-svc.yaml#[latest-svc] indent: align ==
+35:             - image: docker.io/rytswd/color-svc:latest
+36:               name: color-svc
+37:               command:
+38:                 - color-svc
+39:               ports:
+40:                 - containerPort: 8800
+41:               # == i: latest-color-svc / end ==
+42:
+43:               env:
+44:                 # == i: color-svc-default-envs / begin from: ./snippet-k8s-color-svc.yaml#[basic-envs] indent: align ==
+45:                 # == i: color-svc-default-envs / end ==
+46:                 - name: DISABLE_RED
+47:                   value: "true"
+48:                 - name: DISABLE_GREEN
+49:                   value: "false" # The same as default
+50:                 - name: DISABLE_BLUE
+51:                   value: "true"
+52:                 - name: DISABLE_YELLOW
+53:                   value: "true"
+54:
+55:               # == i: resource-footprint / begin from: ./snippet-k8s-resource.yaml#[min-resource] indent: align ==
+56:               data: |
+57:                 this will be purged
+58:               # == i: resource-footprint / end ==
+---------------------------------------
+
+---------------------------------------
+Content After Purged:
+1:      ---
+2:      apiVersion: v1
+3:      kind: Service
+4:      metadata:
+5:        name: color-svc-only-green
+6:        labels:
+7:          app.kubernetes.io/name: color-svc-only-green
+8:      spec:
+9:        ports:
+10:         - name: http
+11:           port: 8800
+12:           targetPort: 8800
+13:       selector:
+14:         app.kubernetes.io/name: color-svc-only-green
+15:     ---
+16:     apiVersion: apps/v1
+17:     kind: Deployment
+18:     metadata:
+19:       name: color-svc-only-green
+20:     spec:
+21:       replicas: 1
+22:       selector:
+23:         matchLabels:
+24:           app.kubernetes.io/name: color-svc-only-green
+25:           app.kubernetes.io/version: v1
+26:       template:
+27:         metadata:
+28:           labels:
+29:             app.kubernetes.io/name: color-svc-only-green
+30:             app.kubernetes.io/version: v1
+31:         spec:
+32:           serviceAccountName: color-svc
+33:           containers:
+34:             # == i: latest-color-svc / begin from: ./snippet-k8s-color-svc.yaml#[latest-svc] indent: align ==
+35:               # == i: latest-color-svc / end ==
+36:
+37:               env:
+38:                 # == i: color-svc-default-envs / begin from: ./snippet-k8s-color-svc.yaml#[basic-envs] indent: align ==
+39:                 # == i: color-svc-default-envs / end ==
+40:                 - name: DISABLE_RED
+41:                   value: "true"
+42:                 - name: DISABLE_GREEN
+43:                   value: "false" # The same as default
+44:                 - name: DISABLE_BLUE
+45:                   value: "true"
+46:                 - name: DISABLE_YELLOW
+47:                   value: "true"
+48:
+49:               # == i: resource-footprint / begin from: ./snippet-k8s-resource.yaml#[min-resource] indent: align ==
+50:               # == i: resource-footprint / end ==
+---------------------------------------
+
+---------------------------------------
+Content After Processed:
+1:      ---
+2:      apiVersion: v1
+3:      kind: Service
+4:      metadata:
+5:        name: color-svc-only-green
+6:        labels:
+7:          app.kubernetes.io/name: color-svc-only-green
+8:      spec:
+9:        ports:
+10:         - name: http
+11:           port: 8800
+12:           targetPort: 8800
+13:       selector:
+14:         app.kubernetes.io/name: color-svc-only-green
+15:     ---
+16:     apiVersion: apps/v1
+17:     kind: Deployment
+18:     metadata:
+19:       name: color-svc-only-green
+20:     spec:
+21:       replicas: 1
+22:       selector:
+23:         matchLabels:
+24:           app.kubernetes.io/name: color-svc-only-green
+25:           app.kubernetes.io/version: v1
+26:       template:
+27:         metadata:
+28:           labels:
+29:             app.kubernetes.io/name: color-svc-only-green
+30:             app.kubernetes.io/version: v1
+31:         spec:
+32:           serviceAccountName: color-svc
+33:           containers:
+34:             # == i: latest-color-svc / begin from: ./snippet-k8s-color-svc.yaml#[latest-svc] indent: align ==
+35:             - image: docker.io/rytswd/color-svc:latest
+36:               name: color-svc
+37:               command:
+38:                 - color-svc
+39:               ports:
+40:                 - containerPort: 8800
+41:               # == i: latest-color-svc / end ==
+42:
+43:               env:
+44:                 # == i: color-svc-default-envs / begin from: ./snippet-k8s-color-svc.yaml#[basic-envs] indent: align ==
+45:                 - name: ENABLE_DELAY
+46:                   value: "true"
+47:                 - name: DELAY_DURATION_MILLISECOND
+48:                   value: "500"
+49:                 - name: ENABLE_CORS
+50:                   value: "true"
+51:                 # == i: color-svc-default-envs / end ==
+52:                 - name: DISABLE_RED
+53:                   value: "true"
+54:                 - name: DISABLE_GREEN
+55:                   value: "false" # The same as default
+56:                 - name: DISABLE_BLUE
+57:                   value: "true"
+58:                 - name: DISABLE_YELLOW
+59:                   value: "true"
+60:
+61:               # == i: resource-footprint / begin from: ./snippet-k8s-resource.yaml#[min-resource] indent: align ==
+62:               resources:
+63:                 requests:
+64:                   cpu: 10m
+65:                   memory: 10Mi
+66:                 limits:
+67:                   cpu: 30m
+68:                   memory: 30Mi
+69:               # == i: resource-footprint / end ==
+---------------------------------------
+
+You can replace the file content with either of the commands below:
+
+  importer update testdata/yaml/k8s-color-svc-before.yaml     Replace the file content with the Importer processed file.
+  importer purge testdata/yaml/k8s-color-svc-before.yaml      Replace the file content by removing all data between marker pairs.
+
+You can find more with 'importer help'
+```
+
+</details>
+
 ## Other Markers
 
 There are some special markers that are used to update Importer behaviour.
@@ -203,22 +411,10 @@ There are some special markers that are used to update Importer behaviour.
 
 ### Auto Generated Note: `== improter-generated-from: FILENAME ==`
 
-- This is auto-generated by `importer generate FILENAME --out TARGET_FILE`, which tells how the file was generated by using `FILENAME` as input.
-
-| Name                 | Syntax                                    | Use Case                                                                                                                                       |
-| -------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Auto Generated Note  | `== improter-generated-from: FILENAME ==` | This is auto-generated by `importer generate FILENAME --out TARGET_FILE`, which tells how the file was generated by using `FILENAME` as input. |
-| Skip Importer Update | `== importer-skip-update ==`              | Mark the file not to be updated by `importer update` command.                                                                                  |
+- This is auto-generated by `importer generate FILENAME --out TARGET_FILE`.
+- This tells how the file was generated by using `FILENAME` as input.
 
 ---
-
-The main marker for importing data from other file.
-
-This needs to be closed with `== import: NAME / end ==`.
-
-### Exporter Marker: `== export: NAME / begin ==`
-
-Exporter Markers can be used to mark specific lines as import target. This allows Importer to not specify the line range, but simply rely on the exporter markers to find which lines to import.
 
 ### List
 
