@@ -102,8 +102,7 @@ To request additional file support, please file an issue from [here](https://git
 
 <!-- == imptr: basic-marker / begin from: ./docs/details/markers.md#[basic-marker] == -->
 
-**Markers** are a simple comment with special syntax Importer understands. There
-are several types of markers.
+**Markers** are a simple comment with special syntax Importer understands. Importer is a simple CLI tool, and these markers are the key to make all the import and export to happen. There are several types of markers.
 
 | Name                 | Description                                                     |
 | -------------------- | --------------------------------------------------------------- |

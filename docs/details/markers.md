@@ -6,8 +6,7 @@
 
 <!-- == export: basic-marker / begin == -->
 
-**Markers** are a simple comment with special syntax Importer understands. There
-are several types of markers.
+**Markers** are a simple comment with special syntax Importer understands. Importer is a simple CLI tool, and these markers are the key to make all the import and export to happen. There are several types of markers.
 
 | Name                 | Description                                                     |
 | -------------------- | --------------------------------------------------------------- |
