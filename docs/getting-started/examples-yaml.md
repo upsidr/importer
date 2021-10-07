@@ -1,6 +1,6 @@
-## 🚀 Examples
+## 🚀 Examples with YAML
 
-### Preview With YAML
+### Preview
 
 <!-- == export: preview / begin == -->
 
