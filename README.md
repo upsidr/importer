@@ -100,23 +100,18 @@ To request additional file support, please file an issue from [here](https://git
 
 <!-- == imptr: basic-marker / begin from: ./docs/details/markers.md#[basic-marker] == -->
 
-A marker is a simple comment with special syntax, and thus is slightly different depending on file used.
-
-The below is a simple example for **Markdown**.
-
-```markdown
-<!-- == imptr: getting-started-install / begin from: ./docs/getting-started/install.md#[homebrew-install] == -->
-```
-
 ![Marker explained][marker-explanation]
 
 [marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
 
-And there has to be a matching "end" marker. This is much simpler, as options are all defined in the "begin" marker.
+Importer has the following markers.
 
-```markdown
-<!-- == imptr: getting-started-install / end == -->
-```
+| Name                 | Description                                                     |
+| -------------------- | --------------------------------------------------------------- |
+| Importer Marker      | The main marker, used to import data from other file.           |
+| Exporter Marker      | Supplemental markers used to define line range in target files. |
+| Skip Importer Update | Special marker to suppress `importer update`.                   |
+| Auto Generated Note  | Special marker for `importer generate` information.             |
 
 <!-- == imptr: basic-marker / end == -->
 
