@@ -15,10 +15,6 @@
 | Skip Importer Update | Special marker to suppress `importer update`.                  |
 | Auto Generated Note  | Special marker for `importer generate` information.            |
 
-![Marker explained][marker-explanation]
-
-[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
-
 <!-- == export: basic-marker / end == -->
 
 ## ☕️ Basic Syntax

@@ -111,10 +111,6 @@ To request additional file support, please file an issue from [here](https://git
 | Skip Importer Update | Special marker to suppress `importer update`.                  |
 | Auto Generated Note  | Special marker for `importer generate` information.            |
 
-![Marker explained][marker-explanation]
-
-[marker-explanation]: /assets/images/marker-explanation.png "Marker Explanation"
-
 <!-- == imptr: basic-marker / end == -->
 
 You can find more about the Importer Marker [here](/docs/details/markers.md).
