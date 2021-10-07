@@ -18,10 +18,10 @@ In case of markdown, this would be `<!-- == some-importer-marker-input == -->`.
 
 ![Importer Marker Syntax](/assets/images/importer-marker-syntax.png)
 
-1️⃣ Importer Marker type - this can be represented with `importer`, `import`, `imptr` or `i`.
-2️⃣ Importer Marker Name - the same name cannot be used in a single file. Any alphanumeric allowed.
-3️⃣ Either `begin` or `end` - each Importer Marker must be a pair to operate.
-4️⃣ Importer Marker Details - this includes target file to import from, etc. Find more below.
+1️⃣ Importer Marker type - this can be represented with `importer`, `import`, `imptr` or `i`.\
+2️⃣ Importer Marker Name - the same name cannot be used in a single file. Any alphanumeric allowed.\
+3️⃣ Either `begin` or `end` - each Importer Marker must be a pair to operate.\
+4️⃣ Importer Marker Details - this includes target file to import from, etc. Find more below.\
 
 The main marker for importing data from other file.
 
