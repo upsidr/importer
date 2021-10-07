@@ -12,7 +12,9 @@ The markers always follow the pattern of `== some-importer-marker-input ==`.
 In case of YAML, this would be `# == some-importer-marker-input ==`.\
 In case of markdown, this would be `<!-- == some-importer-marker-input == -->`.
 
-## Marker Types - Pairs
+The main markers **Importer Markers** and **Exporter Markers** are both made up of pairs, `begin` and `end`.
+
+Other markers are used to update Importer behaviours.
 
 ## Importer Marker
 
@@ -50,7 +52,12 @@ This includes target file to import from, etc.
   - `extra NUM` (e.g. `extra 4`): Add extra indentation of `NUM` spaces.
   - `keep` (default): Keep the indentation from the imported data.
 
-#### Example
+### Examples
+
+#### With `/testdata/markdown/simple-before.md`
+
+<summary>
+<details>Preview Importer CLI in action</details>
 
 ```console
 $ importer preview testdata/markdown/simple-before.md
@@ -102,6 +109,8 @@ You can replace the file content with either of the commands below:
 
 You can find more with 'importer help'
 ```
+
+</summary>
 
 ---
 
