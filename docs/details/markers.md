@@ -16,6 +16,8 @@ In case of markdown, this would be `<!-- == some-importer-marker-input == -->`.
 
 ### Importer Marker: `== import: NAME / begin from: FILENAME ==`
 
+![Importer Marker Syntax](/assets/images/importer-marker-syntax.png)
+
 The main marker for importing data from other file.
 
 This needs to be closed with `== import: NAME / end ==`.
