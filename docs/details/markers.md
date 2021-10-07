@@ -56,8 +56,8 @@ This includes target file to import from, etc.
 
 #### With `/testdata/markdown/simple-before.md`
 
-<summary>
-<details>Preview Importer CLI in action</details>
+<details>
+<summary>Preview Importer CLI in action</summary>
 
 ```console
 $ importer preview testdata/markdown/simple-before.md
@@ -110,7 +110,7 @@ You can replace the file content with either of the commands below:
 You can find more with 'importer help'
 ```
 
-</summary>
+</details>
 
 ---
 
