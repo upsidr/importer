@@ -112,6 +112,55 @@ You can find more with 'importer help'
 
 </details>
 
+#### With `/testdata/yaml/snippet-description.yaml`
+
+<details>
+<summary>Preview Importer CLI in action</summary>
+
+```console
+$ cat testdata/yaml/snippet-description.yaml
+# == export: for-demo / begin ==
+description: |
+  This demonstrates how importing YAML snippet is made possible, without
+  changing YAML handling at all.
+# == export: for-demo / end ==
+
+$ importer preview testdata/yaml/demo-before.yaml
+---------------------------------------
+Content Before:
+1:      title: Demo of YAML Importer
+2:      # == import: description / begin from: ./snippet-description.yaml#[for-demo] ==
+3:      dummy: This will be replaced
+4:      # == import: description / end ==
+---------------------------------------
+
+---------------------------------------
+Content After Purged:
+1:      title: Demo of YAML Importer
+2:      # == import: description / begin from: ./snippet-description.yaml#[for-demo] ==
+3:      # == import: description / end ==
+---------------------------------------
+
+---------------------------------------
+Content After Processed:
+1:      title: Demo of YAML Importer
+2:      # == import: description / begin from: ./snippet-description.yaml#[for-demo] ==
+3:      description: |
+4:        This demonstrates how importing YAML snippet is made possible, without
+5:        changing YAML handling at all.
+6:      # == import: description / end ==
+---------------------------------------
+
+You can replace the file content with either of the commands below:
+
+  importer update testdata/yaml/demo-before.yaml     Replace the file content with the Importer processed file.
+  importer purge testdata/yaml/demo-before.yaml      Replace the file content by removing all data between marker pairs.
+
+You can find more with 'importer help'
+```
+
+</details>
+
 ---
 
 ### Exporter Marker
