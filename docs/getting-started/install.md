@@ -21,7 +21,7 @@ You can also find the relevent binary files under [releases](https://github.com/
 You can also use Go to install.
 
 ```bash
-$ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
+$ go get github.com/upsidr/importer/cmd/importer@v0.1.0
 ```
 
 <!-- == export: go-get / end == -->
