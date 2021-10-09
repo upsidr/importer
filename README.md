@@ -47,7 +47,7 @@ You can also find the relevent binary files under [releases](https://github.com/
 You can also use Go to install.
 
 ```bash
-$ go get github.com/upsidr/importer/cmd/importer@v0.0.1-rc2
+$ go get github.com/upsidr/importer/cmd/importer@v0.1.0
 ```
 
 <!-- == imptr: install-with-go / end == -->
@@ -117,50 +117,48 @@ You can find more about the markers [here](/docs/details/markers.md).
 
 ## 🚀 Examples
 
-<!-- == imptr: getting-started-example-short / begin from: ./docs/getting-started/examples-markdown.md#[preview] == -->
+### `importer preview`
+
+<!-- == imptr: example-preview / begin from: ./docs/getting-started/examples-yaml.md#[preview] == -->
 
 `importer preview` command gives you a quick look at how the file may change when `importer update` and `importer purge` are run against the provided file. This is meant to be useful for testing and debugging.
 
 ```console
-$ importer preview ./testdata/markdown/demo-before.md
+$ importer preview ./testdata/yaml/demo-before.yaml
 ---------------------------------------
 Content Before:
-1:      # Markdown Demo
-2:
-3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-4:      Any content here will be replaced by Importer.
-5:      <!-- == imptr: short-description / end == -->
+1:      title: Demo of YAML Importer
+2:      # == imptr: description / begin from: ./snippet-description.yaml#[for-demo] ==
+3:      dummy: This will be replaced
+4:      # == imptr: description / end ==
 ---------------------------------------
 
 ---------------------------------------
 Content After Purged:
-1:      # Markdown Demo
-2:
-3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-4:      <!-- == imptr: short-description / end == -->
+1:      title: Demo of YAML Importer
+2:      # == imptr: description / begin from: ./snippet-description.yaml#[for-demo] ==
+3:      # == imptr: description / end ==
 ---------------------------------------
 
 ---------------------------------------
 Content After Processed:
-1:      # Markdown Demo
-2:
-3:      <!-- == imptr: short-description / begin from: ./snippet-description.md#[for-demo] == -->
-4:      This demonstrates how a markdown can import other file content.
-5:
-6:      Importer is a CLI tool to read and process Importer and Exporter markers.
-7:      This can be easily integrated into CI/CD and automation setup.
-8:      <!-- == imptr: short-description / end == -->
+1:      title: Demo of YAML Importer
+2:      # == imptr: description / begin from: ./snippet-description.yaml#[for-demo] ==
+3:      description: |
+4:        This demonstrates how importing YAML snippet is made possible, without
+5:        changing YAML handling at all.
+6:      # == imptr: description / end ==
 ---------------------------------------
 
 You can replace the file content with either of the commands below:
 
-  importer update ./testdata/markdown/demo-before.md     Replace the file content with the Importer processed file.
-  importer purge ./testdata/markdown/demo-before.md      Replace the file content by removing all data between marker pairs.
+  importer update ./testdata/yaml/demo-before.yaml     Replace the file content with the Importer processed file.
+  importer purge ./testdata/yaml/demo-before.yaml      Replace the file content by removing all data between marker pairs.
 
 You can find more with 'importer help'
 ```
 
-<!-- == imptr: getting-started-example-short / end == -->
+<!-- == imptr: example-preview / end == -->
 
 You can find more examples:
 
