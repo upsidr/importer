@@ -27,12 +27,12 @@ Use "importer [command] --help" for more information about a command.
 
 <!-- == export: list / begin == -->
 
-| Name                         | Description                                                                                       |
-| ---------------------------- | ------------------------------------------------------------------------------------------------- |
-| `importer generate FILENAME` | Run Importer processing on `FILENAME`, and write the result to stdout.                            |
-| `importer update FILENAME`   | Run Importer processing on `FILENAME`, and update it in place.                                    |
-| `importer purge FILENAME`    | Parse Importer Markers, remove any content within Importer Markers, and update the file in plcae. |
-| `importer preview FILENAME`  | Write before/purged/after preview of how Importer processes the file content to stdout.           |
+| Name                     | Description                                                                                       |
+| ------------------------ | ------------------------------------------------------------------------------------------------- |
+| `importer generate FILE` | Run Importer processing on `FILE`, and write the result to stdout.                                |
+| `importer update FILE`   | Run Importer processing on `FILE`, and update it in place.                                        |
+| `importer purge FILE`    | Parse Importer Markers, remove any content within Importer Markers, and update the file in plcae. |
+| `importer preview FILE`  | Write before/purged/after preview of how Importer processes the file content to stdout.           |
 
 <!-- == export: list / end == -->
 
