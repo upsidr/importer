@@ -55,4 +55,9 @@ spec:
           # == i: resource-footprint / begin from: ./snippet-k8s-resource.yaml#[min-resource] indent: align ==
           data: |
             this will be purged
+          # dummy data
+          resources:
+            limits:
+              cpu: 1m
+              memory: 1Mi
           # == i: resource-footprint / end ==
