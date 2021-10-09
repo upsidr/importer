@@ -3,7 +3,7 @@
 demo_helper_type_speed=3000
 
 # shellcheck source=./demo-helper.sh
-source "$(dirname "$0")/demo-helper.sh"
+source "$(dirname "$0")/../demo-helper.sh"
 
 clear_terminal
 read -rs
