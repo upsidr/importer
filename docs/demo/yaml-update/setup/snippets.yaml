@@ -1,0 +1,33 @@
+name: Exporter Marker Example for YAML
+description: |
+  This is an example for using YAML Exporter Marker.
+  With YAML, indentation plays a signigficant role, and thus Importer makes
+  sure to keep the original indentation details, while providing absolute and
+  relative indentation adjustment from Importer Marker.
+
+test-data:
+  # == export: sample-nested / begin ==
+  nested:
+    more:
+      data:
+        sample: This is a sample data
+      # == export: metadata-only / begin ==
+      metadata:
+        name: sample-data
+        namespace: sample-namespace
+      # == export: metadata-only / end ==
+  # == export: sample-nested / end ==
+
+# == exporter: long-tree / begin ==
+a:
+  b:
+    c:
+      d:
+        e:
+          f:
+            g:
+              h:
+                i:
+                  j:
+                    k: {}
+# == exporter: long-tree / end ==
