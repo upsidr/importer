@@ -57,6 +57,6 @@ You can find more with 'importer help'
 
 <!-- == export: purge / begin == -->
 
-/assets/images/importer-purge-yaml-demo.mp4
+https://github.com/upsidr/importer/blob/adjust-readme/assets/images/importer-purge-yaml-demo.mp4?raw=true
 
 <!-- == export: purge / end == -->
