@@ -162,9 +162,7 @@ You can find more with 'importer help'
 
 <!-- == imptr: example-purge / begin from: ./docs/getting-started/examples-yaml.md#[purge] == -->
 
-![Purge in Action][purge-in-action]
-
-[purge-in-action]: /assets/images/importer-purge-yaml-demo.mp4 "Purge in Action"
+/assets/images/importer-purge-yaml-demo.mp4
 
 <!-- == imptr: example-purge / end == -->
 

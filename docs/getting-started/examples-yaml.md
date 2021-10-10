@@ -57,8 +57,6 @@ You can find more with 'importer help'
 
 <!-- == export: purge / begin == -->
 
-![Purge in Action][purge-in-action]
-
-[purge-in-action]: /assets/images/importer-purge-yaml-demo.mp4 "Purge in Action"
+/assets/images/importer-purge-yaml-demo.mp4
 
 <!-- == export: purge / end == -->
