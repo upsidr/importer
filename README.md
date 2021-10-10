@@ -148,6 +148,16 @@ You can find more with 'importer help'
 
 <!-- == imptr: example-preview / end == -->
 
+### `importer generate`
+
+<!-- == imptr: example-generate / begin from: ./docs/getting-started/examples-yaml.md#[generate] == -->
+
+![Generate in Action][generate-in-action]
+
+[generate-in-action]: /assets/images/importer-generate-yaml-demo.gif "Generate in Action"
+
+<!-- == imptr: example-generate / end == -->
+
 You can find more examples:
 
 - [For Markdown](/docs/getting-started/examples-markdown.md)

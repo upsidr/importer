@@ -42,3 +42,13 @@ You can find more with 'importer help'
 ```
 
 <!-- == export: preview / end == -->
+
+### Generate
+
+<!-- == export: generate / begin == -->
+
+![Generate in Action][generate-in-action]
+
+[generate-in-action]: /assets/images/importer-generate-yaml-demo.gif "Generate in Action"
+
+<!-- == export: generate / end == -->
