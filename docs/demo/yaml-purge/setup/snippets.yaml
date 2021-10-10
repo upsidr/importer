@@ -1,0 +1,5 @@
+labels:
+  # == export: labels / begin ==
+  app.kubernetes.io/name: color-svc
+  app.kubernetes.io/version: v1
+  # == export: labels / end ==
