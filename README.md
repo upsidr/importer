@@ -164,7 +164,7 @@ You can find more with 'importer help'
 
 ![Purge in Action][purge-in-action]
 
-[purge-in-action]: /assets/images/importer-purge-yaml-demo.gif "Purge in Action"
+[purge-in-action]: /assets/images/importer-purge-yaml-demo.mp4 "Purge in Action"
 
 <!-- == imptr: example-purge / end == -->
 
