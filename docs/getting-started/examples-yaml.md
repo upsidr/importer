@@ -52,3 +52,13 @@ You can find more with 'importer help'
 [generate-in-action]: /assets/images/importer-generate-yaml-demo.gif "Generate in Action"
 
 <!-- == export: generate / end == -->
+
+### Purge
+
+<!-- == export: purge / begin == -->
+
+![Purge in Action][purge-in-action]
+
+[purge-in-action]: /assets/images/importer-purge-yaml-demo.gif "Purge in Action"
+
+<!-- == export: purge / end == -->

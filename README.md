@@ -158,6 +158,16 @@ You can find more with 'importer help'
 
 <!-- == imptr: example-generate / end == -->
 
+### `importer purge`
+
+<!-- == imptr: example-purge / begin from: ./docs/getting-started/examples-yaml.md#[purge] == -->
+
+![Purge in Action][purge-in-action]
+
+[purge-in-action]: /assets/images/importer-purge-yaml-demo.gif "Purge in Action"
+
+<!-- == imptr: example-purge / end == -->
+
 You can find more examples:
 
 - [For Markdown](/docs/getting-started/examples-markdown.md)
