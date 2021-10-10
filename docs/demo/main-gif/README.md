@@ -27,3 +27,14 @@ cd stage
 ```bash
 ../importer-demo.sh
 ```
+
+## All in one
+
+```bash
+{
+    cd stage
+    rm *
+    cp ../setup/* .
+    ../importer-demo.sh
+}
+```
