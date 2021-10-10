@@ -1,0 +1,14 @@
+# == improter-generated-from: ./demo-template.yaml ==
+# == importer-skip-update ==
+apiVersion: v1
+kind: Service
+metadata:
+  name: color-svc
+  labels:
+    app.kubernetes.io/name: color-svc
+    app.kubernetes.io/version: v1
+spec:
+  ports:
+    - name: http
+      port: 8800
+      targetPort: 8800

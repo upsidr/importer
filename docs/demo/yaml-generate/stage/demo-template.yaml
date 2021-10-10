@@ -1,0 +1,16 @@
+# == importer-skip-update ==
+apiVersion: v1
+kind: Service
+metadata:
+  name: color-svc
+  labels:
+    # == import: labels / begin from: snippets.yaml#[labels] indent: align ==
+    these: labels
+    will: be
+    replaced: by Importer.
+    # == import: labels / end ==
+spec:
+  ports:
+    - name: http
+      port: 8800
+      targetPort: 8800
