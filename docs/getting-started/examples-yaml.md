@@ -47,9 +47,7 @@ You can find more with 'importer help'
 
 <!-- == export: generate / begin == -->
 
-![Generate in Action][generate-in-action]
-
-[generate-in-action]: /assets/images/importer-generate-yaml-demo.gif "Generate in Action"
+https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-a5a1-698139392465.mp4
 
 <!-- == export: generate / end == -->
 
