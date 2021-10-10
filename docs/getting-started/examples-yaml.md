@@ -2,32 +2,6 @@
 
 ### Preview
 
-<!-- == export: preview / begin == -->
-
-https://user-images.githubusercontent.com/23435099/136710122-a0901daf-971b-40bf-9ec0-15f39f0e7958.mp4
-
-<!-- == export: preview / end == -->
-
-### Generate
-
-<!-- == export: generate / begin == -->
-
-https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-a5a1-698139392465.mp4
-
-<!-- == export: generate / end == -->
-
-### Purge
-
-<!-- == export: purge / begin == -->
-
-https://user-images.githubusercontent.com/23435099/136700548-6c11e599-1cda-4c30-bcfd-840a2c075e37.mp4
-
-<!-- == export: purge / end == -->
-
-## Examples in Code
-
-### Preview
-
 `importer preview` command gives you a quick look at how the file may change when `importer update` and `importer purge` are run against the provided file. This is meant to be useful for testing and debugging.
 
 ```console
@@ -64,3 +38,35 @@ You can replace the file content with either of the commands below:
 
 You can find more with 'importer help'
 ```
+
+#### Preview in Action
+
+<!-- == export: preview / begin == -->
+
+https://user-images.githubusercontent.com/23435099/136710122-a0901daf-971b-40bf-9ec0-15f39f0e7958.mp4
+
+<!-- == export: preview / end == -->
+
+### Generate
+
+`importer generate` imports based on Importer Markers in the given file, and write the result to stdout or file. This can be used for debugging, or create a template file with Importer Markers but keep the file purely for Importer Markers.
+
+#### Generate in Action
+
+<!-- == export: generate / begin == -->
+
+https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-a5a1-698139392465.mp4
+
+<!-- == export: generate / end == -->
+
+### Purge
+
+`importer purge` removes any lines between Importer Markers in the given file, and update the file in place. The same operation is executed for `importer update` before importing all the lines, but this "purge" is sometimes useful to see the file without extra data imported.
+
+#### Purge in Action
+
+<!-- == export: purge / begin == -->
+
+https://user-images.githubusercontent.com/23435099/136700548-6c11e599-1cda-4c30-bcfd-840a2c075e37.mp4
+
+<!-- == export: purge / end == -->
