@@ -73,14 +73,14 @@ You can find more about the commands [here](/docs/details/commands.md).
 
 <!-- == imptr: supported-files / begin from: ./docs/details/supported-files.md#[list] == -->
 
+Because Importer works by parsing language comments, the below are the list of files supported at the moment.
+
 | File Type | Is Supported? | File Extensions | Additional Importer Option |
 | --------- | :-----------: | --------------- | -------------------------- |
 | Markdown  |      ✅       | `.md`           |                            |
 | YAML      |      ✅       | `.yaml`, `.yml` | Indentation                |
 | HTML      |      🚧       | TBC             |                            |
 | TOML      |      🚧       | TBC             |                            |
-
-Any other file type not specified above are not supported by Importer at the moment.
 
 To request additional file support, please file an issue from [here](https://github.com/upsidr/importer/issues/new?assignees=&labels=enhancement&template=feature-request.yaml&title=%5BFeature+Request%5D%3A+).
 
