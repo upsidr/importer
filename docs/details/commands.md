@@ -31,8 +31,8 @@ Use "importer [command] --help" for more information about a command.
 | ------------------------ | ------------------------------------------------------------------------------------------------- |
 | `importer preview FILE`  | Write before/purged/after preview of how Importer processes the file content to stdout.           |
 | `importer update FILE`   | Run Importer processing on `FILE`, and update it in place.                                        |
-| `importer generate FILE` | Run Importer processing on `FILE`, and write the result to stdout.                                |
 | `importer purge FILE`    | Parse Importer Markers, remove any content within Importer Markers, and update the file in plcae. |
+| `importer generate FILE` | Run Importer processing on `FILE`, and write the result to stdout.                                |
 
 <!-- == export: list / end == -->
 
