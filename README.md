@@ -13,7 +13,7 @@ Import any lines, from anywhere
 
 Importer is a CLI tool to allow any file to import other file content, including Markdown, YAML, to name a few. Importer uses **Importer Markers**, which are often provided as comment, to find the relevant file and import defined lines based on line numbers and other details.
 
-Files such as Markdown and YAML which are meant to be a single file input can have other file to be pulled in. Importer aims to provide this extra feature without breaking any language, and that means Importer uses code generation approach, where the **Markers** are used to update the file in place.
+Files such as Markdown and YAML which are meant to be a single file input can pull in other files. Importer aims to provide this extra feature without breaking the language syntax. Importer accomplishes this with a code generation approach, where the **Markers** are used to update the file in place.
 
 This may seem like an unnecessary layer for simple files such as Markdown and YAML, but this allows better structure and code reuse, while retaining or even enhancing code readability.
 
