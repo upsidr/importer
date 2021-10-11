@@ -8,7 +8,7 @@ In most of programming languages, you can define variables and reuse code, and s
 
 Also, Importer's idea is not about DRY - instead, it's about "reuse for clarity".
 
-For example, in any programming language, if you update a single variable, it could have a huge impact as the variable could be referred in many places. You will need some smart tools such as IDE, CI jobs, or test caess to fully understand the impact. You may miss some change that wasn't intended to take place because of the hidden dependencies.
+For example, in any programming language, if you update a single variable, it could have a huge impact as the variable could be referred in many places. You will need some smart tools such as IDE, CI jobs, or test cases to fully understand the impact. You may miss some change that wasn't intended to take place because of the hidden dependencies.
 
 However, you probably won't simply copy and paste the same code in multiple places. It may be very easy to see even for reviewer, but when it comes to updating them, you would have to update in many places. This is very error prone, as you can forget to update one file, and it is often difficult to spot those.
 
