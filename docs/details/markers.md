@@ -43,7 +43,7 @@ Other markers are used to update Importer behaviours.
 ### 2️⃣ Importer Marker Name
 
 - Any name of your choice, with no whitespace character.
-- The same name cannot be used in a single file.
+- The same name cannot be used in a single file more than once.
 
 ### 📃 Separate with `/`
 
