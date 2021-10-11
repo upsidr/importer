@@ -62,8 +62,8 @@ $ go get github.com/upsidr/importer/cmd/importer@v0.1.0
 | ------------------------ | ------------------------------------------------------------------------------------------------- |
 | `importer preview FILE`  | Write before/purged/after preview of how Importer processes the file content to stdout.           |
 | `importer update FILE`   | Run Importer processing on `FILE`, and update it in place.                                        |
-| `importer generate FILE` | Run Importer processing on `FILE`, and write the result to stdout.                                |
 | `importer purge FILE`    | Parse Importer Markers, remove any content within Importer Markers, and update the file in plcae. |
+| `importer generate FILE` | Run Importer processing on `FILE`, and write the result to stdout.                                |
 
 <!-- == imptr: commands / end == -->
 
@@ -119,19 +119,19 @@ https://user-images.githubusercontent.com/23435099/136710122-a0901daf-971b-40bf-
 
 <!-- == imptr: example-preview / end == -->
 
-### `importer generate`
+### `importer update`
 
-<!-- == imptr: generate-desc / begin from: ./docs/getting-started/examples-yaml.md#[generate-desc] == -->
+<!-- == imptr: update-desc / begin from: ./docs/getting-started/examples-yaml.md#[update-desc] == -->
 
-`importer generate` imports based on Importer Markers in the given file, and write the result to stdout or file. This can be used for debugging, or create a template file with Importer Markers but keep the file purely for Importer Markers.
+`importer update` imports based on Importer Markers in the given file, and update the file in place. This is useful for having a single file to manage and also import other file contents. If you want to have a template file which only holds Importer Markers and not actually the imported content, you should use `importer generate` instead.
 
-<!-- == imptr: generate-desc / end == -->
+<!-- == imptr: update-desc / end == -->
 
-<!-- == imptr: example-generate / begin from: ./docs/getting-started/examples-yaml.md#[generate] == -->
+<!-- == imptr: example-update / begin from: ./docs/getting-started/examples-yaml.md#[update] == -->
 
-https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-a5a1-698139392465.mp4
+https://user-images.githubusercontent.com/23435099/136860831-1dfc8ee0-6e33-4ed5-8fa9-e7464a9a4633.mp4
 
-<!-- == imptr: example-generate / end == -->
+<!-- == imptr: example-update / end == -->
 
 ### `importer purge`
 
@@ -146,6 +146,20 @@ https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-
 https://user-images.githubusercontent.com/23435099/136700548-6c11e599-1cda-4c30-bcfd-840a2c075e37.mp4
 
 <!-- == imptr: example-purge / end == -->
+
+### `importer generate`
+
+<!-- == imptr: generate-desc / begin from: ./docs/getting-started/examples-yaml.md#[generate-desc] == -->
+
+`importer generate` imports based on Importer Markers in the given file, and write the result to stdout or file. This can be used for debugging, or create a template file with Importer Markers but keep the file purely for Importer Markers.
+
+<!-- == imptr: generate-desc / end == -->
+
+<!-- == imptr: example-generate / begin from: ./docs/getting-started/examples-yaml.md#[generate] == -->
+
+https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-a5a1-698139392465.mp4
+
+<!-- == imptr: example-generate / end == -->
 
 You can find more examples:
 
