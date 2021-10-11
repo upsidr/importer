@@ -11,14 +11,12 @@ execute "ls -la"
 
 execute "cat demo.yaml"
 
-clear_terminal
-
 execute "cat snippets.yaml"
 
 clear_terminal
 
-comment "Run Importer to update demo.yaml"
+comment "Run Importer to update 'demo.yaml'"
 execute "importer update demo.yaml"
 
-comment "Update complete, check out the updated file"
+comment "Update complete, confirm the update imported from the snippet."
 execute "cat demo.yaml"
