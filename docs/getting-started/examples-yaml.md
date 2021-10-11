@@ -2,7 +2,11 @@
 
 ### Preview
 
+<!-- == export: preview-desc / begin == -->
+
 `importer preview` command gives you a quick look at how the file may change when `importer update` and `importer purge` are run against the provided file. This is meant to be useful for testing and debugging.
+
+<!-- == export: preview-desc / end == -->
 
 ```console
 $ importer preview ./testdata/yaml/demo-before.yaml
@@ -49,7 +53,11 @@ https://user-images.githubusercontent.com/23435099/136710122-a0901daf-971b-40bf-
 
 ### Generate
 
+<!-- == export: generate-desc / begin == -->
+
 `importer generate` imports based on Importer Markers in the given file, and write the result to stdout or file. This can be used for debugging, or create a template file with Importer Markers but keep the file purely for Importer Markers.
+
+<!-- == export: generate-desc / end == -->
 
 #### Generate in Action
 
@@ -61,7 +69,11 @@ https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-
 
 ### Purge
 
+<!-- == export: purge-desc / begin == -->
+
 `importer purge` removes any lines between Importer Markers in the given file, and update the file in place. The same operation is executed for `importer update` before importing all the lines, but this "purge" is sometimes useful to see the file without extra data imported.
+
+<!-- == export: purge-desc / end == -->
 
 #### Purge in Action
 

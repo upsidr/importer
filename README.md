@@ -107,6 +107,12 @@ You can find more about the markers [here](/docs/details/markers.md).
 
 ### `importer preview`
 
+<!-- == imptr: preview-desc / begin from: ./docs/getting-started/examples-yaml.md#[preview-desc] == -->
+
+`importer preview` command gives you a quick look at how the file may change when `importer update` and `importer purge` are run against the provided file. This is meant to be useful for testing and debugging.
+
+<!-- == imptr: preview-desc / end == -->
+
 <!-- == imptr: example-preview / begin from: ./docs/getting-started/examples-yaml.md#[preview] == -->
 
 https://user-images.githubusercontent.com/23435099/136710122-a0901daf-971b-40bf-9ec0-15f39f0e7958.mp4
@@ -115,6 +121,12 @@ https://user-images.githubusercontent.com/23435099/136710122-a0901daf-971b-40bf-
 
 ### `importer generate`
 
+<!-- == imptr: generate-desc / begin from: ./docs/getting-started/examples-yaml.md#[generate-desc] == -->
+
+`importer generate` imports based on Importer Markers in the given file, and write the result to stdout or file. This can be used for debugging, or create a template file with Importer Markers but keep the file purely for Importer Markers.
+
+<!-- == imptr: generate-desc / end == -->
+
 <!-- == imptr: example-generate / begin from: ./docs/getting-started/examples-yaml.md#[generate] == -->
 
 https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-a5a1-698139392465.mp4
@@ -122,6 +134,12 @@ https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-
 <!-- == imptr: example-generate / end == -->
 
 ### `importer purge`
+
+<!-- == imptr: purge-desc / begin from: ./docs/getting-started/examples-yaml.md#[purge-desc] == -->
+
+`importer purge` removes any lines between Importer Markers in the given file, and update the file in place. The same operation is executed for `importer update` before importing all the lines, but this "purge" is sometimes useful to see the file without extra data imported.
+
+<!-- == imptr: purge-desc / end == -->
 
 <!-- == imptr: example-purge / begin from: ./docs/getting-started/examples-yaml.md#[purge] == -->
 
