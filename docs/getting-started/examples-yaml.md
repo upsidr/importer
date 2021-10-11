@@ -2,7 +2,11 @@
 
 ### Preview
 
+<!-- == export: preview-desc / begin == -->
+
 `importer preview` command gives you a quick look at how the file may change when `importer update` and `importer purge` are run against the provided file. This is meant to be useful for testing and debugging.
+
+<!-- == export: preview-desc / end == -->
 
 ```console
 $ importer preview ./testdata/yaml/demo-before.yaml
@@ -47,21 +51,29 @@ https://user-images.githubusercontent.com/23435099/136710122-a0901daf-971b-40bf-
 
 <!-- == export: preview / end == -->
 
-### Generate
+### Update
 
-`importer generate` imports based on Importer Markers in the given file, and write the result to stdout or file. This can be used for debugging, or create a template file with Importer Markers but keep the file purely for Importer Markers.
+<!-- == export: update-desc / begin == -->
 
-#### Generate in Action
+`importer update` imports based on Importer Markers in the given file, and update the file in place. This is useful for having a single file to manage and also import other file contents. If you want to have a template file which only holds Importer Markers and not actually the imported content, you should use `importer generate` instead.
 
-<!-- == export: generate / begin == -->
+<!-- == export: update-desc / end == -->
 
-https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-a5a1-698139392465.mp4
+#### Update in Action
 
-<!-- == export: generate / end == -->
+<!-- == export: update / begin == -->
+
+https://user-images.githubusercontent.com/23435099/136860831-1dfc8ee0-6e33-4ed5-8fa9-e7464a9a4633.mp4
+
+<!-- == export: update / end == -->
 
 ### Purge
 
+<!-- == export: purge-desc / begin == -->
+
 `importer purge` removes any lines between Importer Markers in the given file, and update the file in place. The same operation is executed for `importer update` before importing all the lines, but this "purge" is sometimes useful to see the file without extra data imported.
+
+<!-- == export: purge-desc / end == -->
 
 #### Purge in Action
 
@@ -70,3 +82,19 @@ https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-
 https://user-images.githubusercontent.com/23435099/136700548-6c11e599-1cda-4c30-bcfd-840a2c075e37.mp4
 
 <!-- == export: purge / end == -->
+
+### Generate
+
+<!-- == export: generate-desc / begin == -->
+
+`importer generate` imports based on Importer Markers in the given file, and write the result to stdout or file. This can be used for debugging, or create a template file with Importer Markers but keep the file purely for Importer Markers.
+
+<!-- == export: generate-desc / end == -->
+
+#### Generate in Action
+
+<!-- == export: generate / begin == -->
+
+https://user-images.githubusercontent.com/23435099/136703617-9f11e97b-3a87-449a-a5a1-698139392465.mp4
+
+<!-- == export: generate / end == -->

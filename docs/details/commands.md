@@ -29,34 +29,33 @@ Use "importer [command] --help" for more information about a command.
 
 | Name                     | Description                                                                                       |
 | ------------------------ | ------------------------------------------------------------------------------------------------- |
-| `importer generate FILE` | Run Importer processing on `FILE`, and write the result to stdout.                                |
+| `importer preview FILE`  | Write before/purged/after preview of how Importer processes the file content to stdout.           |
 | `importer update FILE`   | Run Importer processing on `FILE`, and update it in place.                                        |
 | `importer purge FILE`    | Parse Importer Markers, remove any content within Importer Markers, and update the file in plcae. |
-| `importer preview FILE`  | Write before/purged/after preview of how Importer processes the file content to stdout.           |
+| `importer generate FILE` | Run Importer processing on `FILE`, and write the result to stdout.                                |
 
 <!-- == export: list / end == -->
 
-### `importer generate`
+### `importer preview`
 
 ```console
-$ importer generate --help
+$ importer preview --help
 
-`generate` command parses the provided file as the input, and output the processed file content to stdout or a file.
+`preview` command processes the provided file and gives you a quick preview.
 
-While `update` command is useful for managing file content in itself, `generate` can be used to create a separate template file.
-This approach allows the input file to be full of Importer markes without actual importing, and only used as the template to generate a new file.
+This allows you to find what the file looks like after `update` or `purge`.
 
 Usage:
-  importer generate [filename] [flags]
+  importer preview [filename] [flags]
 
 Aliases:
-  generate, gen
+  preview, pre, p
 
 Flags:
-      --disable-header   disable automatically added header of Importer generated notice
-  -h, --help             help for generate
-      --keep-markers     keep Importer Markers from the generated result
-  -o, --out FILE         write to FILE
+  -h, --help     help for preview
+      --lines    Show line numbers
+  -p, --purge    Show only purged result
+  -u, --update   Show only updated result
 ```
 
 ### `importer update`
@@ -96,24 +95,25 @@ Flags:
   -h, --help      help for purge
 ```
 
-### `importer preview`
+### `importer generate`
 
 ```console
-$ importer preview --help
+$ importer generate --help
 
-`preview` command processes the provided file and gives you a quick preview.
+`generate` command parses the provided file as the input, and output the processed file content to stdout or a file.
 
-This allows you to find what the file looks like after `update` or `purge`.
+While `update` command is useful for managing file content in itself, `generate` can be used to create a separate template file.
+This approach allows the input file to be full of Importer markes without actual importing, and only used as the template to generate a new file.
 
 Usage:
-  importer preview [filename] [flags]
+  importer generate [filename] [flags]
 
 Aliases:
-  preview, pre, p
+  generate, gen
 
 Flags:
-  -h, --help     help for preview
-      --lines    Show line numbers
-  -p, --purge    Show only purged result
-  -u, --update   Show only updated result
+      --disable-header   disable automatically added header of Importer generated notice
+  -h, --help             help for generate
+      --keep-markers     keep Importer Markers from the generated result
+  -o, --out FILE         write to FILE
 ```
