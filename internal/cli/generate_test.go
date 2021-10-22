@@ -36,6 +36,11 @@ func TestGenerateStdout(t *testing.T) {
 			keepMarkers: true,
 			wantFile:    "../../testdata/markdown/import-with-exporter-updated.md",
 		},
+		"markdown with verbatim YAML ": {
+			inputFile:   "../../testdata/markdown/verbatim-yaml-before.md",
+			keepMarkers: true,
+			wantFile:    "../../testdata/markdown/verbatim-yaml-updated.md",
+		},
 		"yaml with exporter": {
 			inputFile:   "../../testdata/yaml/demo-before.yaml",
 			keepMarkers: true,
