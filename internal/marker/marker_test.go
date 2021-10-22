@@ -203,6 +203,58 @@ func TestNewMarker(t *testing.T) {
 				},
 			},
 		},
+		"Quote": {
+			input: &marker.RawMarker{
+				Name:           "simple-marker",
+				IsBeginFound:   true,
+				IsEndFound:     true,
+				LineToInsertAt: 3,
+				Options:        "from: ./abc.md#3~5 style: quote abc", // "abc" is used as language, but quote simply ignores this
+			},
+			want: &marker.Marker{
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.md",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:     marker.LineRange,
+					LineFrom: 3,
+					LineTo:   5,
+				},
+				Indentation: nil,
+				ImportStyle: &marker.ImportStyle{
+					Mode: marker.Quote,
+				},
+			},
+		},
+		"Verbatim ": {
+			input: &marker.RawMarker{
+				Name:           "simple-marker",
+				IsBeginFound:   true,
+				IsEndFound:     true,
+				LineToInsertAt: 3,
+				Options:        "from: ./abc.md#3~5 style: verbatim some-lang",
+			},
+			want: &marker.Marker{
+				Name:           "simple-marker",
+				LineToInsertAt: 3,
+				ImportTargetFile: marker.ImportTargetFile{
+					Type: marker.PathBased,
+					File: "./abc.md",
+				},
+				ImportLogic: marker.ImportLogic{
+					Type:     marker.LineRange,
+					LineFrom: 3,
+					LineTo:   5,
+				},
+				Indentation: nil,
+				Wrap: &marker.Wrap{
+					LanguageType: "some-lang",
+				},
+			},
+		},
 	}
 
 	for name, tc := range cases {
