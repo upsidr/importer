@@ -74,12 +74,33 @@ func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 	withinExportMarker := false
 	currentLine := 0
 
+	if m.Wrap != nil {
+		result = append(result, []byte("```"+m.Wrap.LanguageType)...)
+		result = append(result, br)
+	}
+
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		currentLine++
 
+		dataToWrite := append(scanner.Bytes(), br)
+		if m.ImportStyle != nil && m.ImportStyle.Mode == Quote {
+			dataToWrite = append([]byte("> "), dataToWrite...)
+		}
+
 		// Find Exporter Marker
-		matches, err := regexpplus.MapWithNamedSubgroups(scanner.Text(), ExporterMarkerMarkdown)
+		var exporter string
+		targetFileType := filepath.Ext(m.ImportTargetFile.File)
+		switch targetFileType {
+		case ".md":
+			exporter = ExporterMarkerMarkdown
+		case ".yaml", ".yml":
+			exporter = ExporterMarkerYAML
+		default:
+			exporter = ExporterMarkerMarkdown
+		}
+
+		matches, err := regexpplus.MapWithNamedSubgroups(scanner.Text(), exporter)
 		if err != nil && !errors.Is(err, regexpplus.ErrNoMatch) {
 			panic(err) // Unknown error, should not happen
 		}
@@ -98,26 +119,29 @@ func (m *Marker) processSingleMarkerMarkdown(file io.Reader) ([]byte, error) {
 
 		// Handle Exporter Marker imports
 		if withinExportMarker {
-			result = append(result, scanner.Bytes()...)
-			result = append(result, br)
+			result = append(result, dataToWrite...)
 			continue
 		}
 
 		// Handle line number imports
 		if currentLine >= m.ImportLogic.LineFrom &&
 			currentLine <= m.ImportLogic.LineTo {
-			result = append(result, scanner.Bytes()...)
-			result = append(result, br)
+			result = append(result, dataToWrite...)
 			continue
 		}
 		for _, l := range m.ImportLogic.Lines {
 			if currentLine == l {
-				result = append(result, scanner.Bytes()...)
-				result = append(result, br)
+				result = append(result, dataToWrite...)
 				continue
 			}
 		}
 	}
+
+	if m.Wrap != nil {
+		result = append(result, []byte("```")...)
+		result = append(result, br)
+	}
+
 	return result, nil
 }
 

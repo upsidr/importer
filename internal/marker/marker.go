@@ -26,9 +26,11 @@ type Marker struct {
 	ImportTargetFile
 	ImportLogic
 
-	Indentation *Indentation
+	// Below are optional
 
-	// TODO: Add insert style such as code verbatim, details, quotes, etc.
+	Indentation *Indentation
+	ImportStyle *ImportStyle
+	Wrap        *Wrap
 }
 
 type ImportTargetFileType int
@@ -82,31 +84,60 @@ type Indentation struct {
 	MarkerIndentation int
 }
 
+type StyleMode int
+
+const (
+	// Reserve 0 value as invalid
+	Quote StyleMode = iota + 1
+
+	// TODO: implement this if there is a use case
+	// UnorderedList
+	// OrderedList
+)
+
+type ImportStyle struct {
+	Mode StyleMode
+}
+
+type Wrap struct {
+	LanguageType string
+}
+
 func NewMarker(raw *RawMarker) (*Marker, error) {
 	err := raw.Validate()
 	if err != nil {
 		return nil, err
 	}
 
-	result := &Marker{
+	marker := &Marker{
 		Name:           raw.Name,
 		LineToInsertAt: raw.LineToInsertAt,
 	}
 
-	err = processFileOption(result, raw)
+	err = marker.processFileOption(raw)
 	if err != nil {
 		return nil, err
 	}
 
-	err = processIndentOption(result, raw)
+	err = marker.processIndentOption(raw)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	err = marker.processStyle(raw)
+	if err != nil {
+		return nil, err
+	}
+
+	err = marker.processWrap(raw)
+	if err != nil {
+		return nil, err
+	}
+
+	return marker, nil
 }
 
-func processFileOption(marker *Marker, match *RawMarker) error {
+func (marker *Marker) processFileOption(match *RawMarker) error {
 	matches, err := regexpplus.MapWithNamedSubgroups(match.Options, OptionFilePathIndicator)
 	if err != nil {
 		return fmt.Errorf("%w for '%s', import target option is missing", ErrInvalidSyntax, match.Name)
@@ -126,7 +157,7 @@ func processFileOption(marker *Marker, match *RawMarker) error {
 	return nil
 }
 
-func processIndentOption(marker *Marker, match *RawMarker) error {
+func (marker *Marker) processIndentOption(match *RawMarker) error {
 	matches, err := regexpplus.MapWithNamedSubgroups(match.Options, OptionIndentMode)
 	if err != nil {
 		return nil // Indent options are not required, and thus simply ignore if no match
@@ -167,6 +198,46 @@ func processIndentOption(marker *Marker, match *RawMarker) error {
 		}
 		marker.Indentation.Length = length
 	}
+
+	return nil
+}
+
+func (m *Marker) processStyle(match *RawMarker) error {
+	matches, err := regexpplus.MapWithNamedSubgroups(match.Options, OptionStyleAndWrap)
+	if err != nil {
+		return nil // Indent options are not required, and thus simply ignore if no match
+	}
+
+	if styleMode, found := matches["importer_style"]; found {
+		switch styleMode {
+		case "quote":
+			m.ImportStyle = &ImportStyle{Mode: Quote}
+		case "verbatim":
+			lang, found := matches["importer_style_lang"]
+			if !found {
+				m.Wrap = &Wrap{} // default verbatim, without language syntax
+			}
+			m.Wrap = &Wrap{LanguageType: lang}
+		default:
+			return errors.New("unsupported style") // This shouldn't happen with the underlying regex
+		}
+	}
+
+	return nil
+}
+
+func (m *Marker) processWrap(match *RawMarker) error {
+	matches, err := regexpplus.MapWithNamedSubgroups(match.Options, OptionWrap)
+	if err != nil {
+		return nil // Indent options are not required, and thus simply ignore if no match
+	}
+
+	w := &Wrap{}
+	if lang, found := matches["importer_wrap_lang"]; found {
+		w.LanguageType = lang
+	}
+
+	m.Wrap = w
 
 	return nil
 }

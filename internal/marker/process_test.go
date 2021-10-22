@@ -78,6 +78,62 @@ func TestProcessSingleMarker(t *testing.T) {
 
 `),
 		},
+		"markdown: exporter marker with quote": {
+			callerFile: "./some_file.md",
+			marker: &Marker{
+				LineToInsertAt: 1,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/markdown/snippet-with-exporter.md",
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "test_exporter",
+				},
+				ImportStyle: &ImportStyle{
+					Mode: Quote,
+				},
+			},
+			want: []byte(`> 
+> ✨✨✨✨✨✨✨✨
+> ✨✨✨✨✨✨✨✨
+> ✨✨✨✨✨✨✨✨
+> 🚀🚀🚀🚀🚀🚀🚀🚀
+> ✨✨✨✨✨✨✨✨
+> ✨✨✨✨✨✨✨✨
+> ✨✨✨✨✨✨✨✨
+> 
+`),
+		},
+		"markdown: exporter marker with verbatim": {
+			callerFile: "./some_file.md",
+			marker: &Marker{
+				LineToInsertAt: 1,
+				ImportTargetFile: ImportTargetFile{
+					Type: PathBased,
+					File: "../../testdata/markdown/snippet-with-exporter.md",
+				},
+				ImportLogic: ImportLogic{
+					Type:           ExporterMarker,
+					ExporterMarker: "test_exporter",
+				},
+				Wrap: &Wrap{
+					LanguageType: "some-lang",
+				},
+			},
+			want: []byte("```" + `some-lang
+
+✨✨✨✨✨✨✨✨
+✨✨✨✨✨✨✨✨
+✨✨✨✨✨✨✨✨
+🚀🚀🚀🚀🚀🚀🚀🚀
+✨✨✨✨✨✨✨✨
+✨✨✨✨✨✨✨✨
+✨✨✨✨✨✨✨✨
+
+` + "```" + `
+`),
+		},
 		"yaml: line range": {
 			callerFile: "./some_file.yaml",
 			marker: &Marker{
