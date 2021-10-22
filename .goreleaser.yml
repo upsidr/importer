@@ -2,10 +2,12 @@ builds:
   - id: importer
     binary: importer
     main: ./cmd/importer/main.go
+    hooks:
+      pre: ./tools/prep-release.sh
     goos:
       - darwin
       - linux
-      # - windows # Taking out Windows for now
+      - windows
     goarch:
       - amd64
 

@@ -21,6 +21,7 @@ func Run(args []string) error {
 		updateCmd,
 		generateCliCmd,
 		purgeCliCmd,
+		versionCmd,
 	)
 	return cmd.Execute()
 }
