@@ -18,6 +18,9 @@ var (
 	// OptionIndentMode is the pattern used for specifying indentation mode.
 	OptionIndentMode = `indent: (?P<importer_indent_mode>absolute|extra|align|keep)\s?(?P<importer_indent_length>\d*)`
 
+	OptionStyleAndWrap = `style: (?P<importer_style>quote|q|verbatim|v)\s?(?P<importer_style_lang>\S*)`
+	OptionWrap         = `wrap: (?P<importer_wrap_lang>\S*)`
+
 	ImporterSkipProcessingMarkdown = `<!-- == importer-skip-update == -->`
 	ImporterSkipProcessingYAML     = `# == importer-skip-update ==`
 )
