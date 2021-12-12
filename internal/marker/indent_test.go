@@ -55,6 +55,11 @@ func TestPrependWhitespaces(t *testing.T) {
 			whitespaceCount: 6,
 			want:            []byte("        abcdef"),
 		},
+		"line with only whitespace": {
+			originalSlice:   []byte("    "),
+			whitespaceCount: 6,
+			want:            []byte("    "), // No change
+		},
 	}
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
