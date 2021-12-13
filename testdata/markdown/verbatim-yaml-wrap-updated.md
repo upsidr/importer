@@ -6,6 +6,7 @@
     requests:
       cpu: 10m
       memory: 10Mi
+
     limits:
       cpu: 30m
       memory: 30Mi

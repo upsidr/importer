@@ -77,6 +77,10 @@ func handleAbsoluteIndentation(lineData []byte, exportMarkerIndent, targetIndent
 }
 
 func prependWhitespaces(x []byte, count int) []byte {
+	// If provided line only has space chars, return the line data as is.
+	if len(bytes.TrimSpace(x)) == 0 {
+		return x
+	}
 	empty := bytes.Repeat([]byte(" "), count)
 	// x = append(x, empty...)
 	// copy(x[count:], x)
