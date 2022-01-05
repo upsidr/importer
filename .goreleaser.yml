@@ -2,8 +2,10 @@ builds:
   - id: importer
     binary: importer
     main: ./cmd/importer/main.go
+    env:
+      - CGO_ENABLED=0
     hooks:
-      pre: ./tools/prep-release.sh
+      pre: ./tools/prep-release.sh {{ .Tag }}
     goos:
       - darwin
       - linux
@@ -11,6 +13,9 @@ builds:
     goarch:
       - amd64
       - arm64
+    goarm:
+      - "6"
+      - "7"
 
 brews:
   - name: importer
