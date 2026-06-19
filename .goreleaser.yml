@@ -1,3 +1,5 @@
+version: 2
+
 builds:
   - id: importer
     binary: importer
@@ -19,9 +21,9 @@ builds:
 
 brews:
   - name: importer
-    tap:
+    repository:
       owner: upsidr
       name: homebrew-tap
-    folder: Formula
+    directory: Formula
     homepage: https://github.com/upsidr/importer
     description: Import any lines, from anywhere
